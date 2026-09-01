@@ -1,29 +1,17 @@
 "use client";
 
-import "./ConfigureAmplify";
 import { useEffect, useState } from "react";
-import {
-    signUp,
-    confirmSignUp,
-    signIn,
-    signOut,
-    getCurrentUser,
-    fetchAuthSession,
-} from "aws-amplify/auth";
-import { generateClient } from "aws-amplify/data";
+import { signUp, confirmSignUp } from "aws-amplify/auth";
+import { apiClient as client } from "@/app/lib/apiClient";
+import { useAuth } from "./context/auth";
+import { usePermissions } from "./context/permissions";
 
-const client = generateClient();
 const HOME_SLUG = "home";
 
-async function checkIsAdmin() {
-    const session = await fetchAuthSession();
-    const groups = session.tokens?.accessToken?.payload["cognito:groups"] ?? [];
-    return groups.includes("Admins");
-}
-
 export default function Home() {
-    const [user, setUser] = useState(undefined); // undefined = loading, null = signed out
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { user, booted, signIn, signOut } = useAuth();
+    const { isAdmin } = usePermissions();
+
     const [mode, setMode] = useState("signIn"); // signIn | signUp | confirm
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,18 +21,9 @@ export default function Home() {
     const [pageContent, setPageContent] = useState(null);
     const [draft, setDraft] = useState("");
 
-    const [permissions, setPermissions] = useState([]);
+    const [permissionRecords, setPermissionRecords] = useState([]);
     const [newPermEmail, setNewPermEmail] = useState("");
     const [permError, setPermError] = useState("");
-
-    useEffect(() => {
-        getCurrentUser()
-            .then(async (u) => {
-                setUser(u);
-                setIsAdmin(await checkIsAdmin());
-            })
-            .catch(() => setUser(null));
-    }, []);
 
     // Any signed-in user can read/write this - proves ordinary CMS content works.
     useEffect(() => {
@@ -65,7 +44,7 @@ export default function Home() {
     useEffect(() => {
         if (!user || !isAdmin) return;
         const sub = client.models.AdminPermission.observeQuery().subscribe({
-            next: ({ items }) => setPermissions(items),
+            next: ({ items }) => setPermissionRecords(items),
         });
         return () => sub.unsubscribe();
     }, [user, isAdmin]);
@@ -96,20 +75,10 @@ export default function Home() {
         e.preventDefault();
         setError("");
         try {
-            await signIn({ username: email, password });
-            setUser(await getCurrentUser());
-            setIsAdmin(await checkIsAdmin());
+            await signIn({ email, password });
         } catch (err) {
             setError(err.message ?? "Sign in failed");
         }
-    }
-
-    async function handleSignOut() {
-        await signOut();
-        setUser(null);
-        setIsAdmin(false);
-        setPageContent(null);
-        setPermissions([]);
     }
 
     async function handleSavePageContent(e) {
@@ -134,7 +103,7 @@ export default function Home() {
         }
     }
 
-    if (user === undefined) {
+    if (!booted) {
         return <main className="p-8">Loading...</main>;
     }
 
@@ -193,10 +162,10 @@ export default function Home() {
                 <div>
                     <h1 className="text-xl font-semibold">energydatasa-gen2</h1>
                     <p className="text-sm text-slate-500">
-                        {user.signInDetails?.loginId ?? user.username} — {isAdmin ? "Admin" : "Signed in"}
+                        {user.email} — {isAdmin ? "Admin" : "Signed in"}
                     </p>
                 </div>
-                <button onClick={handleSignOut} className="text-sm border rounded px-3 py-1.5">Sign out</button>
+                <button onClick={signOut} className="text-sm border rounded px-3 py-1.5">Sign out</button>
             </div>
 
             <section>
@@ -224,10 +193,10 @@ export default function Home() {
                         <button className="bg-slate-900 text-white rounded px-4 py-2 text-sm">Grant</button>
                     </form>
                     <ul className="space-y-1 text-sm">
-                        {permissions.map((p) => (
+                        {permissionRecords.map((p) => (
                             <li key={p.id} className="border rounded px-3 py-2">{p.email}</li>
                         ))}
-                        {permissions.length === 0 && <li className="text-slate-500">No permission records yet.</li>}
+                        {permissionRecords.length === 0 && <li className="text-slate-500">No permission records yet.</li>}
                     </ul>
                 </section>
             ) : (

@@ -1,15 +1,95 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
-// Placeholder model used only to prove the frontend can reach a real,
-// authenticated AWS backend end-to-end. Requires sign-in (no public/guest
-// access), and each user can only see/edit their own records (owner-based
-// auth) - not "any signed-in user sees everyone's data".
+// Mirrors the original energydatasa app's content models. Public read (via
+// API key, matching the old app's apiKey auth mode) + any signed-in user can
+// write - that's an intentional, low-stakes "wiki-style" choice for ordinary
+// CMS content, same as the original.
 const schema = a.schema({
-  Todo: a
+  PageContent: a
     .model({
+      slug: a.string().required(),
       content: a.string(),
     })
-    .authorization((allow) => [allow.owner()]),
+    .secondaryIndexes((index) => [index('slug').queryField('pageContentBySlug')])
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read']),
+      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+    ]),
+
+  EskomCoalPowerStation: a
+    .model({
+      slug: a.string().required(),
+      name: a.string().required(),
+      generalIdentification: a.string(),
+      plantConfiguration: a.string(),
+      fuelSupply: a.string(),
+      boilerTurbineGenerator: a.string(),
+      performanceEfficiency: a.string(),
+      environmentalEmissions: a.string(),
+      reliabilityAvailability: a.string(),
+      operationsMaintenance: a.string(),
+      gridIntegration: a.string(),
+      financialEconomic: a.string(),
+      regulatoryPolicy: a.string(),
+      futureOutlook: a.string(),
+    })
+    .secondaryIndexes((index) => [index('slug').queryField('eskomCoalPowerStationBySlug')])
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read']),
+      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+    ]),
+
+  InsightArticle: a
+    .model({
+      slug: a.string().required(),
+      title: a.string().required(),
+      excerpt: a.string().required(),
+      body: a.string().required(),
+      publishedAt: a.date(),
+      imageKey: a.string().required(),
+    })
+    .secondaryIndexes((index) => [index('slug').queryField('insightArticleBySlug')])
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read']),
+      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+    ]),
+
+  AudienceProfile: a
+    .model({
+      slug: a.string().required(),
+      title: a.string().required(),
+      subtitle: a.string(),
+      logo: a.string(),
+      overview: a.string(),
+      useCases: a.string(),
+      datasets: a.string(),
+      tools: a.string(),
+      insights: a.string(),
+      gettingStarted: a.string(),
+    })
+    .secondaryIndexes((index) => [index('slug').queryField('audienceProfileBySlug')])
+    .authorization((allow) => [
+      allow.publicApiKey().to(['read']),
+      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+    ]),
+
+  // Replaces the old app's __admin__.superAdmins / __permissions__.<email>
+  // PageContent records. isAdmin is NOT a field here - it's real Cognito
+  // group membership (checked via cognito:groups), which can't be granted
+  // through a data write at all. This model only holds the fine-grained,
+  // non-security-critical "which extra pages can this non-admin user edit"
+  // grants, and only admins can write it - closing the hole where any
+  // authenticated user could write these records directly.
+  AdminPermission: a
+    .model({
+      email: a.string().required(),
+      editablePages: a.string().array(),
+    })
+    .secondaryIndexes((index) => [index('email').queryField('adminPermissionByEmail')])
+    .authorization((allow) => [
+      allow.authenticated().to(['read']),
+      allow.group('Admins').to(['create', 'update', 'delete']),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -18,34 +98,6 @@ export const data = defineData({
   schema,
   authorizationModes: {
     defaultAuthorizationMode: 'userPool',
+    apiKeyAuthorizationMode: { expiresInDays: 365 },
   },
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>

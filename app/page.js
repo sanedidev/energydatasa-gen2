@@ -1,5 +1,6 @@
 "use client";
 
+import "./ConfigureAmplify";
 import { useEffect, useState } from "react";
 import {
     signUp,

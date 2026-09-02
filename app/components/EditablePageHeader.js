@@ -19,11 +19,15 @@ export default function EditablePageHeader({
     const { editMode: pageEditMode } = usePageEditMode();
     const { user } = useAuth();
 
-    const [record,   setRecord]   = useState(null);
-    const [label,    setLabel]    = useState(defaultLabel);
-    const [title,    setTitle]    = useState(defaultTitle);
-    const [desc,     setDesc]     = useState(defaultDesc);
-    const [editing,  setEditing]  = useState(false);
+    const [record,        setRecord]        = useState(null);
+    const [label,         setLabel]         = useState(defaultLabel);
+    const [title,         setTitle]         = useState(defaultTitle);
+    const [desc,          setDesc]          = useState(defaultDesc);
+    // Derived, not stored: turning off the page-level edit toggle closes any
+    // in-progress edit automatically, discarding unsaved changes - no reset
+    // effect needed, unlike the old app's per-page useEffect-based version.
+    const [editRequested, setEditRequested] = useState(false);
+    const editing = editRequested && pageEditMode;
     const [draft,    setDraft]    = useState({ label: defaultLabel, title: defaultTitle, desc: defaultDesc });
     const [saving,   setSaving]   = useState(false);
 
@@ -48,11 +52,11 @@ export default function EditablePageHeader({
 
     function openEdit() {
         setDraft({ label, title, desc });
-        setEditing(true);
+        setEditRequested(true);
     }
 
     function cancelEdit() {
-        setEditing(false);
+        setEditRequested(false);
     }
 
     async function saveEdit() {
@@ -71,7 +75,7 @@ export default function EditablePageHeader({
             setLabel(draft.label);
             setTitle(draft.title);
             setDesc(draft.desc);
-            setEditing(false);
+            setEditRequested(false);
             logEdit(client, {
                 slug:   headerSlug,
                 label:  `${draft.title || pageKey} — Page Header`,

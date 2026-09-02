@@ -25,7 +25,11 @@ export default function SimplePageBody({ pageKey, placeholder = "Add content for
     const [record, setRecord] = useState(null);
     const [content, setContent] = useState("");
     const [draft, setDraft] = useState("");
-    const [editing, setEditing] = useState(false);
+    // Derived, not stored: turning off the page-level edit toggle closes any
+    // in-progress edit automatically, discarding unsaved changes - no reset
+    // effect needed, unlike the old app's per-page useEffect-based version.
+    const [editRequested, setEditRequested] = useState(false);
+    const editing = editRequested && pageEditMode;
     const [saving, setSaving] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -50,7 +54,7 @@ export default function SimplePageBody({ pageKey, placeholder = "Add content for
 
     function openEdit() {
         setDraft(content);
-        setEditing(true);
+        setEditRequested(true);
     }
 
     async function saveEdit() {
@@ -65,7 +69,7 @@ export default function SimplePageBody({ pageKey, placeholder = "Add content for
                 setRecord(res.data);
             }
             setContent(draft);
-            setEditing(false);
+            setEditRequested(false);
             logEdit(client, {
                 slug: pageKey,
                 label: pageKey,
@@ -120,7 +124,7 @@ export default function SimplePageBody({ pageKey, placeholder = "Add content for
                             {saving ? "Saving…" : "Save"}
                         </button>
                         <button
-                            onClick={() => setEditing(false)}
+                            onClick={() => setEditRequested(false)}
                             className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
                         >
                             Cancel

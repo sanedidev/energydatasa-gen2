@@ -36,7 +36,7 @@ const EditableContent = forwardRef(function EditableContent({
 
     const ec = useEditableContent({
         slug, defaultContent, preloadedRecord,
-        onFirstBlockIsTitle, onSave, userEmail, sectionLabel, ref,
+        onFirstBlockIsTitle, onSave, userEmail, sectionLabel, canEdit, ref,
     });
 
     // ── Loading ───────────────────────────────────────────────────────────────

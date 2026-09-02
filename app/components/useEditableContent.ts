@@ -32,6 +32,10 @@ export interface UseEditableContentParams {
     onSave?: ((slug: string, record: PageContentRecord) => void) | null;
     userEmail?: string | null;
     sectionLabel?: string | null;
+    // Turning this false (e.g. the page-level "Edit page" toggle turning
+    // off) force-exits any in-progress edit, discarding unsaved changes -
+    // see isEditing below.
+    canEdit?: boolean;
     ref?: unknown;
 }
 
@@ -85,12 +89,17 @@ export function useEditableContent({
     onSave = null,
     userEmail = null,
     sectionLabel = null,
+    canEdit = true,
     ref,
 }: UseEditableContentParams): UseEditableContentReturn {
     const hasPreload = preloadedRecord !== undefined;
     const [record,   setRecord]   = useState<PageContentRecord>(hasPreload ? (preloadedRecord ?? null) : null);
     const [loading,  setLoading]  = useState(!hasPreload);
-    const [isEditing, setIsEditing] = useState(false);
+    // Derived, not stored: canEdit turning false (e.g. the page-level "Edit
+    // page" toggle turning off) force-exits editing automatically, no reset
+    // effect needed - same pattern as EditablePageHeader/PageBody.
+    const [editRequested, setEditRequested] = useState(false);
+    const isEditing = editRequested && canEdit;
     const [blocks,   setBlocks]   = useState<Block[]>(() => hasPreload ? parseBlocks(preloadedRecord?.content) : [""]);
     const [saving,   setSaving]   = useState(false);
     const [error,    setError]    = useState("");
@@ -183,7 +192,7 @@ export function useEditableContent({
     // ── Imperative API for EditableSections quick-add ─────────────────────────
     useImperativeHandle(ref as any, () => ({
         quickAdd(type: string) {
-            setIsEditing(true);
+            setEditRequested(true);
             if (type === "image") {
                 setPendingImgIdx(null);
                 setMediaOpen(true);
@@ -225,7 +234,7 @@ export function useEditableContent({
                 saved = res.data ?? null;
             }
             setRecord(saved);
-            setIsEditing(false);
+            setEditRequested(false);
             setDraftRestored(false);
             try { localStorage.removeItem(draftKey); } catch { /* ignore */ }
             onSave?.(slug, saved);
@@ -245,7 +254,7 @@ export function useEditableContent({
 
     function handleCancel() {
         setBlocks(parseBlocks(record?.content ?? defaultContent));
-        setIsEditing(false);
+        setEditRequested(false);
         setError("");
         setDraftRestored(false);
         try { localStorage.removeItem(draftKey); } catch { /* ignore */ }
@@ -266,7 +275,7 @@ export function useEditableContent({
         } catch { /* ignore */ }
         if (!restored) setBlocks(fresh);
         setDraftRestored(restored);
-        setIsEditing(true);
+        setEditRequested(true);
     }
 
     // ── Block mutations ───────────────────────────────────────────────────────

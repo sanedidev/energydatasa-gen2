@@ -30,10 +30,10 @@ export default function Navbar() {
 
     const isActive = (href) => pathname === href || pathname.startsWith(href + "/");
 
-    const doSignOut = () => {
-        signOut();
+    const doSignOut = async () => {
         setOpen(false);
-        router.push("/login");
+        await signOut();
+        router.push("/");
     };
 
     return (

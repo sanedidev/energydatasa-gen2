@@ -44,7 +44,20 @@ export function AuthProvider({ children }) {
 
     // REAL Cognito sign-in
     async function signIn({ email, password }) {
-        const result = await cognitoSignIn({ username: email, password });
+        let result;
+        try {
+            result = await cognitoSignIn({ username: email, password });
+        } catch (err) {
+            // Amplify can leave a stale session in storage after signOut()
+            // (token-refresh race) and then refuse to sign in with
+            // "There is already a signed in user." Force-clear and retry once.
+            if (err.name === "UserAlreadyAuthenticatedException") {
+                await cognitoSignOut();
+                result = await cognitoSignIn({ username: email, password });
+            } else {
+                throw err;
+            }
+        }
 
         // Cognito requires a new password on first login after AdminCreateUser
         if (!result.isSignedIn && result.nextStep?.signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
@@ -82,8 +95,11 @@ export function AuthProvider({ children }) {
     }
 
     async function signOut() {
-        await cognitoSignOut();
-        setUser(null);
+        try {
+            await cognitoSignOut();
+        } finally {
+            setUser(null);
+        }
     }
 
     const value = useMemo(

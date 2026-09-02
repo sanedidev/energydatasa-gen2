@@ -35,7 +35,8 @@ export default function EditablePageHeader({
         let cancelled = false;
         async function load() {
             try {
-                const res = await client.models.PageContent.pageContentBySlug({ slug: `header.${pageKey}` });
+                // apiKey so anonymous visitors (not just signed-in editors) can view this.
+                const res = await client.models.PageContent.pageContentBySlug({ slug: `header.${pageKey}` }, { authMode: "apiKey" });
                 const item = res.data?.[0] ?? null;
                 if (!cancelled && item?.content) {
                     const parsed = JSON.parse(item.content);

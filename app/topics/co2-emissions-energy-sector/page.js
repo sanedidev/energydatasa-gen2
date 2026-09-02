@@ -1,5 +1,5 @@
 import EditablePageHeader from "@/app/components/EditablePageHeader";
-import SimplePageBody from "@/app/components/SimplePageBody";
+import PageBody from "@/app/components/PageBody";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 
 export const metadata = { title: "CO₂ Emissions (Energy Sector)" };
@@ -19,7 +19,7 @@ export default function Page() {
                 defaultDesc="Carbon dioxide emissions from electricity generation, fuel combustion, and other energy-related activities in South Africa."
             />
 
-            <SimplePageBody
+            <PageBody
                 pageKey="topic.co2-emissions-energy-sector.__body__"
                 placeholder="Add content about CO₂ emissions from South Africa's energy sector: key sources, the carbon tax, NDC targets, and related datasets."
             />

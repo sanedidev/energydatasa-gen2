@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/ConfigureAmplify";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
     signIn as cognitoSignIn,

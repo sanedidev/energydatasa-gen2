@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import DragHandle from "../ui/DragHandle";
-import { applyFormat, getBlockBg, isHiddenBlock, resolveImageUrl } from "./blockHelpers";
+import { applyFormat, getBlockBg, isHiddenBlock } from "./blockHelpers";
+import { useResolvedImageUrl } from "./useResolvedImageUrl";
 
 // ── Primitives ────────────────────────────────────────────────────────────────
 export function TBtn({ children, title, onClick }) {
@@ -270,7 +271,7 @@ export function ImageBlockEditor({
     onDragStart, onDragOver, onDrop, onDragEnd,
 }) {
     const [draggable, setDraggable] = useState(false);
-    const src       = resolveImageUrl(block.key);
+    const src       = useResolvedImageUrl(block.key);
     const width     = block.width     ?? 100;
     const maxHeight = block.maxHeight ?? 400;
     const align     = block.align     ?? "center";
@@ -306,7 +307,7 @@ export function ImageBlockEditor({
                 <div className={`flex ${align === "right" ? "justify-end" : align === "center" ? "justify-center" : "justify-start"}`}>
                     {src
                         ? <div className="relative rounded-lg overflow-hidden" style={{ width: `${width}%`, height: `${maxHeight}px` }}>
-                              <Image src={src} alt="Image block" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" />
+                              <Image src={src} alt="Image block" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" unoptimized />
                           </div>
                         : <div className="flex h-20 w-full items-center justify-center text-xs text-slate-400">Image unavailable</div>
                     }

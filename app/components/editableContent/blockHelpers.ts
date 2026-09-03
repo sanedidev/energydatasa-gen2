@@ -84,13 +84,6 @@ export function serializeBlocks(blocks: Block[]): string {
     return JSON.stringify(blocks);
 }
 
-// ── Image URL ─────────────────────────────────────────────────────────────────
-
-export function resolveImageUrl(key: string | null | undefined): string | null {
-    if (!key) return null;
-    const base = process.env.NEXT_PUBLIC_MEDIA_BASE_URL;
-    return base ? `${base}/${key}` : null;
-}
 
 // ── View-mode background classes ──────────────────────────────────────────────
 

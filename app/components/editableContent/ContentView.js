@@ -1,8 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { BG_VIEW, blockHasContent, getBlockBg, getBlockText, isHiddenBlock, isImageBlock, isSectionBlock, isTitleBlock, resolveImageUrl } from "./blockHelpers";
+import { BG_VIEW, blockHasContent, getBlockBg, getBlockText, isHiddenBlock, isImageBlock, isSectionBlock, isTitleBlock } from "./blockHelpers";
+import { useResolvedImageUrl } from "./useResolvedImageUrl";
 import MarkdownContent from "./MarkdownContent";
+
+function ImageBlockView({ block }) {
+    const src = useResolvedImageUrl(block.key);
+    if (!src) return null;
+    return (
+        <div className="relative rounded-xl overflow-hidden" style={{ width: `${block.width ?? 100}%`, height: `${block.maxHeight ?? 400}px` }}>
+            <Image src={src} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" unoptimized />
+        </div>
+    );
+}
 
 export default function ContentView({ savedBlocks, hasContent, placeholder, canEdit, onStartEdit }) {
     return (
@@ -28,11 +39,7 @@ export default function ContentView({ savedBlocks, hasContent, placeholder, canE
                                 </div>
                             ) : isImageBlock(block) ? (
                                 <div key={idx} className={`flex ${(block.align ?? "center") === "right" ? "justify-end" : (block.align ?? "center") === "left" ? "justify-start" : "justify-center"}`}>
-                                    {resolveImageUrl(block.key) && (
-                                        <div className="relative rounded-xl overflow-hidden" style={{ width: `${block.width ?? 100}%`, height: `${block.maxHeight ?? 400}px` }}>
-                                            <Image src={resolveImageUrl(block.key)} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" />
-                                        </div>
-                                    )}
+                                    <ImageBlockView block={block} />
                                 </div>
                             ) : (
                                 <div key={idx} className={BG_VIEW[getBlockBg(block)] ?? BG_VIEW.gray}>

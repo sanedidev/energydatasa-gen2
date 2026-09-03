@@ -1,211 +1,42 @@
-"use client";
+import Link from "next/link";
+import HeroSection from "./components/ui/HeroSection";
 
-import { useEffect, useState } from "react";
-import { signUp, confirmSignUp } from "aws-amplify/auth";
-import { apiClient as client } from "@/app/lib/apiClient";
-import { useAuth } from "./context/auth";
-import { usePermissions } from "./context/permissions";
-
-const HOME_SLUG = "home";
+const topics = [
+    { label: "Total Electricity Generated",     href: "/topics/total-electricity-generated" },
+    { label: "Electricity Tariffs & Pricing",   href: "/topics/electricity-tariffs-pricing" },
+    { label: "Installed Renewable Capacity",    href: "/topics/installed-renewable-capacity" },
+    { label: "Energy Intensity of the Economy", href: "/topics/energy-intensity-economy" },
+    { label: "CO₂ Emissions (Energy Sector)",   href: "/topics/co2-emissions-energy-sector" },
+    { label: "Just Energy Transition",          href: "/topics/just-energy-transition" },
+];
 
 export default function Home() {
-    const { user, booted, signIn, signOut } = useAuth();
-    const { isAdmin } = usePermissions();
-
-    const [mode, setMode] = useState("signIn"); // signIn | signUp | confirm
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [code, setCode] = useState("");
-    const [error, setError] = useState("");
-
-    const [pageContent, setPageContent] = useState(null);
-    const [draft, setDraft] = useState("");
-
-    const [permissionRecords, setPermissionRecords] = useState([]);
-    const [newPermEmail, setNewPermEmail] = useState("");
-    const [permError, setPermError] = useState("");
-
-    // Any signed-in user can read/write this - proves ordinary CMS content works.
-    useEffect(() => {
-        if (!user) return;
-        const sub = client.models.PageContent.observeQuery({
-            filter: { slug: { eq: HOME_SLUG } },
-        }).subscribe({
-            next: ({ items }) => {
-                const record = items[0] ?? null;
-                setPageContent(record);
-                setDraft(record?.content ?? "");
-            },
-        });
-        return () => sub.unsubscribe();
-    }, [user]);
-
-    // Only the Admins group can write AdminPermission - proves the group-gated model.
-    useEffect(() => {
-        if (!user || !isAdmin) return;
-        const sub = client.models.AdminPermission.observeQuery().subscribe({
-            next: ({ items }) => setPermissionRecords(items),
-        });
-        return () => sub.unsubscribe();
-    }, [user, isAdmin]);
-
-    async function handleSignUp(e) {
-        e.preventDefault();
-        setError("");
-        try {
-            await signUp({ username: email, password, options: { userAttributes: { email } } });
-            setMode("confirm");
-        } catch (err) {
-            setError(err.message ?? "Sign up failed");
-        }
-    }
-
-    async function handleConfirm(e) {
-        e.preventDefault();
-        setError("");
-        try {
-            await confirmSignUp({ username: email, confirmationCode: code });
-            setMode("signIn");
-        } catch (err) {
-            setError(err.message ?? "Confirmation failed");
-        }
-    }
-
-    async function handleSignIn(e) {
-        e.preventDefault();
-        setError("");
-        try {
-            await signIn({ email, password });
-        } catch (err) {
-            setError(err.message ?? "Sign in failed");
-        }
-    }
-
-    async function handleSavePageContent(e) {
-        e.preventDefault();
-        if (pageContent?.id) {
-            await client.models.PageContent.update({ id: pageContent.id, content: draft });
-        } else {
-            const { data } = await client.models.PageContent.create({ slug: HOME_SLUG, content: draft });
-            setPageContent(data);
-        }
-    }
-
-    async function handleCreatePermission(e) {
-        e.preventDefault();
-        setPermError("");
-        if (!newPermEmail.trim()) return;
-        try {
-            await client.models.AdminPermission.create({ email: newPermEmail.trim(), editablePages: [] });
-            setNewPermEmail("");
-        } catch (err) {
-            setPermError(err.message ?? "Could not create permission");
-        }
-    }
-
-    if (!booted) {
-        return <main className="p-8">Loading...</main>;
-    }
-
-    if (!user) {
-        return (
-            <main className="max-w-sm mx-auto p-8">
-                <h1 className="text-xl font-semibold mb-4">energydatasa-gen2 — connectivity test</h1>
-
-                {error && (
-                    <div className="mb-3 rounded bg-red-50 border border-red-200 p-2 text-sm text-red-700">
-                        {error}
-                    </div>
-                )}
-
-                {mode === "signUp" && (
-                    <form onSubmit={handleSignUp} className="space-y-3">
-                        <input type="email" required placeholder="you@example.com" value={email}
-                            onChange={(e) => setEmail(e.target.value)} className="w-full border rounded px-3 py-2" />
-                        <input type="password" required placeholder="Password" value={password}
-                            onChange={(e) => setPassword(e.target.value)} className="w-full border rounded px-3 py-2" />
-                        <button className="w-full bg-slate-900 text-white rounded px-4 py-2">Sign up</button>
-                        <button type="button" onClick={() => setMode("signIn")} className="text-sm text-slate-500">
-                            Already have an account? Sign in
-                        </button>
-                    </form>
-                )}
-
-                {mode === "confirm" && (
-                    <form onSubmit={handleConfirm} className="space-y-3">
-                        <p className="text-sm text-slate-600">Enter the code emailed to {email}</p>
-                        <input required placeholder="Confirmation code" value={code}
-                            onChange={(e) => setCode(e.target.value)} className="w-full border rounded px-3 py-2" />
-                        <button className="w-full bg-slate-900 text-white rounded px-4 py-2">Confirm</button>
-                    </form>
-                )}
-
-                {mode === "signIn" && (
-                    <form onSubmit={handleSignIn} className="space-y-3">
-                        <input type="email" required placeholder="you@example.com" value={email}
-                            onChange={(e) => setEmail(e.target.value)} className="w-full border rounded px-3 py-2" />
-                        <input type="password" required placeholder="Password" value={password}
-                            onChange={(e) => setPassword(e.target.value)} className="w-full border rounded px-3 py-2" />
-                        <button className="w-full bg-slate-900 text-white rounded px-4 py-2">Sign in</button>
-                        <button type="button" onClick={() => setMode("signUp")} className="text-sm text-slate-500">
-                            No account? Sign up
-                        </button>
-                    </form>
-                )}
-            </main>
-        );
-    }
-
     return (
-        <main className="max-w-lg mx-auto p-8 space-y-8">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-xl font-semibold">energydatasa-gen2</h1>
-                    <p className="text-sm text-slate-500">
-                        {user.email} — {isAdmin ? "Admin" : "Signed in"}
-                    </p>
+        <main>
+            <HeroSection eyebrow="South Africa's Open Energy Platform" padding="pt-14 pb-12">
+                <h1 className="text-3xl lg:text-5xl font-bold leading-tight tracking-tight max-w-3xl">
+                    Open Data and Analytics
+                    <br className="hidden sm:block" />
+                    for a{" "}
+                    <span className="text-green-400">sustainable energy</span>{" "}
+                    future
+                </h1>
+                <p className="mt-4 text-base md:text-lg text-white/60 max-w-[52ch] leading-relaxed">
+                    Explore how energy is produced, consumed, and changing in South Africa
+                </p>
+
+                <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                    {topics.map((topic) => (
+                        <Link
+                            key={topic.href}
+                            href={topic.href}
+                            className="group flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-4 text-center text-sm font-medium text-white/80 transition-all hover:bg-white hover:text-[#0d1526] hover:border-transparent"
+                        >
+                            {topic.label}
+                        </Link>
+                    ))}
                 </div>
-                <button onClick={signOut} className="text-sm border rounded px-3 py-1.5">Sign out</button>
-            </div>
-
-            <section>
-                <h2 className="font-medium mb-2">PageContent: &quot;{HOME_SLUG}&quot;</h2>
-                <p className="text-xs text-slate-500 mb-2">
-                    Any signed-in user can edit this — proves ordinary CMS content works.
-                </p>
-                <form onSubmit={handleSavePageContent} className="space-y-2">
-                    <textarea value={draft} onChange={(e) => setDraft(e.target.value)}
-                        className="w-full border rounded px-3 py-2 h-24" placeholder="Page content..." />
-                    <button className="bg-slate-900 text-white rounded px-4 py-2 text-sm">Save</button>
-                </form>
-            </section>
-
-            {isAdmin ? (
-                <section>
-                    <h2 className="font-medium mb-2">Admin permissions</h2>
-                    <p className="text-xs text-slate-500 mb-2">
-                        Only the Admins group can write these — proves the group-gated model works.
-                    </p>
-                    {permError && <p className="text-sm text-red-600 mb-2">{permError}</p>}
-                    <form onSubmit={handleCreatePermission} className="flex gap-2 mb-3">
-                        <input value={newPermEmail} onChange={(e) => setNewPermEmail(e.target.value)}
-                            placeholder="user@example.com" className="flex-1 border rounded px-3 py-2 text-sm" />
-                        <button className="bg-slate-900 text-white rounded px-4 py-2 text-sm">Grant</button>
-                    </form>
-                    <ul className="space-y-1 text-sm">
-                        {permissionRecords.map((p) => (
-                            <li key={p.id} className="border rounded px-3 py-2">{p.email}</li>
-                        ))}
-                        {permissionRecords.length === 0 && <li className="text-slate-500">No permission records yet.</li>}
-                    </ul>
-                </section>
-            ) : (
-                <p className="text-xs text-slate-500">
-                    Not an admin — the &quot;Admin permissions&quot; panel is hidden, and directly calling
-                    AdminPermission.create from the browser console would be rejected server-side too,
-                    not just hidden client-side.
-                </p>
-            )}
+            </HeroSection>
         </main>
     );
 }

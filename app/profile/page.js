@@ -9,8 +9,8 @@ import { fetchHistory, revertEntry, labelFromSlug } from "@/app/lib/editHistory"
 
 // ── Page groups (non-dynamic pages) ──────────────────────────────────────────
 // Trimmed to this rebuild's actual pages - the original app also listed
-// Maps/Partners/dashboard energy-carrier sections, none of which exist in
-// this rebuild yet. Extend this list as more pages get built.
+// dashboard energy-carrier sections, which don't exist in this rebuild yet.
+// Extend this list as more pages get built.
 const PAGE_GROUPS = [
     {
         group: "Topics",
@@ -36,6 +36,18 @@ const PAGE_GROUPS = [
         group: "About Page",
         pages: [
             { key: "about", label: "About page (all sections)" },
+        ],
+    },
+    {
+        group: "Maps",
+        pages: [
+            { key: "maps.power-stations", label: "Power Station Map (edit stations)" },
+        ],
+    },
+    {
+        group: "Partners",
+        pages: [
+            { key: "partners.__index__", label: "Manage partners (add / edit / hide / delete)", isIndex: true },
         ],
     },
 ];

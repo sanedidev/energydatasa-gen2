@@ -6,6 +6,7 @@ import { useAuth } from "@/app/context/auth";
 import { usePermissions } from "@/app/context/permissions";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { fetchHistory, revertEntry, labelFromSlug } from "@/app/lib/editHistory";
+import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 
 // ── Page groups (non-dynamic pages) ──────────────────────────────────────────
 // Trimmed to this rebuild's actual pages. Extend this list as more pages
@@ -255,6 +256,67 @@ function UserEditor({ record, onClose, onDeleted, onSaved }) {
     );
 }
 
+// ── Reset password modal ──────────────────────────────────────────────────────
+function ResetPasswordModal({ email, onClose, onSubmit }) {
+    const [newPassword, setNewPassword] = useState("");
+    const [busy,        setBusy]        = useState(false);
+    const [error,       setError]       = useState("");
+    const [success,     setSuccess]     = useState(false);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        if (newPassword.length < 8) { setError("Password must be at least 8 characters."); return; }
+        setBusy(true);
+        setError("");
+        try {
+            await onSubmit(newPassword);
+            setSuccess(true);
+        } catch (err) {
+            setError(err?.message ?? "Failed to set password.");
+        } finally {
+            setBusy(false);
+        }
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+            <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-slate-200 p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                    <p className="font-semibold text-slate-900">Set password for {email}</p>
+                    <button onClick={onClose} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+                </div>
+                {success ? (
+                    <div className="rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+                        Password updated. Share it with {email} through a secure channel.
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} className="space-y-3">
+                        {error && <p className="text-xs text-red-500">{error}</p>}
+                        <input
+                            type="password"
+                            required
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            placeholder="New password (min. 8 characters)"
+                            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-200"
+                        />
+                        <div className="flex gap-2">
+                            <button type="submit" disabled={busy}
+                                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-50">
+                                {busy ? "Saving…" : "Set password"}
+                            </button>
+                            <button type="button" onClick={onClose}
+                                className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                )}
+            </div>
+        </div>
+    );
+}
+
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Profile() {
     const { user, booted, signOut } = useAuth();
@@ -276,6 +338,17 @@ export default function Profile() {
     const [revertingId,     setRevertingId]     = useState(null);
     const [revertDone,      setRevertDone]      = useState(null);
     const [historyFilter,   setHistoryFilter]   = useState("");
+
+    // Cognito account management (list / invite / delete / reset-password)
+    const [cognitoUsers,   setCognitoUsers]   = useState([]);
+    const [cognitoLoading, setCognitoLoading] = useState(false);
+    const [cognitoError,   setCognitoError]   = useState("");
+    const [inviteEmail,    setInviteEmail]    = useState("");
+    const [inviteBusy,     setInviteBusy]     = useState(false);
+    const [inviteError,    setInviteError]    = useState("");
+    const [confirmDeleteEmail, setConfirmDeleteEmail] = useState(null);
+    const [deletingEmail,      setDeletingEmail]      = useState(null);
+    const [resetPasswordFor,   setResetPasswordFor]   = useState(null);
 
     useEffect(() => {
         if (booted && !user) router.replace("/login");
@@ -318,6 +391,68 @@ export default function Profile() {
         } finally {
             setAddBusy(false);
         }
+    }
+
+    // ── Cognito account management ───────────────────────────────────────────
+    async function callManageUsers(args) {
+        const { data, errors } = await client.mutations.manageUsers(args);
+        if (errors?.length) throw new Error(errors[0].message ?? "Request failed");
+        return typeof data === "string" ? JSON.parse(data) : data;
+    }
+
+    async function loadCognitoUsers() {
+        setCognitoLoading(true);
+        setCognitoError("");
+        try {
+            const result = await callManageUsers({ action: "list" });
+            setCognitoUsers(result?.users ?? []);
+        } catch (err) {
+            setCognitoError(err?.message ?? "Failed to load users.");
+        } finally {
+            setCognitoLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if (!isAdmin) return;
+        (async () => { await loadCognitoUsers(); })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAdmin]);
+
+    async function handleInvite(e) {
+        e.preventDefault();
+        const email = inviteEmail.trim().toLowerCase();
+        if (!email || !email.includes("@")) { setInviteError("Enter a valid email address."); return; }
+        setInviteBusy(true);
+        setInviteError("");
+        try {
+            await callManageUsers({ action: "create", email });
+            setInviteEmail("");
+            await loadCognitoUsers();
+        } catch (err) {
+            setInviteError(err?.message ?? "Failed to invite user.");
+        } finally {
+            setInviteBusy(false);
+        }
+    }
+
+    async function handleDeleteUser() {
+        if (!confirmDeleteEmail) return;
+        setDeletingEmail(confirmDeleteEmail);
+        setCognitoError("");
+        try {
+            await callManageUsers({ action: "delete", email: confirmDeleteEmail });
+            setCognitoUsers((prev) => prev.filter((u) => u.email !== confirmDeleteEmail));
+        } catch (err) {
+            setCognitoError(err?.message ?? "Failed to delete user.");
+        } finally {
+            setDeletingEmail(null);
+            setConfirmDeleteEmail(null);
+        }
+    }
+
+    async function handleSetPassword(newPassword) {
+        await callManageUsers({ action: "setPassword", email: resetPasswordFor, newPassword });
     }
 
     async function loadHistoryEntries() {
@@ -422,6 +557,97 @@ export default function Profile() {
                                 </div>
                             )}
                         </section>
+
+                        {/* Cognito accounts */}
+                        <section className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-sm font-semibold text-slate-700">User accounts</h2>
+                                <button onClick={loadCognitoUsers} disabled={cognitoLoading}
+                                    className="text-[11px] text-slate-500 hover:text-slate-800 border border-slate-200 rounded px-2 py-0.5 bg-white disabled:opacity-40">
+                                    Refresh
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleInvite} className="flex gap-2">
+                                <input
+                                    type="email"
+                                    value={inviteEmail}
+                                    onChange={(e) => setInviteEmail(e.target.value)}
+                                    placeholder="Invite by email…"
+                                    className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                />
+                                <button type="submit" disabled={inviteBusy}
+                                    className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-50">
+                                    {inviteBusy ? "Inviting…" : "Invite"}
+                                </button>
+                            </form>
+                            {inviteError && <p className="text-xs text-red-500">{inviteError}</p>}
+                            {cognitoError && <p className="text-xs text-red-500">{cognitoError}</p>}
+
+                            {cognitoLoading ? (
+                                <div className="flex justify-center py-8"><Spinner className="h-5 w-5" /></div>
+                            ) : cognitoUsers.length === 0 ? (
+                                <p className="text-sm text-slate-400">No accounts found.</p>
+                            ) : (
+                                <div className="rounded-xl border border-slate-200 divide-y divide-slate-100 overflow-hidden">
+                                    {cognitoUsers.map((u) => {
+                                        const isSelf = u.email === user.email;
+                                        return (
+                                            <div key={u.email} className="flex items-center justify-between gap-3 px-4 py-3">
+                                                <div className="min-w-0">
+                                                    <div className="flex items-center gap-1.5 flex-wrap">
+                                                        <span className="text-sm text-slate-800 truncate">{u.email}</span>
+                                                        {u.isAdmin && (
+                                                            <span className="text-[10px] font-semibold bg-amber-50 text-amber-600 border border-amber-200 rounded-full px-1.5 py-0.5">Admin</span>
+                                                        )}
+                                                        {isSelf && (
+                                                            <span className="text-[10px] font-medium bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5">You</span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-[11px] text-slate-400 mt-0.5">{u.status}{u.enabled === false ? " · Disabled" : ""}</p>
+                                                </div>
+                                                <div className="flex items-center gap-1.5 shrink-0">
+                                                    <button
+                                                        onClick={() => setResetPasswordFor(u.email)}
+                                                        disabled={isSelf}
+                                                        title={isSelf ? "Reset your own password via sign-in instead" : "Set a new password"}
+                                                        className="text-[11px] border border-slate-200 rounded px-2 py-1 text-slate-500 hover:bg-slate-50 disabled:opacity-30 transition-colors"
+                                                    >
+                                                        Reset password
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setConfirmDeleteEmail(u.email)}
+                                                        disabled={isSelf || deletingEmail === u.email}
+                                                        title={isSelf ? "You can't delete your own account here" : "Delete account"}
+                                                        className="text-[11px] border border-red-200 rounded px-2 py-1 text-red-500 hover:bg-red-50 disabled:opacity-30 transition-colors"
+                                                    >
+                                                        {deletingEmail === u.email ? "Deleting…" : "Delete"}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </section>
+
+                        {confirmDeleteEmail && (
+                            <ConfirmDialog
+                                title="Delete this account?"
+                                message={`This permanently deletes the Cognito account for ${confirmDeleteEmail}. This cannot be undone.`}
+                                confirmLabel={deletingEmail ? "Deleting…" : "Yes, delete"}
+                                onConfirm={handleDeleteUser}
+                                onCancel={() => setConfirmDeleteEmail(null)}
+                            />
+                        )}
+
+                        {resetPasswordFor && (
+                            <ResetPasswordModal
+                                email={resetPasswordFor}
+                                onClose={() => setResetPasswordFor(null)}
+                                onSubmit={handleSetPassword}
+                            />
+                        )}
 
                         {/* Edit history */}
                         <section className="rounded-xl border border-slate-200 overflow-hidden">

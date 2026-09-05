@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { manageUsers } from '../functions/manage-users/resource';
 
 // Mirrors the original energydatasa app's content models. Public read (via
 // API key, matching the old app's apiKey auth mode) + any signed-in user can
@@ -90,6 +91,24 @@ const schema = a.schema({
       allow.authenticated().to(['read']),
       allow.group('Admins').to(['create', 'update', 'delete']),
     ]),
+
+  // Cognito user management (list / invite / delete / reset-password),
+  // backed by the manage-users function. Restricted to the Admins group at
+  // the AppSync layer - a non-admin's request is rejected before the
+  // function ever runs. The function itself independently re-checks the
+  // caller's group membership too (see its handler). This can never grant
+  // Admin group membership to anyone - that stays a manual, out-of-band
+  // Cognito action, same as everywhere else in this app.
+  manageUsers: a
+    .mutation()
+    .arguments({
+      action: a.string().required(), // "list" | "create" | "delete" | "setPassword"
+      email: a.string(),
+      newPassword: a.string(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function(manageUsers))
+    .authorization((allow) => [allow.group('Admins')]),
 });
 
 export type Schema = ClientSchema<typeof schema>;

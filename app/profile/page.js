@@ -8,9 +8,8 @@ import { apiClient as client } from "@/app/lib/apiClient";
 import { fetchHistory, revertEntry, labelFromSlug } from "@/app/lib/editHistory";
 
 // ── Page groups (non-dynamic pages) ──────────────────────────────────────────
-// Trimmed to this rebuild's actual pages - the original app also listed
-// dashboard energy-carrier sections, which don't exist in this rebuild yet.
-// Extend this list as more pages get built.
+// Trimmed to this rebuild's actual pages. Extend this list as more pages
+// get built (e.g. as more Energy Carriers branches beyond Coal are added).
 const PAGE_GROUPS = [
     {
         group: "Topics",
@@ -48,6 +47,13 @@ const PAGE_GROUPS = [
         group: "Partners",
         pages: [
             { key: "partners.__index__", label: "Manage partners (add / edit / hide / delete)", isIndex: true },
+        ],
+    },
+    {
+        group: "Energy Carriers",
+        pages: [
+            { key: "ec.carriers.__cards__", label: "Manage index (add / edit / hide / delete carriers)", isIndex: true },
+            { key: "ec.coal.*",             label: "Coal (index + all content, wildcard)" },
         ],
     },
 ];

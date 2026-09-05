@@ -6,50 +6,24 @@
  * the destination and search for the source item via CarrierPicker).
  *
  * Props:
- *   card       – the card being moved: { id, title, desc, href }
- *   onCancel   – called to close without moving
- *   onMoved()  – called after the card has been added to the destination's
- *                cards record; the caller is responsible for removing it
- *                from the current location (it already has `cards`/`persist`
- *                in scope, this component only touches the destination).
+ *   card          – the card being moved: { id, title, desc, href }
+ *   sectionConfig – which subsystem's tree to search (Energy Carriers,
+ *                   Energy Efficiency, Energy Planning). Defaults to
+ *                   Energy Carriers if omitted. See CarrierPicker.js for
+ *                   the shape (base, rootCardsSlug, sectionPathKey,
+ *                   staticItems, staticCarriers).
+ *   onCancel      – called to close without moving
+ *   onMoved()     – called after the card has been added to the
+ *                   destination's cards record; the caller is responsible
+ *                   for removing it from the current location (it already
+ *                   has `cards`/`persist` in scope, this component only
+ *                   touches the destination).
  */
 
 import { useState, useEffect, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { buildDynamicItems, DEFAULT_SECTION_CONFIG } from "./CarrierPicker";
 import ConfirmDialog from "./ui/ConfirmDialog";
-
-// Static carriers (folders) that exist as hardcoded page.js files, with the
-// real PageContent cards slug + the built-in default cards each one falls
-// back to when it has no saved record yet. Without this, moving a card into
-// a static carrier that's never been edited would create a brand-new record
-// containing ONLY the moved card, silently wiping out its built-in cards
-// (which normally come from defaultCards, not a DB record).
-//
-// Dynamically-created carriers don't need an entry - their slug/defaults
-// are always the systematic dyn.cards.<path> / [] pattern, derived below.
-// Extend this list whenever a new static carrier page.js is added under
-// Energy Carriers.
-const STATIC_CARRIERS = [
-    {
-        href: "/dashboard/energy-carriers",
-        label: "Energy Carriers",
-        cardsSlug: "ec.carriers.__cards__",
-        defaultCards: [
-            { id: "coal", href: "/dashboard/energy-carriers/coal", title: "Coal", desc: "Production, mining, markets and power stations.", hidden: false },
-        ],
-    },
-    {
-        href: "/dashboard/energy-carriers/coal",
-        label: "Coal",
-        cardsSlug: "ec.coal.__cards__",
-        defaultCards: [
-            { id: "coal-information", href: "/dashboard/energy-carriers/coal/coal-information", title: "Coal Information", desc: "Quality, calorific values, composition and logistics.", hidden: false },
-            { id: "production-and-mining", href: "/dashboard/energy-carriers/coal/production-and-mining", title: "Production & Mining", desc: "Mines, methods, output and remaining life of mines.", hidden: false },
-            { id: "market-and-trade", href: "/dashboard/energy-carriers/coal/market-and-trade-information", title: "Market & Trade Information", desc: "Imports/exports, prices, contracts and indices.", hidden: false },
-        ],
-    },
-];
 
 function FolderIcon() {
     return (
@@ -59,7 +33,7 @@ function FolderIcon() {
     );
 }
 
-export default function CarrierMovePicker({ card, onCancel, onMoved }) {
+export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTION_CONFIG, onCancel, onMoved }) {
     const [query, setQuery] = useState("");
     const [dynTargets, setDynTargets] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -72,16 +46,16 @@ export default function CarrierMovePicker({ card, onCancel, onMoved }) {
 
     useEffect(() => {
         function load() {
-            buildDynamicItems(DEFAULT_SECTION_CONFIG).then((items) => {
+            buildDynamicItems(sectionConfig).then((items) => {
                 const carriers = items
                     .filter((i) => i.type === "carrier")
                     .map((i) => {
-                        const rel = i.href.replace(`${DEFAULT_SECTION_CONFIG.base}/`, "");
+                        const rel = i.href.replace(`${sectionConfig.base}/`, "");
                         return {
                             href: i.href,
                             label: i.label,
                             path: i.path,
-                            cardsSlug: `dyn.cards.${DEFAULT_SECTION_CONFIG.sectionPathKey}.${rel.replace(/\//g, ".")}`,
+                            cardsSlug: `dyn.cards.${sectionConfig.sectionPathKey}.${rel.replace(/\//g, ".")}`,
                             defaultCards: [],
                         };
                     });
@@ -90,9 +64,11 @@ export default function CarrierMovePicker({ card, onCancel, onMoved }) {
             });
         }
         load();
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sectionConfig.rootCardsSlug]);
 
-    const allTargets = [...STATIC_CARRIERS, ...dynTargets].filter((t) => t.href !== card.href);
+    const staticCarriers = sectionConfig.staticCarriers ?? [];
+    const allTargets = [...staticCarriers, ...dynTargets].filter((t) => t.href !== card.href);
     const q = query.trim().toLowerCase();
     const filtered = allTargets.filter((t) => !q || t.label.toLowerCase().includes(q));
 

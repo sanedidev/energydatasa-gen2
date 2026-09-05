@@ -7,7 +7,7 @@ import { apiClient as client } from "@/app/lib/apiClient";
 import { usePermissions } from "@/app/context/permissions";
 import { useAuth } from "@/app/context/auth";
 import Breadcrumbs from "@/app/components/breadcrumbs";
-import CarrierPicker from "@/app/components/CarrierPicker";
+import CarrierPicker, { DEFAULT_SECTION_CONFIG, EE_SECTION_CONFIG, EP_SECTION_CONFIG } from "@/app/components/CarrierPicker";
 import CarrierMovePicker from "@/app/components/CarrierMovePicker";
 import DragHandle from "@/app/components/ui/DragHandle";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
@@ -441,11 +441,12 @@ export default function CarrierIndexPage({
     const colClass = COLS_CLASS[activeCols] ?? COLS_CLASS[cols] ?? COLS_CLASS[3];
 
     const sectionName = pathname.split("/")[2] ?? "";
-    // The original app also had energy-efficiency/energy-planning picker
-    // configs here; neither subsystem exists in this rebuild yet, so
-    // CarrierPicker always falls back to its Energy Carriers default.
-    const PICKER_SECTION_CONFIGS = {};
-    const pickerSectionConfig = PICKER_SECTION_CONFIGS[sectionName] ?? null;
+    const PICKER_SECTION_CONFIGS = {
+        "energy-carriers":   DEFAULT_SECTION_CONFIG,
+        "energy-efficiency": EE_SECTION_CONFIG,
+        "energy-planning":   EP_SECTION_CONFIG,
+    };
+    const pickerSectionConfig = PICKER_SECTION_CONFIGS[sectionName] ?? DEFAULT_SECTION_CONFIG;
 
     return (
         <div className="space-y-8">
@@ -776,6 +777,7 @@ export default function CarrierIndexPage({
                     {movingIdx !== null && (
                         <CarrierMovePicker
                             card={cards[movingIdx]}
+                            sectionConfig={pickerSectionConfig}
                             onCancel={() => setMovingIdx(null)}
                             onMoved={() => {
                                 persist(cards.filter((_, i) => i !== movingIdx));

@@ -51,6 +51,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
             status: u.UserStatus,
             enabled: u.Enabled,
             isAdmin: (groupsRes.Groups ?? []).some((g) => g.GroupName === 'Admins'),
+            created: u.UserCreateDate ? u.UserCreateDate.toISOString() : null,
           };
         })
       );

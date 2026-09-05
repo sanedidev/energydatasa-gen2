@@ -13,10 +13,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
-import { BASE as EC_BASE, STATIC_NAV } from "@/app/dashboard/energy-carriers/_nav-data";
+import { BASE as EC_BASE, STATIC_NAV as EC_NAV } from "@/app/dashboard/energy-carriers/_nav-data";
+import { BASE as EE_BASE, STATIC_NAV as EE_NAV } from "@/app/dashboard/energy-efficiency/_nav-data";
+import { BASE as EP_BASE, STATIC_NAV as EP_NAV } from "@/app/dashboard/energy-planning/_nav-data";
 
 
-// ─── Default (Energy Carriers) static items ──────────────────────────────────
+// ─── Per-subsystem static items + section configs ────────────────────────────
 
 function flattenNav(nodes, ancestors = []) {
     const items = [];
@@ -35,13 +37,81 @@ function flattenNav(nodes, ancestors = []) {
     return items;
 }
 
-const EC_STATIC_ITEMS = flattenNav(STATIC_NAV, ["Energy Carriers"]);
-
 export const DEFAULT_SECTION_CONFIG = {
     base: EC_BASE,
     rootCardsSlug: "ec.carriers.__cards__",
     sectionPathKey: "dashboard.energy-carriers",
-    staticItems: EC_STATIC_ITEMS,
+    sectionLabel: "Energy Carriers",
+    staticItems: flattenNav(EC_NAV, ["Energy Carriers"]),
+    // Static carriers (folders) that exist as hardcoded page.js files, with
+    // the real PageContent cards slug + the built-in default cards each one
+    // falls back to when it has no saved record yet. Without this, moving a
+    // card into a static carrier that's never been edited would create a
+    // brand-new record containing ONLY the moved card, silently wiping out
+    // its built-in cards (which normally come from defaultCards, not a DB
+    // record). Extend whenever a new static carrier page.js is added.
+    staticCarriers: [
+        {
+            href: "/dashboard/energy-carriers",
+            label: "Energy Carriers",
+            cardsSlug: "ec.carriers.__cards__",
+            defaultCards: [
+                { id: "coal", href: "/dashboard/energy-carriers/coal", title: "Coal", desc: "Production, mining, markets and power stations.", hidden: false },
+            ],
+        },
+        {
+            href: "/dashboard/energy-carriers/coal",
+            label: "Coal",
+            cardsSlug: "ec.coal.__cards__",
+            defaultCards: [
+                { id: "coal-information", href: "/dashboard/energy-carriers/coal/coal-information", title: "Coal Information", desc: "Quality, calorific values, composition and logistics.", hidden: false },
+                { id: "production-and-mining", href: "/dashboard/energy-carriers/coal/production-and-mining", title: "Production & Mining", desc: "Mines, methods, output and remaining life of mines.", hidden: false },
+                { id: "market-and-trade", href: "/dashboard/energy-carriers/coal/market-and-trade-information", title: "Market & Trade Information", desc: "Imports/exports, prices, contracts and indices.", hidden: false },
+            ],
+        },
+    ],
+};
+
+export const EE_SECTION_CONFIG = {
+    base: EE_BASE,
+    rootCardsSlug: "energy-efficiency.__cards__",
+    sectionPathKey: "dashboard.energy-efficiency",
+    sectionLabel: "Energy Efficiency",
+    staticItems: flattenNav(EE_NAV, ["Energy Efficiency"]),
+    staticCarriers: [
+        {
+            href: "/dashboard/energy-efficiency",
+            label: "Energy Efficiency",
+            cardsSlug: "energy-efficiency.__cards__",
+            defaultCards: [
+                { id: "tax-incentives", href: `${EE_BASE}/tax-incentives`, title: "Tax Incentives", desc: "Incentive schemes, eligibility and application guidance.", hidden: false },
+                { id: "energy-performance-certificates", href: `${EE_BASE}/energy-performance-certificates`, title: "Energy Performance Certificates", desc: "EPC requirements, ratings and compliance process.", hidden: false },
+                { id: "balancing-energy-supply-demand", href: `${EE_BASE}/balancing-energy-supply-and-demand`, title: "Balancing Energy Supply and Demand", desc: "Demand-side management, DSM programs and planning.", hidden: false },
+                { id: "standards-and-labelling", href: `${EE_BASE}/standards-and-labelling`, title: "Standards & Labelling", desc: "Minimum performance standards and product labels.", hidden: false },
+            ],
+        },
+    ],
+};
+
+export const EP_SECTION_CONFIG = {
+    base: EP_BASE,
+    rootCardsSlug: "energy-planning.__cards__",
+    sectionPathKey: "dashboard.energy-planning",
+    sectionLabel: "Energy Planning",
+    staticItems: flattenNav(EP_NAV, ["Energy Planning"]),
+    staticCarriers: [
+        {
+            href: "/dashboard/energy-planning",
+            label: "Energy Planning",
+            cardsSlug: "energy-planning.__cards__",
+            defaultCards: [
+                { id: "integrated-resource-plan", href: `${EP_BASE}/integrated-resource-plan`, title: "Integrated Resource Plan (IRP)", desc: "Capacity outlooks, technology splits, assumptions and scenarios.", hidden: false },
+                { id: "integrated-energy-plan", href: `${EP_BASE}/integrated-energy-plan`, title: "Integrated Energy Plan (IEP)", desc: "Energy balance, long-term demand drivers and policy pathways.", hidden: false },
+                { id: "gas-master-plan", href: `${EP_BASE}/gas-master-plan`, title: "Gas Master Plan", desc: "Infrastructure, LNG vs piped options, demand outlooks and timelines.", hidden: false },
+                { id: "liquid-fuels-master-plan", href: `${EP_BASE}/liquid-fuels-master-plan`, title: "Liquid Fuels Master Plan", desc: "Refinery/import strategy, specs, logistics and security of supply.", hidden: false },
+            ],
+        },
+    ],
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

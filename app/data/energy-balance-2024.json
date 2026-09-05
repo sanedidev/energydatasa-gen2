@@ -1,0 +1,910 @@
+{
+  "meta": {
+    "title": "South Africa Energy Balance 2024",
+    "year": 2024,
+    "unit": "PJ",
+    "source": "Energy Systems Research Group, University of Cape Town",
+    "date": "23 March 2026",
+    "convention": "Negative values = consumption | Positive values = production"
+  },
+  "commodityGroups": [
+    { "id": "coal", "label": "Coal & Coke" },
+    { "id": "biomass", "label": "Biomass" },
+    { "id": "liquid", "label": "Liquid Fuels" },
+    { "id": "other", "label": "Gas & Electricity" }
+  ],
+  "commodities": [
+    { "id": "bituminous", "label": "Bituminous Coal", "group": "coal" },
+    { "id": "coking", "label": "Coking Coal", "group": "coal" },
+    { "id": "anthracite", "label": "Anthracite Coal", "group": "coal" },
+    { "id": "coke", "label": "Coke", "group": "coal" },
+    { "id": "biomass", "label": "Biomass", "group": "biomass" },
+    { "id": "wood", "label": "Wood", "group": "biomass" },
+    { "id": "charcoal", "label": "Charcoal", "group": "biomass" },
+    { "id": "crude", "label": "Crude Oil", "group": "liquid" },
+    { "id": "gasoline", "label": "Gasoline", "group": "liquid" },
+    { "id": "diesel", "label": "Diesel", "group": "liquid" },
+    { "id": "lpg", "label": "LPG", "group": "liquid" },
+    { "id": "kerosene", "label": "Kerosene", "group": "liquid" },
+    { "id": "aviationGas", "label": "Aviation Gasoline", "group": "liquid" },
+    { "id": "hfo", "label": "Heavy Fuel Oil", "group": "liquid" },
+    { "id": "otherLiquid", "label": "Other Liquid Fuels", "group": "liquid" },
+    { "id": "naturalGas", "label": "Natural Gas", "group": "other" },
+    { "id": "hydro", "label": "Hydro", "group": "other" },
+    { "id": "nuclear", "label": "Nuclear", "group": "other" },
+    { "id": "solar", "label": "Solar PV", "group": "other" },
+    { "id": "wind", "label": "Wind", "group": "other" },
+    { "id": "otherRE", "label": "Other RE", "group": "other" },
+    { "id": "electricity", "label": "Electricity", "group": "other" },
+    { "id": "heat", "label": "Heat", "group": "other" }
+  ],
+  "sections": [
+    {
+      "id": "primary-supply",
+      "label": "1. Primary Energy Supply",
+      "description": "Coal mining, gas extraction, renewables, imports, exports, losses",
+      "rows": [
+        {
+          "id": "coal-mining",
+          "label": "Coal Mining",
+          "subsector": "Production",
+          "values": {
+            "total": null,
+            "bituminous": 6168.49,
+            "coking": 695.61,
+            "anthracite": 77.68,
+            "coke": null, "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "coke-production",
+          "label": "Coke Production",
+          "subsector": "Production",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": 542.16,
+            "biomass": null, "wood": null, "charcoal": 62.58,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "imports",
+          "label": "Imports",
+          "subsector": "Trade",
+          "values": {
+            "total": null,
+            "bituminous": 20.42, "coking": 28.33, "anthracite": 5.20, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": 355.08, "gasoline": 136.83, "diesel": 411.58, "lpg": 29.13,
+            "kerosene": 32.38, "aviationGas": 23.50, "hfo": 168.17, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "exports",
+          "label": "Exports",
+          "subsector": "Trade",
+          "values": {
+            "total": null,
+            "bituminous": -1459.40, "coking": -181.78, "anthracite": -20.30, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": -0.63, "gasoline": -31.45, "diesel": -30.13, "lpg": -7.81,
+            "kerosene": -17.50, "aviationGas": -53.20, "hfo": -0.99, "otherLiquid": null,
+            "naturalGas": -29.70, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "losses-primary",
+          "label": "Losses",
+          "subsector": "Losses",
+          "values": {
+            "total": null,
+            "bituminous": -716.25, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "tpes",
+          "label": "TOTAL PRIMARY ENERGY SUPPLY",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": 5661.03,
+            "bituminous": 4013.26, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": 167.18, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": 28.07, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "conversion",
+      "label": "2. Conversion & Transformation",
+      "description": "Power generation, refineries, coal-to-liquids, CHP plants",
+      "rows": [
+        {
+          "id": "power-coal",
+          "label": "Power — Coal",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": -1970.21, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 640.37, "heat": null
+          }
+        },
+        {
+          "id": "power-nuclear",
+          "label": "Power — Nuclear",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": -28.07, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 28.07, "heat": null
+          }
+        },
+        {
+          "id": "power-solar",
+          "label": "Power — Solar PV",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": -62.23,
+            "wind": null, "otherRE": null, "electricity": 62.23, "heat": null
+          }
+        },
+        {
+          "id": "power-wind",
+          "label": "Power — Wind",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": -39.23, "otherRE": null, "electricity": 39.23, "heat": null
+          }
+        },
+        {
+          "id": "power-ocgt",
+          "label": "Power — OCGT",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -39.27, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 12.07, "heat": null
+          }
+        },
+        {
+          "id": "power-biomass",
+          "label": "Power — Biomass & Landfill Gas",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": -2.93, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 0.88, "heat": null
+          }
+        },
+        {
+          "id": "power-hydro",
+          "label": "Power — Hydro (ECSP & Run-of-River)",
+          "subsector": "Power Generation",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": -3.87, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 3.87, "heat": null
+          }
+        },
+        {
+          "id": "chp-chemical",
+          "label": "CHP — Chemicals",
+          "subsector": "CHP Plants",
+          "values": {
+            "total": null,
+            "bituminous": -28.14, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": -7.32,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 57.80, "heat": 2.33
+          }
+        },
+        {
+          "id": "chp-pulp",
+          "label": "CHP — Pulp & Paper",
+          "subsector": "CHP Plants",
+          "values": {
+            "total": null,
+            "bituminous": -50.00, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -61.00, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -8.80, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 16.66, "heat": null
+          }
+        },
+        {
+          "id": "chp-sugar",
+          "label": "CHP — Sugar",
+          "subsector": "CHP Plants",
+          "values": {
+            "total": null,
+            "bituminous": -5.00, "coking": null, "anthracite": null, "coke": null,
+            "biomass": -45.00, "wood": null, "charcoal": -1.00,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 11.45, "heat": 1.48
+          }
+        },
+        {
+          "id": "electricity-imports",
+          "label": "Electricity Imports",
+          "subsector": "Trade",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 35.78, "heat": null
+          }
+        },
+        {
+          "id": "electricity-exports",
+          "label": "Electricity Exports",
+          "subsector": "Trade",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -38.53, "heat": null
+          }
+        },
+        {
+          "id": "electricity-losses",
+          "label": "Electricity T&D Losses",
+          "subsector": "Losses",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -136.58, "heat": null
+          }
+        },
+        {
+          "id": "total-electricity",
+          "label": "TOTAL ELECTRICITY GENERATED",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": 671.49,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": 671.49, "heat": null
+          }
+        },
+        {
+          "id": "refinery-crude",
+          "label": "Crude Oil Refining",
+          "subsector": "Refineries",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": -313.30, "gasoline": 204.70, "diesel": 157.40, "lpg": 6.80,
+            "kerosene": 54.00, "aviationGas": null, "hfo": 42.50, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "refinery-ctl",
+          "label": "Coal to Liquids (Sasol CTL)",
+          "subsector": "Refineries",
+          "values": {
+            "total": null,
+            "bituminous": -220.50, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": 117.60, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "refinery-total",
+          "label": "TOTAL REFINERIES",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -661.10,
+            "bituminous": -749.40, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": -313.30, "gasoline": 204.70, "diesel": 157.40, "lpg": 6.80,
+            "kerosene": 54.00, "aviationGas": null, "hfo": 42.50, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "final-supply",
+      "label": "3. Total Final Energy Supply",
+      "description": "Total final energy available by commodity after conversion & transformation",
+      "rows": [
+        {
+          "id": "tfes",
+          "label": "TOTAL FINAL ENERGY SUPPLY",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": 3416.70,
+            "bituminous": 1210.52, "coking": 542.16, "anthracite": 62.58, "coke": null,
+            "biomass": -108.93, "wood": -1.00, "charcoal": null,
+            "crude": 41.15, "gasoline": 310.08, "diesel": 499.58, "lpg": 28.12,
+            "kerosene": 68.88, "aviationGas": null, "hfo": 12.80, "otherLiquid": 109.13,
+            "naturalGas": null, "hydro": -3.87, "nuclear": null, "solar": -62.23,
+            "wind": -39.23, "otherRE": null, "electricity": 658.42, "heat": 88.55
+          }
+        },
+        {
+          "id": "tfc-bottomup",
+          "label": "TOTAL FINAL CONSUMPTION (Bottom-Up)",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -2199.01,
+            "bituminous": -187.68, "coking": -44.59, "anthracite": -19.40, "coke": -31.42,
+            "biomass": -90.71, "wood": -91.96, "charcoal": -0.49,
+            "crude": null, "gasoline": -321.43, "diesel": -452.33, "lpg": -24.01,
+            "kerosene": -100.90, "aviationGas": -0.88, "hfo": -17.66, "otherLiquid": -95.61,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": 31.30,
+            "wind": null, "otherRE": null, "electricity": -661.26, "heat": -89.98
+          }
+        },
+        {
+          "id": "tfc-topdown",
+          "label": "TOTAL FINAL CONSUMPTION (Top-Down)",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -652.34,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -652.34, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "agriculture",
+      "label": "4. Final Consumption — Agriculture",
+      "description": "Heating, irrigation, traction",
+      "rows": [
+        {
+          "id": "agri-heating",
+          "label": "Heating",
+          "subsector": "Agriculture",
+          "values": {
+            "total": null,
+            "bituminous": -0.23, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -10.67, "lpg": null,
+            "kerosene": -0.95, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -1.66, "heat": null
+          }
+        },
+        {
+          "id": "agri-irrigation",
+          "label": "Irrigation",
+          "subsector": "Agriculture",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": -0.70,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -6.27, "heat": null
+          }
+        },
+        {
+          "id": "agri-traction",
+          "label": "Traction",
+          "subsector": "Agriculture",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -1.74, "diesel": -29.32, "lpg": -2.70,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -15.38, "heat": null
+          }
+        },
+        {
+          "id": "agri-total",
+          "label": "TOTAL AGRICULTURE",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -66.93,
+            "bituminous": -0.23, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -1.74, "diesel": -29.32, "lpg": -11.37,
+            "kerosene": -0.95, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -21.65, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "commerce",
+      "label": "5. Final Consumption — Commerce",
+      "description": "Commercial & public buildings",
+      "rows": [
+        {
+          "id": "commerce-buildings",
+          "label": "Commercial & Public Buildings",
+          "subsector": "Commerce",
+          "values": {
+            "total": null,
+            "bituminous": -0.02, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -14.90, "charcoal": -12.30,
+            "crude": null, "gasoline": -7.92, "diesel": -4.80, "lpg": -1.20,
+            "kerosene": -8.80, "aviationGas": null, "hfo": -4.80, "otherLiquid": null,
+            "naturalGas": -2.89, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -136.62, "heat": null
+          }
+        },
+        {
+          "id": "commerce-total",
+          "label": "TOTAL COMMERCE",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -181.53,
+            "bituminous": -0.02, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -14.90, "charcoal": -12.30,
+            "crude": null, "gasoline": -7.92, "diesel": -4.80, "lpg": -1.20,
+            "kerosene": -8.80, "aviationGas": null, "hfo": -4.80, "otherLiquid": -6.50,
+            "naturalGas": -2.89, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -136.62, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "industry",
+      "label": "6. Final Consumption — Industry",
+      "description": "Chemicals, ferro alloys, mining, manufacturing, metals & more",
+      "rows": [
+        {
+          "id": "industry-chemicals",
+          "label": "Chemicals",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -1.67, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -28.08, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -14.32, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -38.73, "otherLiquid": null,
+            "naturalGas": -12.09, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "industry-ferro",
+          "label": "Ferro Alloys",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -17.51, "coking": null, "anthracite": -24.26, "coke": -19.40,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -3.36, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": -48.31, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "industry-food",
+          "label": "Food & Beverages",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -4.36, "coking": null, "anthracite": null, "coke": null,
+            "biomass": -7.67, "wood": -11.08, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -5.22, "lpg": -1.73,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": -5.21, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "industry-general",
+          "label": "General Manufacturing",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -21.27, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -4.50, "otherLiquid": null,
+            "naturalGas": -1.42, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -22.96, "heat": null
+          }
+        },
+        {
+          "id": "industry-iron",
+          "label": "Iron & Steel",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -7.79, "coking": null, "anthracite": null, "coke": -44.59,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -5.63, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -4.40, "otherLiquid": null,
+            "naturalGas": -11.64, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -12.67, "heat": null
+          }
+        },
+        {
+          "id": "industry-mining",
+          "label": "Mining (excl. PGM)",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -14.78, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -12.13, "diesel": -23.58, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": -8.80, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -13.95, "heat": null
+          }
+        },
+        {
+          "id": "industry-nonmet",
+          "label": "Non-Metallic Minerals",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -10.30, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -6.74, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -6.02, "otherLiquid": null,
+            "naturalGas": -25.13, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -35.58, "heat": null
+          }
+        },
+        {
+          "id": "industry-pgm",
+          "label": "Platinum Group Metals (PGM)",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -3.52, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": -0.49,
+            "crude": null, "gasoline": null, "diesel": -8.08, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": -3.90, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "industry-precious",
+          "label": "Precious & Non-Ferrous Metals",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": -0.92, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -1.55, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -4.30, "otherLiquid": null,
+            "naturalGas": -0.92, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -38.61, "heat": null
+          }
+        },
+        {
+          "id": "industry-pulp",
+          "label": "Pulp & Paper",
+          "subsector": "Industry",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -37.20, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -5.29, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "industry-total",
+          "label": "TOTAL INDUSTRY",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -910.18,
+            "bituminous": -154.94, "coking": -44.59, "anthracite": -19.40, "coke": -31.42,
+            "biomass": -90.71, "wood": null, "charcoal": -0.49,
+            "crude": null, "gasoline": -18.11, "diesel": -26.39, "lpg": -7.10,
+            "kerosene": null, "aviationGas": null, "hfo": -9.61, "otherLiquid": -95.61,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -321.83, "heat": -89.98
+          }
+        }
+      ]
+    },
+    {
+      "id": "residential",
+      "label": "7. Final Consumption — Residential",
+      "description": "Low, middle and high income households",
+      "rows": [
+        {
+          "id": "res-low",
+          "label": "Low Income",
+          "subsector": "Residential",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -53.20, "charcoal": -2.39,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": -1.20,
+            "kerosene": -1.36, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -23.04, "heat": null
+          }
+        },
+        {
+          "id": "res-middle",
+          "label": "Middle Income",
+          "subsector": "Residential",
+          "values": {
+            "total": null,
+            "bituminous": -0.28, "coking": -2.36, "anthracite": -1.19, "coke": null,
+            "biomass": null, "wood": -26.60, "charcoal": -0.85,
+            "crude": null, "gasoline": -0.10, "diesel": null, "lpg": -0.61,
+            "kerosene": -0.12, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -13.74, "heat": null
+          }
+        },
+        {
+          "id": "res-high",
+          "label": "High Income",
+          "subsector": "Residential",
+          "values": {
+            "total": null,
+            "bituminous": -0.10, "coking": -0.24, "anthracite": -0.42, "coke": null,
+            "biomass": null, "wood": -3.07, "charcoal": null,
+            "crude": null, "gasoline": -0.24, "diesel": null, "lpg": -0.20,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -21.18, "heat": null
+          }
+        },
+        {
+          "id": "res-embedded",
+          "label": "Embedded Generation (Rooftop Solar)",
+          "subsector": "Residential",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": 31.30,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "res-total",
+          "label": "TOTAL RESIDENTIAL",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -240.72,
+            "bituminous": -5.29, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": -91.96, "charcoal": null,
+            "crude": null, "gasoline": -8.11, "diesel": null, "lpg": -4.04,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": 31.30,
+            "wind": null, "otherRE": null, "electricity": -162.62, "heat": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "transport",
+      "label": "8. Final Consumption — Transport",
+      "description": "Aviation, freight, passenger and rail",
+      "rows": [
+        {
+          "id": "trans-avi-dom",
+          "label": "Aviation — Domestic",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": -18.48, "aviationGas": -0.88, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-avi-int",
+          "label": "Aviation — International",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": -62.20, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-freight-pip",
+          "label": "Freight — Pipeline",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -1.58, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-freight-rail",
+          "label": "Freight — Rail",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -1.01, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -11.77, "heat": null
+          }
+        },
+        {
+          "id": "trans-freight-road",
+          "label": "Freight — Road",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": -147.22, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-pass-priv",
+          "label": "Passenger — Private",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -182.80, "diesel": -36.43, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-pass-pub",
+          "label": "Passenger — Public (Bus, Taxi, BRT)",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -0.67, "diesel": -15.81, "lpg": -5.03,
+            "kerosene": null, "aviationGas": null, "hfo": null, "otherLiquid": null,
+            "naturalGas": -33.76, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-other",
+          "label": "Transport Other",
+          "subsector": "Transport",
+          "values": {
+            "total": null,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": null, "diesel": null, "lpg": null,
+            "kerosene": null, "aviationGas": null, "hfo": -3.50, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": null, "heat": null
+          }
+        },
+        {
+          "id": "trans-total",
+          "label": "TOTAL TRANSPORT",
+          "subsector": "Total",
+          "isTotal": true,
+          "values": {
+            "total": -799.64,
+            "bituminous": null, "coking": null, "anthracite": null, "coke": null,
+            "biomass": null, "wood": null, "charcoal": null,
+            "crude": null, "gasoline": -300.62, "diesel": -395.42, "lpg": null,
+            "kerosene": -80.69, "aviationGas": -0.88, "hfo": -3.50, "otherLiquid": null,
+            "naturalGas": null, "hydro": null, "nuclear": null, "solar": null,
+            "wind": null, "otherRE": null, "electricity": -18.54, "heat": null
+          }
+        }
+      ]
+    }
+  ]
+}

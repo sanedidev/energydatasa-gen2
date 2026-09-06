@@ -30,7 +30,13 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
   // function like this should never rely on a single layer of enforcement.
   const identity = event.identity as AppSyncIdentityCognito | undefined;
   const callerGroups = identity?.groups ?? [];
-  const callerEmail = (identity?.claims?.email as string | undefined) ?? undefined;
+  // The ID token's claims don't reliably include "email" in this identity
+  // shape, but this app signs in with email as the Cognito username
+  // (loginWith: { email: true }), so identity.username is the dependable
+  // source - claims.email is kept only as a secondary fallback. This was a
+  // latent bug: the self-delete/self-reset-password guards below silently
+  // never fired if callerEmail came back empty.
+  const callerEmail = (identity?.username as string | undefined) ?? (identity?.claims?.email as string | undefined) ?? undefined;
 
   if (!callerGroups.includes('Admins')) {
     throw new Error('Forbidden');

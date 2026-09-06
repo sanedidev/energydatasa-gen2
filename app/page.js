@@ -30,7 +30,20 @@ function Hero() {
                 Explore how energy is produced, consumed, and changing in South Africa
             </p>
 
-            <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-sm font-semibold text-[#0d1526] transition-colors hover:bg-green-400"
+                >
+                    Browse the Datasets
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </Link>
+                <span className="text-sm text-white/40">Energy Carriers, Efficiency, Planning &amp; more</span>
+            </div>
+
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {topics.map((topic) => (
                     <Link
                         key={topic.href}

@@ -14,7 +14,14 @@ const STATIC_GROUPS = [
     {
         group: "Topics",
         pages: [
-            { key: "topic.co2-emissions-energy-sector", label: "CO₂ Emissions (Energy Sector)" },
+            { key: "topic.co2-emissions-energy-sector",  label: "CO₂ Emissions (Energy Sector)" },
+            { key: "topic.total-electricity-generated",  label: "Total Electricity Generated" },
+            { key: "topic.current-load-shedding-stage",  label: "Current Load Shedding Stage" },
+            { key: "topic.installed-renewable-capacity", label: "Installed Renewable Capacity" },
+            { key: "topic.energy-intensity-economy",     label: "Energy Intensity of the Economy" },
+            { key: "topic.municipal-energy-data",        label: "Municipalities with Energy Data" },
+            { key: "topic.electricity-tariffs-pricing",  label: "Electricity Tariffs & Pricing" },
+            { key: "topic.just-energy-transition",       label: "Just Energy Transition" },
         ],
     },
     {
@@ -53,6 +60,26 @@ const STATIC_GROUPS = [
         group: "Energy Carriers",
         pages: [
             { key: "ec.carriers.__cards__", label: "Manage index (add / edit / hide / delete carriers)", isIndex: true },
+            { key: "ec.hydro",              label: "Hydro" },
+            { key: "ec.uranium",            label: "Uranium" },
+            { key: "ec.biofuels-and-waste", label: "Biofuels & Waste" },
+            { key: "ec.peat",               label: "Peat" },
+            { key: "ec.heat",               label: "Heat" },
+            { key: "ec.geothermal",         label: "Geothermal" },
+        ],
+    },
+    {
+        group: "Energy Carriers › Electricity",
+        pages: [
+            { key: "ec.electricity.__cards__", label: "Manage index (add / edit / hide / delete cards, all levels)", isIndex: true },
+            // Four separate wildcards because the underlying page keys use
+            // three different legacy prefixes (mirrored from the original
+            // app) rather than one consistent "ec.electricity.*" tree —
+            // grant all four for full Electricity access.
+            { key: "ec.electricity.*",   label: "Generation hubs, transmission, demand & pricing content (wildcard)" },
+            { key: "ec.eskom-coal.*",    label: "Eskom coal market/technology/mining content (wildcard)" },
+            { key: "ec.eskom-nuclear.*", label: "Koeberg nuclear content (wildcard)" },
+            { key: "ec.station.*",       label: "All 15 named coal power station pages (wildcard)" },
         ],
     },
     {
@@ -93,6 +120,54 @@ const SECTION_REGISTRY = [
             "coal-information":      "ec.coal.coal-information",
             "production-and-mining": "ec.coal.production-and-mining",
             "market-and-trade":      "ec.coal.market-and-trade-information",
+        },
+    },
+    {
+        group: "Energy Carriers › Renewable Energy",
+        pageSlug: "ec.renewable-energy.__cards__",
+        base: "/dashboard/energy-carriers/renewable-energy",
+        sectionPathKey: "dashboard.energy-carriers.renewable-energy",
+        wildcardKey: "ec.renewable-energy.*",
+        wildcardLabel: "All Renewable Energy content (wildcard)",
+        defaultCards: [
+            { id: "pv",   href: "/dashboard/energy-carriers/renewable-energy/pv",   title: "PV" },
+            { id: "wind", href: "/dashboard/energy-carriers/renewable-energy/wind", title: "Wind" },
+        ],
+        knownKeys: {
+            "pv":   "ec.renewable-energy.pv",
+            "wind": "ec.renewable-energy.wind",
+        },
+    },
+    {
+        group: "Energy Carriers › Oil",
+        pageSlug: "ec.oil.__cards__",
+        base: "/dashboard/energy-carriers/oil",
+        sectionPathKey: "dashboard.energy-carriers.oil",
+        wildcardKey: "ec.oil.*",
+        wildcardLabel: "All Oil content (wildcard)",
+        defaultCards: [
+            { id: "technology-and-innovation", href: "/dashboard/energy-carriers/oil/technology-and-innovation", title: "Technology & Innovation" },
+            { id: "ccs-and-clean-coal-tech",   href: "/dashboard/energy-carriers/oil/ccs-and-clean-coal-tech",   title: "CCS & Clean Coal Tech" },
+        ],
+        knownKeys: {
+            "technology-and-innovation": "ec.oil.technology-and-innovation",
+            "ccs-and-clean-coal-tech":   "ec.oil.ccs-and-clean-coal-tech",
+        },
+    },
+    {
+        group: "Energy Carriers › Natural Gas",
+        pageSlug: "ec.natural-gas.__cards__",
+        base: "/dashboard/energy-carriers/natural-gas",
+        sectionPathKey: "dashboard.energy-carriers.natural-gas",
+        wildcardKey: "ec.natural-gas.*",
+        wildcardLabel: "All Natural Gas content (wildcard)",
+        defaultCards: [
+            { id: "piped", href: "/dashboard/energy-carriers/natural-gas/piped", title: "Piped" },
+            { id: "lng",   href: "/dashboard/energy-carriers/natural-gas/lng",   title: "LNG" },
+        ],
+        knownKeys: {
+            "piped": "ec.natural-gas.piped",
+            "lng":   "ec.natural-gas.lng",
         },
     },
     {
@@ -253,14 +328,16 @@ function PermissionGroup({ group, pages, editablePages, onChange, defaultCollaps
 }
 
 // ── Per-user permission editor modal ──────────────────────────────────────────
-function UserEditor({ record, onClose, onDeleted, onSaved }) {
+function UserEditor({ record, viewerIsAdmin, onClose, onDeleted, onSaved }) {
     const [editablePages, setEditablePages] = useState(record.editablePages ?? []);
+    const [isModerator,   setIsModerator]   = useState(record.isModerator === true);
     const [dirty,         setDirty]         = useState(false);
     const [saving,        setSaving]        = useState(false);
     const [saved,         setSaved]         = useState(false);
     const [confirmRemove, setConfirmRemove] = useState(false);
     const [dynamicGroups, setDynamicGroups] = useState([]);
     const [dynLoading,    setDynLoading]    = useState(true);
+    const [moderatorErr,  setModeratorErr]  = useState("");
 
     useEffect(() => {
         let cancelled = false;
@@ -278,8 +355,14 @@ function UserEditor({ record, onClose, onDeleted, onSaved }) {
     async function handleSave() {
         setSaving(true);
         try {
-            const { data } = await client.models.AdminPermission.update({ id: record.id, editablePages });
-            onSaved(data);
+            const { data, errors } = await client.mutations.managePermissions({
+                action: "setPages",
+                targetEmail: record.email,
+                editablePages,
+            });
+            if (errors?.length) throw new Error(errors[0].message ?? "Failed to save");
+            const parsed = typeof data === "string" ? JSON.parse(data) : data;
+            onSaved({ ...record, editablePages, ...(parsed?.record ?? {}) });
             setDirty(false);
             setSaved(true);
             setTimeout(() => setSaved(false), 3000);
@@ -292,10 +375,27 @@ function UserEditor({ record, onClose, onDeleted, onSaved }) {
         setConfirmRemove(false);
         setSaving(true);
         try {
-            await client.models.AdminPermission.delete({ id: record.id });
+            await client.mutations.managePermissions({ action: "revoke", targetEmail: record.email });
             onDeleted(record.id);
         } finally {
             setSaving(false);
+        }
+    }
+
+    async function handleToggleModerator() {
+        const next = !isModerator;
+        setModeratorErr("");
+        try {
+            const { errors } = await client.mutations.managePermissions({
+                action: "setModerator",
+                targetEmail: record.email,
+                isModerator: next,
+            });
+            if (errors?.length) throw new Error(errors[0].message ?? "Failed to update");
+            setIsModerator(next);
+            onSaved({ ...record, editablePages, isModerator: next });
+        } catch (err) {
+            setModeratorErr(err?.message ?? "Failed to update moderator status.");
         }
     }
 
@@ -321,6 +421,27 @@ function UserEditor({ record, onClose, onDeleted, onSaved }) {
                             can never be self-granted through a data write. This only controls which specific pages
                             this user can edit as a non-admin editor.
                         </p>
+
+                        {viewerIsAdmin && (
+                            <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
+                                <label className="flex items-center justify-between cursor-pointer">
+                                    <div>
+                                        <p className="text-sm font-semibold text-purple-900">Moderator access</p>
+                                        <p className="text-xs text-purple-600 mt-0.5">
+                                            Can grant/edit/revoke page permissions for other non-admin, non-moderator
+                                            editors — but can never touch an admin, another moderator, or their own
+                                            permissions, and can never grant Moderator or Admin to anyone.
+                                        </p>
+                                    </div>
+                                    <div className="relative ml-4 shrink-0">
+                                        <input type="checkbox" className="sr-only peer" checked={isModerator} onChange={handleToggleModerator} />
+                                        <div className="w-10 h-6 bg-slate-200 rounded-full peer peer-checked:bg-purple-600 transition-colors" />
+                                        <div className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-all peer-checked:translate-x-4" />
+                                    </div>
+                                </label>
+                                {moderatorErr && <p className="mt-2 text-xs text-red-600">{moderatorErr}</p>}
+                            </div>
+                        )}
 
                         <div className="flex items-center justify-between">
                             <p className="text-sm font-medium text-slate-700">Page-level permissions</p>
@@ -461,7 +582,8 @@ function ResetPasswordModal({ email, onClose, onSubmit }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function Profile() {
     const { user, booted, signOut } = useAuth();
-    const { isAdmin, loading: permsLoading, permissions } = usePermissions();
+    const { isAdmin, isModerator: viewerIsModerator, loading: permsLoading, permissions } = usePermissions();
+    const canManageUsers = isAdmin || viewerIsModerator;
     const router = useRouter();
 
     const [grants,        setGrants]        = useState([]);
@@ -496,6 +618,14 @@ export default function Profile() {
     const [deletingEmail,      setDeletingEmail]      = useState(null);
     const [resetPasswordFor,   setResetPasswordFor]   = useState(null);
 
+    // Moderator's "grant by email" form (they have no Cognito account
+    // visibility, so unlike Admin's Invite form, this just creates a page-
+    // permissions record for an email that must already have an account).
+    const [grantEmail,   setGrantEmail]   = useState("");
+    const [grantBusy,    setGrantBusy]    = useState(false);
+    const [grantError,   setGrantError]   = useState("");
+    const [grantSuccess, setGrantSuccess] = useState(false);
+
     // Unified table interactions
     const [quickViewEmail, setQuickViewEmail] = useState(null);
     const [addingPermsFor, setAddingPermsFor] = useState(null);
@@ -516,12 +646,15 @@ export default function Profile() {
     useEffect(() => {
         let cancelled = false;
         async function load() {
-            if (!isAdmin) {
+            if (!canManageUsers) {
                 if (!cancelled) setGrantsLoading(false);
                 return;
             }
             setGrantsLoading(true);
             try {
+                // Reading AdminPermission is unrestricted for any
+                // authenticated user (only writes go through
+                // managePermissions), so this works for Moderators too.
                 const { data } = await client.models.AdminPermission.list();
                 if (!cancelled) setGrants(data ?? []);
             } finally {
@@ -530,7 +663,7 @@ export default function Profile() {
         }
         load();
         return () => { cancelled = true; };
-    }, [isAdmin]);
+    }, [canManageUsers]);
 
     // ── Cognito account management ───────────────────────────────────────────
     async function callManageUsers(args) {
@@ -602,15 +735,44 @@ export default function Profile() {
         if (grants.some((g) => g.email === email) || addingPermsFor === email) return;
         setAddingPermsFor(email);
         try {
-            const { data, errors } = await client.models.AdminPermission.create({ email, editablePages: [] });
-            if (errors?.length) throw errors[0];
-            setGrants((prev) => [...prev, data]);
+            const { data, errors } = await client.mutations.managePermissions({ action: "grant", targetEmail: email });
+            if (errors?.length) throw new Error(errors[0].message ?? "Failed to add");
+            const parsed = typeof data === "string" ? JSON.parse(data) : data;
+            const record = parsed?.record ?? { email, editablePages: [], isModerator: false };
+            setGrants((prev) => [...prev, record]);
             setJustAddedEmail(email);
             setTimeout(() => setJustAddedEmail(null), 2000);
         } catch (err) {
             console.error("Failed to add permissions record", err);
         } finally {
             setAddingPermsFor(null);
+        }
+    }
+
+    // Moderator's own entry point for a user with no page-permissions record
+    // yet - they have no Cognito account visibility, so unlike Admin's
+    // Invite form, this just targets an email directly.
+    async function handleGrantByEmail(e) {
+        e.preventDefault();
+        const email = grantEmail.trim().toLowerCase();
+        if (!email || !email.includes("@")) { setGrantError("Enter a valid email address."); return; }
+        if (grants.some((g) => g.email === email)) { setGrantError("This user already has a permissions record."); return; }
+        setGrantBusy(true);
+        setGrantError("");
+        setGrantSuccess(false);
+        try {
+            const { data, errors } = await client.mutations.managePermissions({ action: "grant", targetEmail: email });
+            if (errors?.length) throw new Error(errors[0].message ?? "Failed to grant");
+            const parsed = typeof data === "string" ? JSON.parse(data) : data;
+            const record = parsed?.record ?? { email, editablePages: [], isModerator: false };
+            setGrants((prev) => [...prev, record]);
+            setGrantEmail("");
+            setGrantSuccess(true);
+            setTimeout(() => setGrantSuccess(false), 3000);
+        } catch (err) {
+            setGrantError(err?.message ?? "Failed to grant permissions.");
+        } finally {
+            setGrantBusy(false);
         }
     }
 
@@ -663,6 +825,7 @@ export default function Profile() {
             {editingRecord && (
                 <UserEditor
                     record={editingRecord}
+                    viewerIsAdmin={isAdmin}
                     onClose={() => setEditingId(null)}
                     onDeleted={(id) => { setGrants((prev) => prev.filter((g) => g.id !== id)); setEditingId(null); }}
                     onSaved={(updated) => setGrants((prev) => prev.map((g) => g.id === updated.id ? updated : g))}
@@ -674,7 +837,7 @@ export default function Profile() {
                     <div>
                         <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-green-600">Profile</p>
                         <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">{user.email}</h1>
-                        <p className="mt-1 text-sm text-slate-500">{isAdmin ? "Admin" : "Signed in"}</p>
+                        <p className="mt-1 text-sm text-slate-500">{isAdmin ? "Admin" : viewerIsModerator ? "Moderator" : "Signed in"}</p>
                     </div>
                     <button onClick={signOut} className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
                         Sign out
@@ -683,7 +846,7 @@ export default function Profile() {
 
                 {permsLoading ? (
                     <div className="flex justify-center py-12"><Spinner className="h-6 w-6" /></div>
-                ) : !isAdmin ? (
+                ) : !canManageUsers ? (
                     <section className="rounded-xl border border-slate-200 bg-white p-6">
                         <h2 className="font-semibold text-slate-900 mb-4">My Edit Permissions</h2>
                         {!permissions?.editablePages?.length ? (
@@ -704,24 +867,32 @@ export default function Profile() {
                         <section className="space-y-3">
                             <div>
                                 <h2 className="text-lg font-bold text-slate-900">User Management</h2>
-                                <p className="text-sm text-slate-500 mt-0.5">Manage who can access and edit your site. Click a user to view their permissions.</p>
+                                <p className="text-sm text-slate-500 mt-0.5">
+                                    {isAdmin
+                                        ? "Manage who can access and edit your site. Click a user to view their permissions."
+                                        : "Grant and manage page-editing permissions for other editors. Click a user to view their permissions."}
+                                </p>
                             </div>
 
                             <div className="rounded-xl border border-slate-200 overflow-hidden">
                                 <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
                                     <div className="flex items-center gap-3">
                                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Users</p>
-                                        <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
-                                            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />Cognito connected
-                                        </span>
+                                        {isAdmin && (
+                                            <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-green-500" />Cognito connected
+                                            </span>
+                                        )}
                                     </div>
-                                    <button onClick={loadCognitoUsers} disabled={cognitoLoading}
-                                        title="Refresh user list"
-                                        className="inline-flex items-center justify-center h-7 w-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-100 disabled:opacity-40 transition-colors">
-                                        <svg className={`h-3.5 w-3.5 ${cognitoLoading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                        </svg>
-                                    </button>
+                                    {isAdmin && (
+                                        <button onClick={loadCognitoUsers} disabled={cognitoLoading}
+                                            title="Refresh user list"
+                                            className="inline-flex items-center justify-center h-7 w-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-100 disabled:opacity-40 transition-colors">
+                                            <svg className={`h-3.5 w-3.5 ${cognitoLoading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                            </svg>
+                                        </button>
+                                    )}
                                 </div>
 
                                 {cognitoError && <p className="px-5 py-2 text-xs text-red-500 bg-red-50 border-b border-red-100">{cognitoError}</p>}
@@ -737,6 +908,11 @@ export default function Profile() {
                                             const isSelf = email === user.email;
                                             const hasGrant = !!grant;
                                             const pageCount = grant?.editablePages?.length ?? 0;
+                                            const rowIsModerator = grant?.isModerator === true;
+                                            // A Moderator viewer can only manage plain non-admin,
+                                            // non-moderator rows - never an admin, another
+                                            // moderator, or themselves (enforced server-side too).
+                                            const canManageRow = isAdmin || (viewerIsModerator && !u?.isAdmin && !rowIsModerator && !isSelf);
                                             return (
                                                 <div key={email} className="px-5 py-3.5">
                                                     <div className="flex items-center justify-between gap-3 flex-wrap">
@@ -751,10 +927,13 @@ export default function Profile() {
                                                                     {u?.isAdmin && (
                                                                         <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5 shrink-0">Admin</span>
                                                                     )}
+                                                                    {rowIsModerator && (
+                                                                        <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 border border-purple-200 rounded px-1.5 py-0.5 shrink-0">Moderator</span>
+                                                                    )}
                                                                     {isSelf && (
                                                                         <span className="text-[10px] font-medium bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5 shrink-0">You</span>
                                                                     )}
-                                                                    {!u && (
+                                                                    {isAdmin && !u && (
                                                                         <span className="text-[10px] font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 shrink-0">No account found</span>
                                                                     )}
                                                                 </div>
@@ -764,7 +943,7 @@ export default function Profile() {
                                                                             {u.status}{u.enabled === false ? " · Disabled" : ""}
                                                                             {u.created && ` · Joined ${new Date(u.created).toLocaleDateString()}`}
                                                                         </>
-                                                                    ) : "Permissions record only"}
+                                                                    ) : isAdmin ? "Permissions record only" : null}
                                                                     {u?.isAdmin ? (
                                                                         <span className="ml-2 text-blue-500">· Full edit access</span>
                                                                     ) : hasGrant ? (
@@ -777,20 +956,20 @@ export default function Profile() {
                                                         </button>
 
                                                         <div className="flex items-center gap-2 shrink-0 ml-4">
-                                                            {!hasGrant && !u?.isAdmin && (
+                                                            {!hasGrant && canManageRow && (
                                                                 <button onClick={() => handleAddPermissions(email)}
                                                                     disabled={addingPermsFor === email}
                                                                     className={`text-xs font-medium border rounded-lg px-3 py-1.5 transition-colors ${justAddedEmail === email ? "text-green-700 border-green-300 bg-green-50" : "text-green-700 border-green-200 hover:bg-green-50"} disabled:opacity-60`}>
                                                                     {addingPermsFor === email ? "Adding…" : justAddedEmail === email ? "Added ✓" : "+ Permissions"}
                                                                 </button>
                                                             )}
-                                                            {hasGrant && !u?.isAdmin && (
+                                                            {hasGrant && canManageRow && (
                                                                 <button onClick={() => setEditingId(grant.id)}
                                                                     className="text-xs font-medium border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-100 transition-colors">
                                                                     Manage
                                                                 </button>
                                                             )}
-                                                            {u && (
+                                                            {isAdmin && u && (
                                                                 <button
                                                                     onClick={() => setResetPasswordFor(email)}
                                                                     disabled={isSelf}
@@ -799,7 +978,7 @@ export default function Profile() {
                                                                     Reset password
                                                                 </button>
                                                             )}
-                                                            {u && (
+                                                            {isAdmin && u && (
                                                                 <button
                                                                     onClick={() => setConfirmDeleteEmail(email)}
                                                                     disabled={isSelf || deletingEmail === email}
@@ -836,33 +1015,62 @@ export default function Profile() {
                                     </div>
                                 )}
 
-                                {/* Invite form */}
-                                <div className="px-5 py-4 bg-slate-50 border-t border-slate-200">
-                                    <p className="text-xs font-semibold text-slate-500 mb-2">Invite new user</p>
-                                    <form onSubmit={handleInvite} className="flex gap-2">
-                                        <input
-                                            type="email"
-                                            placeholder="email@example.com"
-                                            value={inviteEmail}
-                                            onChange={(e) => setInviteEmail(e.target.value)}
-                                            className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
-                                        />
-                                        <button type="submit" disabled={inviteBusy}
-                                            className="rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-40">
-                                            {inviteBusy ? "Inviting…" : "Invite"}
-                                        </button>
-                                    </form>
-                                    {inviteSuccess && (
-                                        <p className="mt-2 text-xs font-medium text-green-700 flex items-center gap-1.5">
-                                            <svg className="h-3.5 w-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                                            Invitation sent — user will receive a temporary password by email.
-                                        </p>
-                                    )}
-                                    {inviteError && <p className="mt-2 text-xs font-medium text-red-600">{inviteError}</p>}
-                                    {!inviteSuccess && !inviteError && (
-                                        <p className="mt-1.5 text-[11px] text-slate-400">User will receive a temporary password via email from Cognito.</p>
-                                    )}
-                                </div>
+                                {/* Invite form (Admin) / Grant-by-email form (Moderator) */}
+                                {isAdmin ? (
+                                    <div className="px-5 py-4 bg-slate-50 border-t border-slate-200">
+                                        <p className="text-xs font-semibold text-slate-500 mb-2">Invite new user</p>
+                                        <form onSubmit={handleInvite} className="flex gap-2">
+                                            <input
+                                                type="email"
+                                                placeholder="email@example.com"
+                                                value={inviteEmail}
+                                                onChange={(e) => setInviteEmail(e.target.value)}
+                                                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                                            />
+                                            <button type="submit" disabled={inviteBusy}
+                                                className="rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-40">
+                                                {inviteBusy ? "Inviting…" : "Invite"}
+                                            </button>
+                                        </form>
+                                        {inviteSuccess && (
+                                            <p className="mt-2 text-xs font-medium text-green-700 flex items-center gap-1.5">
+                                                <svg className="h-3.5 w-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                                Invitation sent — user will receive a temporary password by email.
+                                            </p>
+                                        )}
+                                        {inviteError && <p className="mt-2 text-xs font-medium text-red-600">{inviteError}</p>}
+                                        {!inviteSuccess && !inviteError && (
+                                            <p className="mt-1.5 text-[11px] text-slate-400">User will receive a temporary password via email from Cognito.</p>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="px-5 py-4 bg-slate-50 border-t border-slate-200">
+                                        <p className="text-xs font-semibold text-slate-500 mb-2">Grant permissions to a user</p>
+                                        <form onSubmit={handleGrantByEmail} className="flex gap-2">
+                                            <input
+                                                type="email"
+                                                placeholder="email@example.com"
+                                                value={grantEmail}
+                                                onChange={(e) => setGrantEmail(e.target.value)}
+                                                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                                            />
+                                            <button type="submit" disabled={grantBusy}
+                                                className="rounded-lg bg-green-700 px-4 py-2 text-sm font-semibold text-white hover:bg-green-800 disabled:opacity-40">
+                                                {grantBusy ? "Adding…" : "Add"}
+                                            </button>
+                                        </form>
+                                        {grantSuccess && (
+                                            <p className="mt-2 text-xs font-medium text-green-700 flex items-center gap-1.5">
+                                                <svg className="h-3.5 w-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                                Permissions record created — click &quot;Manage&quot; above to grant page access.
+                                            </p>
+                                        )}
+                                        {grantError && <p className="mt-2 text-xs font-medium text-red-600">{grantError}</p>}
+                                        {!grantSuccess && !grantError && (
+                                            <p className="mt-1.5 text-[11px] text-slate-400">The user must already have an account — this only grants page-editing access, it doesn&apos;t create a login.</p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </section>
 

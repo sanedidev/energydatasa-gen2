@@ -13,7 +13,7 @@ const PermissionsCtx = createContext(null);
 // record (AdminPermission), but only the Admins group can write it.
 export function PermissionsProvider({ children }) {
     const { user } = useAuth();
-    const [permissions, setPermissions] = useState(null); // { isAdmin, editablePages }
+    const [permissions, setPermissions] = useState(null); // { isAdmin, isModerator, editablePages }
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -35,14 +35,16 @@ export function PermissionsProvider({ children }) {
                 const isAdmin = groups.includes("Admins");
 
                 let editablePages = [];
+                let isModerator = false;
                 try {
                     const res = await client.models.AdminPermission.adminPermissionByEmail({ email: user.email });
                     editablePages = res.data?.[0]?.editablePages ?? [];
+                    isModerator = res.data?.[0]?.isModerator === true;
                 } catch {}
 
-                if (!cancelled) setPermissions({ isAdmin, editablePages });
+                if (!cancelled) setPermissions({ isAdmin, isModerator, editablePages });
             } catch {
-                if (!cancelled) setPermissions({ isAdmin: false, editablePages: [] });
+                if (!cancelled) setPermissions({ isAdmin: false, isModerator: false, editablePages: [] });
             } finally {
                 if (!cancelled) setLoading(false);
             }
@@ -77,9 +79,10 @@ export function PermissionsProvider({ children }) {
     }, [user, permissions]);
 
     const isAdmin = !!permissions?.isAdmin;
+    const isModerator = !!permissions?.isModerator;
 
     return (
-        <PermissionsCtx.Provider value={{ permissions, loading, canEdit, isAdmin }}>
+        <PermissionsCtx.Provider value={{ permissions, loading, canEdit, isAdmin, isModerator }}>
             {children}
         </PermissionsCtx.Provider>
     );

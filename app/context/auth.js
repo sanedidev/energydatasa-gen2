@@ -8,6 +8,8 @@ import {
     confirmSignIn,
     getCurrentUser,
     fetchUserAttributes,
+    resetPassword as cognitoResetPassword,
+    confirmResetPassword as cognitoConfirmResetPassword,
 } from "aws-amplify/auth";
 
 const AuthCtx = createContext(null);
@@ -94,6 +96,20 @@ export function AuthProvider({ children }) {
         return appUser;
     }
 
+    // Self-service "forgot password" - sends a code to the user's email
+    async function resetPassword({ email }) {
+        return cognitoResetPassword({ username: email });
+    }
+
+    // Completes the forgot-password flow with the emailed code + new password
+    async function confirmResetPassword({ email, code, newPassword }) {
+        await cognitoConfirmResetPassword({
+            username: email,
+            confirmationCode: code,
+            newPassword,
+        });
+    }
+
     async function signOut() {
         try {
             await cognitoSignOut();
@@ -108,6 +124,8 @@ export function AuthProvider({ children }) {
             booted,
             signIn,
             completeNewPassword,
+            resetPassword,
+            confirmResetPassword,
             signOut,
             setUser,
             isAuthenticated: !!user,

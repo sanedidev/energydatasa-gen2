@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
-import { BASE, STATIC_NAV } from "./_nav-data";
+import { BASE, STATIC_NAV, STATIC_CHILDREN } from "./_nav-data";
 
 
 const STATIC_HREFS = new Set(STATIC_NAV.map((n) => n.href));
@@ -93,21 +93,31 @@ export default function SectionNav() {
             }
             const rel = pathname.slice(BASE.length + 1);
             const segs = rel.split("/").filter(Boolean);
-            const map = {};
-            for (let i = 0; i < segs.length; i++) {
+            // Fetch every segment (and both slug variants per segment) in parallel
+            // instead of awaiting them one at a time - a deep path otherwise waits
+            // through up to 2 sequential round-trips per level before the sidebar
+            // can expand at all.
+            const entries = await Promise.all(segs.map(async (_, i) => {
                 const pathKey = segs.slice(0, i + 1).join(".");
-                const cardsSlug = `dyn.cards.dashboard.energy-carriers.${pathKey}`;
-                const cards = await fetchDynCards(cardsSlug);
-                if (cancelled) return;
+                const parentHref = `${BASE}/${segs.slice(0, i + 1).join("/")}`;
+                const [ecCards, dynCards] = await Promise.all([
+                    fetchDynCards(`ec.${pathKey}.__cards__`),
+                    fetchDynCards(`dyn.cards.dashboard.energy-carriers.${pathKey}`),
+                ]);
+                const cards = ecCards.length > 0 ? ecCards : dynCards;
                 if (cards.length > 0) {
-                    const parentHref = `${BASE}/${segs.slice(0, i + 1).join("/")}`;
-                    map[parentHref] = cards.map((c) => ({
+                    return [parentHref, cards.map((c) => ({
                         label: c.title,
                         href: c.href ?? `${parentHref}/${c.id}`,
-                    }));
+                    }))];
                 }
-            }
-            if (!cancelled) setDynChildMap(map);
+                const fallback = STATIC_CHILDREN[parentHref.slice(BASE.length)];
+                return fallback ? [parentHref, fallback] : null;
+            }));
+            if (cancelled) return;
+            const map = {};
+            for (const entry of entries) if (entry) map[entry[0]] = entry[1];
+            setDynChildMap(map);
         }
         loadPath();
         return () => { cancelled = true; };

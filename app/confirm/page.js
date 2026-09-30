@@ -65,6 +65,9 @@ function ConfirmForm() {
                             placeholder="6-digit code"
                             className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-colors"
                         />
+                        <p className="mt-1.5 text-xs text-slate-400">
+                            Don&apos;t see it? Check your spam or junk folder — the code can sometimes land there.
+                        </p>
                     </div>
                     <button
                         type="submit"

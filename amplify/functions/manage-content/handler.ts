@@ -161,7 +161,12 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
   if (!callerEmail) throw new Error('Forbidden');
 
   const isCallerAdmin = callerGroups.includes('Admins');
-  const { model, op, pageKeys, id, slug, data, historyLabel } = event.arguments;
+  const { model, op, pageKeys, id, slug, data: rawData, historyLabel } = event.arguments;
+  // AWSJSON arguments arrive as a JSON string on a direct Lambda resolver
+  // (AppSync doesn't auto-parse them the way it does for VTL/model
+  // resolvers) - normalize so the rest of this handler can just treat
+  // `data` as a plain object either way.
+  const data = typeof rawData === 'string' ? JSON.parse(rawData) : rawData;
 
   // Revert can restore ANY historical slug across any model/category, so
   // unlike everything else here it's Admin-only rather than

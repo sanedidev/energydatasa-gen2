@@ -20,7 +20,11 @@ export async function upsertPageContent({ slug, content, pageKeys, historyLabel 
         slug,
         pageKeys,
         historyLabel,
-        data: { content },
+        // The data argument is AWSJSON - AppSync requires that to be sent as
+        // a JSON-encoded string, not a raw object (the generated client
+        // doesn't do this stringification for you on custom mutation
+        // arguments, only on model fields).
+        data: JSON.stringify({ content }),
     });
     if (errors?.length) throw new Error(errors[0].message ?? "Failed to save.");
     return data?.record;
@@ -41,7 +45,7 @@ export async function deletePageContentById({ id, pageKeys, historyLabel }) {
  * include `slug` plus the model's own fields. */
 export async function createContentRecord({ model, data, pageKeys, historyLabel }) {
     const { data: result, errors } = await client.mutations.manageContent({
-        model, op: "create", data, pageKeys, historyLabel,
+        model, op: "create", data: JSON.stringify(data), pageKeys, historyLabel,
     });
     if (errors?.length) throw new Error(errors[0].message ?? "Failed to create.");
     return result?.record;
@@ -49,7 +53,7 @@ export async function createContentRecord({ model, data, pageKeys, historyLabel 
 
 export async function updateContentRecord({ model, id, data, pageKeys, historyLabel }) {
     const { data: result, errors } = await client.mutations.manageContent({
-        model, op: "update", id, data, pageKeys, historyLabel,
+        model, op: "update", id, data: JSON.stringify(data), pageKeys, historyLabel,
     });
     if (errors?.length) throw new Error(errors[0].message ?? "Failed to save.");
     return result?.record;

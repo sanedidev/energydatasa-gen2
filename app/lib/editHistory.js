@@ -37,7 +37,7 @@ export async function revertEntry(_client, entry) {
             model: "PageContent",
             op: "revert",
             slug: entry.slug,
-            data: { content: entry.before },
+            data: JSON.stringify({ content: entry.before }),
         });
         if (errors?.length) return false;
         return !!data?.ok;

@@ -302,6 +302,17 @@ export default function Maps() {
     useEffect(() => {
         if (mapRef.current || !containerRef.current) return;
 
+        // maplibre-gl 6's automatic worker-URL detection relies on
+        // import.meta.url resolution that Turbopack doesn't bundle/serve
+        // correctly - it ends up constructing `new Worker("")`, which fails
+        // silently (map shell renders, but no tiles/markers ever draw, and
+        // "Worker failed to load" shows up in the console). Setting the
+        // worker URL explicitly via new URL(..., import.meta.url) is what
+        // maplibre-gl's own v5->v6 migration guide recommends for bundlers
+        // that need this spelled out - Turbopack recognizes that pattern as
+        // a real asset reference and serves the worker file correctly.
+        maplibregl.setWorkerUrl(new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).href);
+
         const map = new maplibregl.Map({
             container: containerRef.current,
             style:     "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",

@@ -2,9 +2,11 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import nebData2024 from "@/app/data/energy-balance-2024.json";
 
 const YEARS_INDEX_SLUG = "neb.years.index";
+const NEB_PAGE_KEY = "neb.balance";
 const DEFAULT_YEAR = { year: "2024", label: "2024 NEB", isBuiltIn: true };
 
 const NEBYearsContext = createContext(null);
@@ -49,14 +51,8 @@ export function NEBYearsProvider({ children }) {
     }, []);
 
     async function saveYearsIndex(years) {
-        const content  = JSON.stringify(years);
-        const checkRes = await client.models.PageContent.pageContentBySlug({ slug: YEARS_INDEX_SLUG }, { authMode: "apiKey" });
-        const existing = checkRes?.data?.[0];
-        if (existing?.id) {
-            await client.models.PageContent.update({ id: existing.id, content });
-        } else {
-            await client.models.PageContent.create({ slug: YEARS_INDEX_SLUG, content });
-        }
+        const content = JSON.stringify(years);
+        await upsertPageContent({ slug: YEARS_INDEX_SLUG, content, pageKeys: [NEB_PAGE_KEY], historyLabel: "NEB — Years index" });
     }
 
     const saveYearData = useCallback(async ({ year, label, sections, userEmail }) => {
@@ -77,13 +73,7 @@ export function NEBYearsProvider({ children }) {
         };
         const content = JSON.stringify(data);
 
-        const checkRes  = await client.models.PageContent.pageContentBySlug({ slug }, { authMode: "apiKey" });
-        const existing  = checkRes?.data?.[0];
-        if (existing?.id) {
-            await client.models.PageContent.update({ id: existing.id, content });
-        } else {
-            await client.models.PageContent.create({ slug, content });
-        }
+        await upsertPageContent({ slug, content, pageKeys: [NEB_PAGE_KEY], historyLabel: `NEB — ${year} data` });
 
         cacheRef.current[year] = data;
 

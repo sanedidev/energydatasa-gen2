@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import DragHandleIcon from "@/app/components/ui/DragHandle";
 import { usePermissions } from "@/app/context/permissions";
 import Breadcrumbs from "@/app/components/breadcrumbs";
@@ -329,13 +330,8 @@ export default function Partners() {
         setSaving(true);
         const content = JSON.stringify(updated);
         try {
-            if (record?.id) {
-                const { data } = await client.models.PageContent.update({ id: record.id, content });
-                setRecord(data ?? record);
-            } else {
-                const { data } = await client.models.PageContent.create({ slug: SLUG, content });
-                setRecord(data ?? null);
-            }
+            const saved = await upsertPageContent({ slug: SLUG, content, pageKeys: ["partners.__index__"], historyLabel: "Partners" });
+            setRecord(saved ?? record);
             setPartners(updated);
         } catch (e) { console.error(e); }
         finally { setSaving(false); }

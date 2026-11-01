@@ -201,6 +201,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                                 key={`${pageKey}.${f.id}.${ps.reloadKeys[f.id] ?? 0}`}
                                 ref={(el) => { ps.sectionRefs.current[f.id] = el; }}
                                 slug={`${pageKey}.${f.id}`}
+                                pageKey={pageKey}
                                 placeholder={placeholders[f.id] ?? "Add content for this section."}
                                 canEdit={ps.canEditThisPage}
                                 defaultContent={f.defaultContent ?? null}

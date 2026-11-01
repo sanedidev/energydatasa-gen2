@@ -5,11 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent, createContentRecord, deleteContentRecord } from "@/app/lib/manageContent";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
 
 const HIDDEN_SLUG = "whoisitfor.hidden";
+const WHOISITFOR_PAGE_KEYS = ["whoisitfor.__index__", "audience.*"];
 
 function slugify(str) {
     return str.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
@@ -90,13 +92,8 @@ export default function WhoIsItForIndex() {
         next.has(id) ? next.delete(id) : next.add(id);
         const content = JSON.stringify([...next]);
         try {
-            if (hiddenRecord) {
-                const { data } = await client.models.PageContent.update({ id: hiddenRecord.id, content });
-                setHiddenRecord(data);
-            } else {
-                const { data } = await client.models.PageContent.create({ slug: HIDDEN_SLUG, content });
-                setHiddenRecord(data);
-            }
+            const saved = await upsertPageContent({ slug: HIDDEN_SLUG, content, pageKeys: WHOISITFOR_PAGE_KEYS, historyLabel: "Who is it for — Hidden" });
+            setHiddenRecord(saved ?? hiddenRecord);
             setHiddenIds(next);
         } catch (err) {
             console.error("Failed to update hidden state", err);
@@ -115,11 +112,12 @@ export default function WhoIsItForIndex() {
         if (!title || !slug) return;
         setCreating(true); setCreateErr("");
         try {
-            const { data, errors } = await client.models.AudienceProfile.create({
-                title, slug,
-                subtitle: newSubtitle.trim() || "",
+            const data = await createContentRecord({
+                model: "AudienceProfile",
+                data: { title, slug, subtitle: newSubtitle.trim() || "" },
+                pageKeys: WHOISITFOR_PAGE_KEYS,
+                historyLabel: `Audience — ${title}`,
             });
-            if (errors?.length) throw errors[0];
             if (data) router.push(`/whoisitfor/${data.slug}`);
         } catch (err) {
             console.error(err);
@@ -133,7 +131,7 @@ export default function WhoIsItForIndex() {
         const { id } = confirmTarget;
         setDeletingId(id);
         try {
-            await client.models.AudienceProfile.delete({ id });
+            await deleteContentRecord({ model: "AudienceProfile", id, pageKeys: WHOISITFOR_PAGE_KEYS, historyLabel: "Audience — delete" });
             setAudiences((prev) => prev.filter((a) => a.id !== id));
             setConfirmTarget(null);
         } catch (err) {

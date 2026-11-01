@@ -5,13 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { usePermissions } from "@/app/context/permissions";
-import { useAuth } from "@/app/context/auth";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import CarrierPicker, { DEFAULT_SECTION_CONFIG, EE_SECTION_CONFIG, EP_SECTION_CONFIG } from "@/app/components/CarrierPicker";
 import CarrierMovePicker from "@/app/components/CarrierMovePicker";
 import DragHandle from "@/app/components/ui/DragHandle";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
-import { logEdit } from "@/app/lib/editHistory";
+import { upsertPageContent } from "@/app/lib/manageContent";
 
 
 function parseCards(content) {
@@ -215,7 +214,6 @@ export default function CarrierIndexPage({
     cols = 3,
 }) {
     const { isAdmin, canEdit } = usePermissions();
-    const { user } = useAuth();
     // Accept both the full key (ec.foo.__cards__) and the short key (ec.foo) so
     // admins can grant permission via either format in the permissions editor.
     const canManage = isAdmin || canEdit(pageSlug) || canEdit(pageSlug.replace(/\.__cards__$/, ""));
@@ -317,27 +315,16 @@ export default function CarrierIndexPage({
 
     async function persist(updated) {
         setSaving(true);
-        const before  = record?.content ?? null;
         const content = JSON.stringify(updated);
         try {
-            let saved;
-            if (record) {
-                const { data } = await client.models.PageContent.update({ id: record.id, content });
-                saved = data;
-            } else {
-                const { data } = await client.models.PageContent.create({ slug: pageSlug, content });
-                saved = data;
-            }
-            setRecord(saved);
-            setCards(updated);
-            logEdit(client, {
-                slug:   pageSlug,
-                label:  `${pageSlug} — Cards`,
-                email:  user?.email,
-                action: record ? "update" : "create",
-                before,
-                after:  content,
+            const saved = await upsertPageContent({
+                slug: pageSlug,
+                content,
+                pageKeys: [pageSlug, pageSlug.replace(/\.__cards__$/, "")],
+                historyLabel: `${pageSlug} — Cards`,
             });
+            setRecord(saved ?? record);
+            setCards(updated);
         } finally {
             setSaving(false);
         }
@@ -377,13 +364,12 @@ export default function CarrierIndexPage({
             // creating a second one with the same slug - a raw create()
             // here left two records under one slug, and pageContentBySlug
             // non-deterministically returned whichever (often the stale one).
-            const existing = await client.models.PageContent.pageContentBySlug({ slug: nodeConfigSlug }, { authMode: "apiKey" });
-            const existingRecord = existing?.data?.[0] ?? null;
-            if (existingRecord) {
-                await client.models.PageContent.update({ id: existingRecord.id, content: nodeContent });
-            } else {
-                await client.models.PageContent.create({ slug: nodeConfigSlug, content: nodeContent });
-            }
+            await upsertPageContent({
+                slug: nodeConfigSlug,
+                content: nodeContent,
+                pageKeys: [pageSlug, pageSlug.replace(/\.__cards__$/, "")],
+                historyLabel: `${nodeConfigSlug} — Node config`,
+            });
             await persist([...cards, { id: slug, title: draft.title, desc: draft.desc, href: itemPath, hidden: false }]);
             setAddType(null);
         } catch (e) {
@@ -772,12 +758,14 @@ export default function CarrierIndexPage({
                             excludeHrefs={cards.map((c) => c.href).filter(Boolean)}
                             onSelect={(picked) => handleAdd({ title: picked.title, desc: picked.desc, href: picked.href })}
                             onCancel={() => setAddType(null)}
+                            pageKeys={[pageSlug, pageSlug.replace(/\.__cards__$/, "")]}
                         />
                     )}
                     {movingIdx !== null && (
                         <CarrierMovePicker
                             card={cards[movingIdx]}
                             sectionConfig={pickerSectionConfig}
+                            pageKeys={[pageSlug, pageSlug.replace(/\.__cards__$/, "")]}
                             onCancel={() => setMovingIdx(null)}
                             onMoved={() => {
                                 persist(cards.filter((_, i) => i !== movingIdx));

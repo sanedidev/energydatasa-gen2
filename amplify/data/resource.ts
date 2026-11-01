@@ -1,11 +1,18 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { manageUsers } from '../functions/manage-users/resource';
 import { managePermissions } from '../functions/manage-permissions/resource';
+import { manageContent } from '../functions/manage-content/resource';
 
 // Mirrors the original energydatasa app's content models. Public read (via
-// API key, matching the old app's apiKey auth mode) + any signed-in user can
-// write - that's an intentional, low-stakes "wiki-style" choice for ordinary
-// CMS content, same as the original.
+// API key, matching the old app's apiKey auth mode) is unrestricted, but
+// writes are NOT open to every signed-in user any more - that used to be an
+// intentional "wiki-style" choice, but it meant the Moderator/editablePages
+// system (see AdminPermission below) only ever hid Edit buttons in the UI
+// without enforcing anything server-side: any self-registered account could
+// write to these models directly via the API. Writes now go only through
+// the Admins group or the manageContent function below, which re-derives
+// and enforces editablePages the same way managePermissions already does
+// for AdminPermission itself.
 const schema = a.schema({
   PageContent: a
     .model({
@@ -15,9 +22,13 @@ const schema = a.schema({
     .secondaryIndexes((index) => [index('slug').queryField('pageContentBySlug')])
     .authorization((allow) => [
       allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+      allow.group('Admins').to(['read', 'create', 'update', 'delete']),
     ]),
 
+  // Unused by any part of the app (the Eskom coal station pages store their
+  // content as PageContent records instead, via EditableSections) - kept
+  // only so existing data isn't orphaned, locked to read-only/Admins since
+  // nothing should ever be writing to it.
   EskomCoalPowerStation: a
     .model({
       slug: a.string().required(),
@@ -38,7 +49,7 @@ const schema = a.schema({
     .secondaryIndexes((index) => [index('slug').queryField('eskomCoalPowerStationBySlug')])
     .authorization((allow) => [
       allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+      allow.group('Admins').to(['read', 'create', 'update', 'delete']),
     ]),
 
   InsightArticle: a
@@ -53,7 +64,7 @@ const schema = a.schema({
     .secondaryIndexes((index) => [index('slug').queryField('insightArticleBySlug')])
     .authorization((allow) => [
       allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+      allow.group('Admins').to(['read', 'create', 'update', 'delete']),
     ]),
 
   AudienceProfile: a
@@ -72,7 +83,7 @@ const schema = a.schema({
     .secondaryIndexes((index) => [index('slug').queryField('audienceProfileBySlug')])
     .authorization((allow) => [
       allow.publicApiKey().to(['read']),
-      allow.authenticated().to(['read', 'create', 'update', 'delete']),
+      allow.group('Admins').to(['read', 'create', 'update', 'delete']),
     ]),
 
   // Replaces the old app's __admin__.superAdmins / __permissions__.<email>
@@ -142,6 +153,28 @@ const schema = a.schema({
     })
     .returns(a.json())
     .handler(a.handler.function(managePermissions))
+    .authorization((allow) => [allow.authenticated()]),
+
+  // The sole write path for PageContent, InsightArticle and AudienceProfile
+  // now that their schema auth above no longer grants authenticated-user
+  // write access. Open to any authenticated caller at the schema layer for
+  // the same reason managePermissions is - a Moderator or an editablePages
+  // holder isn't in the Admins group - with the function itself re-deriving
+  // and enforcing the caller's actual editablePages via AdminPermission
+  // before touching anything. "revert" is Admin-only (see the function).
+  manageContent: a
+    .mutation()
+    .arguments({
+      model: a.string(), // "PageContent" | "InsightArticle" | "AudienceProfile"
+      op: a.string().required(), // "upsert" | "create" | "update" | "delete" | "revert"
+      pageKeys: a.string().array(), // editablePages keys that authorize this write (OR'd)
+      id: a.string(),
+      slug: a.string(),
+      data: a.json(),
+      historyLabel: a.string(),
+    })
+    .returns(a.json())
+    .handler(a.handler.function(manageContent))
     .authorization((allow) => [allow.authenticated()]),
 });
 

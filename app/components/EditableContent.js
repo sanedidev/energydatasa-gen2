@@ -21,6 +21,7 @@ const EditableContent = forwardRef(function EditableContent({
     slug,
     placeholder = "Click Edit to add content.",
     canEdit: canEditProp = undefined,
+    pageKey: pageKeyProp = undefined,
     defaultContent = null,
     preloadedRecord = undefined,
     onFirstBlockIsTitle = null,
@@ -33,10 +34,15 @@ const EditableContent = forwardRef(function EditableContent({
     // When it IS passed (e.g. from EditableSections which manages its own mode),
     // use that value directly.
     const canEdit = canEditProp !== undefined ? canEditProp : canEditFromCtx(slug);
+    // Same dual-mode resolution as canEdit above, since this is the key the
+    // server re-verifies editablePages against on save - it has to match
+    // whatever key actually granted canEdit, not just default to the slug
+    // when a caller (EditableSections) already resolved a shorter pageKey.
+    const pageKey = pageKeyProp !== undefined ? pageKeyProp : slug;
 
     const ec = useEditableContent({
         slug, defaultContent, preloadedRecord,
-        onFirstBlockIsTitle, onSave, userEmail, sectionLabel, canEdit, ref,
+        onFirstBlockIsTitle, onSave, userEmail, sectionLabel, canEdit, pageKey, ref,
     });
 
     // ── Loading ───────────────────────────────────────────────────────────────

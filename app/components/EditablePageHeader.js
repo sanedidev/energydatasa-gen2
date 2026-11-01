@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import { usePermissions } from "@/app/context/permissions";
 import { usePageEditMode } from "@/app/context/pageEditMode";
 import { useAuth } from "@/app/context/auth";
-import { logEdit } from "@/app/lib/editHistory";
 
 
 export default function EditablePageHeader({
@@ -62,29 +62,20 @@ export default function EditablePageHeader({
 
     async function saveEdit() {
         setSaving(true);
-        const before  = record?.content ?? null;
         const content = JSON.stringify(draft);
         const headerSlug = `header.${pageKey}`;
         try {
-            if (record) {
-                const res = await client.models.PageContent.update({ id: record.id, content });
-                setRecord(res.data);
-            } else {
-                const res = await client.models.PageContent.create({ slug: headerSlug, content });
-                setRecord(res.data);
-            }
+            const saved = await upsertPageContent({
+                slug: headerSlug,
+                content,
+                pageKeys: [pageKey],
+                historyLabel: `${draft.title || pageKey} — Page Header`,
+            });
+            setRecord(saved ?? record);
             setLabel(draft.label);
             setTitle(draft.title);
             setDesc(draft.desc);
             setEditRequested(false);
-            logEdit(client, {
-                slug:   headerSlug,
-                label:  `${draft.title || pageKey} — Page Header`,
-                email:  user?.email,
-                action: record ? "update" : "create",
-                before,
-                after:  content,
-            });
         } finally {
             setSaving(false);
         }

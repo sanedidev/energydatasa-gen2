@@ -2,6 +2,7 @@
 
 import { use as usePromise, useEffect, useState } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { updateContentRecord } from "@/app/lib/manageContent";
 import Image from "next/image";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import EditableSections from "@/app/components/EditableSections";
@@ -76,11 +77,12 @@ export default function Page({ params }) {
         if (!profile?.id) return;
         setSavingHeader(true);
         try {
-            await client.models.AudienceProfile.update({
+            await updateContentRecord({
+                model: "AudienceProfile",
                 id: profile.id,
-                title: headerDraft.title,
-                subtitle: headerDraft.subtitle || "",
-                logo: headerDraft.logo || "",
+                data: { title: headerDraft.title, subtitle: headerDraft.subtitle || "", logo: headerDraft.logo || "" },
+                pageKeys: ["whoisitfor.__index__", "audience.*", `audience.${slug}`],
+                historyLabel: `Audience — ${headerDraft.title} header`,
             });
             setProfile((p) => ({ ...p, title: headerDraft.title, subtitle: headerDraft.subtitle, logo: headerDraft.logo }));
             setEditingHeader(false);

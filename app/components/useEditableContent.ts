@@ -2,7 +2,7 @@
 
 import { useEffect, useImperativeHandle, useRef, useState, type Dispatch, type MutableRefObject, type RefObject, type SetStateAction } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
-import { logEdit } from "@/app/lib/editHistory";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import {
     type Block,
     blockHasContent,
@@ -26,6 +26,10 @@ type DropTarget =
 
 export interface UseEditableContentParams {
     slug: string;
+    // The editablePages key the server re-verifies this save against -
+    // defaults to slug at the call site (EditableContent.js) when the
+    // caller doesn't resolve a shorter shared pageKey itself.
+    pageKey: string;
     defaultContent?: string | null;
     preloadedRecord?: PageContentRecord | undefined;
     onFirstBlockIsTitle?: ((isTitle: boolean) => void) | null;
@@ -83,6 +87,7 @@ export interface UseEditableContentReturn {
 
 export function useEditableContent({
     slug,
+    pageKey,
     defaultContent = null,
     preloadedRecord = undefined,
     onFirstBlockIsTitle = null,
@@ -212,40 +217,19 @@ export function useEditableContent({
     // ── Save / cancel ─────────────────────────────────────────────────────────
     async function handleSave() {
         setSaving(true); setError("");
-        const before   = record?.content ?? null;
-        const content  = serializeBlocks(blocks);
-        const isUpdate = !!record?.id;
+        const content = serializeBlocks(blocks);
         try {
-            let saved: PageContentRecord;
-            // Amplify's generated client types incorrectly widen plain string
-            // fields to string[] project-wide whenever *any* model has an
-            // .array() field (verified: reproduces on unrelated models too,
-            // e.g. EskomCoalPowerStation, and the generated parameter type
-            // itself has a broken `{ [x: string]: string[] }` index signature)
-            // - a Gen2 typegen bug, not a real mismatch. `as any` on the call
-            // is the only thing that actually bypasses it; runtime behavior
-            // (and the real Schema-derived return type below) is unaffected.
-            const pageContentClient = client.models.PageContent as any;
-            if (isUpdate) {
-                const res = await pageContentClient.update({ id: record!.id, content });
-                saved = res.data ?? record;
-            } else {
-                const res = await pageContentClient.create({ slug, content });
-                saved = res.data ?? null;
-            }
-            setRecord(saved);
+            const saved = await upsertPageContent({
+                slug,
+                content,
+                pageKeys: [pageKey],
+                historyLabel: sectionLabel || slug,
+            });
+            setRecord((saved as PageContentRecord) ?? record);
             setEditRequested(false);
             setDraftRestored(false);
             try { localStorage.removeItem(draftKey); } catch { /* ignore */ }
-            onSave?.(slug, saved);
-            logEdit(client, {
-                slug,
-                label:  sectionLabel || slug,
-                email:  userEmail,
-                action: isUpdate ? "update" : "create",
-                before,
-                after:  content,
-            });
+            onSave?.(slug, (saved as PageContentRecord) ?? record);
         } catch (e) {
             console.error(e);
             setError("Failed to save. Please try again.");

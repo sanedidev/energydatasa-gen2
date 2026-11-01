@@ -41,6 +41,13 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
   if (!callerGroups.includes('Admins')) {
     throw new Error('Forbidden');
   }
+  // Fail closed: the self-delete/self-reset-password guards below depend on
+  // callerEmail being populated. Without this, a caller whose identity came
+  // back without a resolvable email would silently bypass those guards
+  // instead of being rejected - this bit us once already (see note above).
+  if (!callerEmail) {
+    throw new Error('Forbidden');
+  }
 
   const { action, email, newPassword } = event.arguments;
 
@@ -82,7 +89,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
 
     case 'delete': {
       if (!email) throw new Error('email is required');
-      if (callerEmail && email === callerEmail) {
+      if (email === callerEmail) {
         throw new Error("You can't delete your own account here.");
       }
       await client.send(new AdminDeleteUserCommand({ UserPoolId: USER_POOL_ID, Username: email }));
@@ -91,7 +98,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
 
     case 'setPassword': {
       if (!email || !newPassword) throw new Error('email and newPassword are required');
-      if (callerEmail && email === callerEmail) {
+      if (email === callerEmail) {
         throw new Error("You can't reset your own password here.");
       }
       if (newPassword.length < 8) throw new Error('Password must be at least 8 characters.');

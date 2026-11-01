@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth";
 
@@ -324,10 +323,6 @@ export default function Login() {
                             >
                                 {submitting ? "Signing in…" : "Sign in"}
                             </button>
-                            <p className="text-center text-sm text-slate-500">
-                                No account?{" "}
-                                <Link href="/signup" className="font-medium text-green-700 hover:text-green-800">Sign up</Link>
-                            </p>
                         </div>
                     </form>
                 )}

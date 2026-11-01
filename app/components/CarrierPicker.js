@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import { BASE as EC_BASE, STATIC_NAV as EC_NAV } from "@/app/dashboard/energy-carriers/_nav-data";
 import { BASE as EE_BASE, STATIC_NAV as EE_NAV } from "@/app/dashboard/energy-efficiency/_nav-data";
 import { BASE as EP_BASE, STATIC_NAV as EP_NAV } from "@/app/dashboard/energy-planning/_nav-data";
@@ -176,7 +177,7 @@ function sourceCardsSlug(href, sectionConfig) {
     return `dyn.cards.${sectionPathKey}.${rel.replace(/\//g, ".")}`;
 }
 
-async function removeFromSource(item, sectionConfig) {
+async function removeFromSource(item, sectionConfig, pageKeys) {
     const slug = sourceCardsSlug(item.href, sectionConfig);
     try {
         const res = await client.models.PageContent.pageContentBySlug({ slug }, { authMode: "apiKey" });
@@ -188,7 +189,7 @@ async function removeFromSource(item, sectionConfig) {
             const h = c.href ?? `${parentHref}/${c.id}`;
             return h !== item.href;
         });
-        await client.models.PageContent.update({ id: record.id, content: JSON.stringify(updated) });
+        await upsertPageContent({ slug, content: JSON.stringify(updated), pageKeys, historyLabel: `${slug} — Cards` });
     } catch (e) {
         console.error("CarrierPicker: failed to remove from source", e);
     }
@@ -214,7 +215,7 @@ function FileIcon() {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSelect, onCancel, excludeHrefs = [] }) {
+export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSelect, onCancel, excludeHrefs = [], pageKeys = [] }) {
     const sectionConfig = { ...DEFAULT_SECTION_CONFIG, ...sectionConfigProp };
     const excludeSet = new Set(excludeHrefs);
 
@@ -254,7 +255,7 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
 
     async function handleMove() {
         setActioning(true);
-        await removeFromSource(selected, sectionConfig);
+        await removeFromSource(selected, sectionConfig, pageKeys);
         setActioning(false);
         onSelect({ title: selected.label, href: selected.href, desc: selected.desc ?? "" });
     }

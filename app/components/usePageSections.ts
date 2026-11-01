@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState, type Dispatch, type MutableRefObject, type RefObject, type SetStateAction } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent, deletePageContentById } from "@/app/lib/manageContent";
 import { usePermissions } from "../context/permissions";
 import { usePageEditMode } from "../context/pageEditMode";
 import { useAuth } from "../context/auth";
-import { logEdit } from "../lib/editHistory";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -221,24 +221,15 @@ export function usePageSections({ pageKey, defaultSections, editMode = null, ini
     // ── Persist config ────────────────────────────────────────────────────────
     async function persist(updated: Section[], toc = tocVisible) {
         setSaving(true);
-        const before  = sectionsRecord?.content ?? null;
         const content = JSON.stringify({ sections: updated, tocVisible: toc });
         try {
-            if (sectionsRecord?.id) {
-                const res = await pageContentClient.update({ id: sectionsRecord.id, content });
-                setSectionsRecord(res?.data ?? sectionsRecord);
-            } else {
-                const res = await pageContentClient.create({ slug: configSlug, content });
-                setSectionsRecord(res?.data ?? null);
-            }
-            logEdit(client, {
-                slug:   configSlug,
-                label:  `${pageKey} — Sections`,
-                email:  (user as any)?.email,
-                action: sectionsRecord?.id ? "update" : "create",
-                before,
-                after:  content,
+            const record = await upsertPageContent({
+                slug: configSlug,
+                content,
+                pageKeys: [pageKey],
+                historyLabel: `${pageKey} — Sections`,
             });
+            setSectionsRecord((record as PageContentRecord) ?? sectionsRecord);
         } catch (e) {
             console.error("Failed to save sections", e);
         } finally {
@@ -314,13 +305,9 @@ export function usePageSections({ pageKey, defaultSections, editMode = null, ini
                 ...parseBlocksForMerge(lowerItem?.content),
             ];
             const content = JSON.stringify(merged);
-            if (upperItem?.id) {
-                await pageContentClient.update({ id: upperItem.id, content });
-            } else {
-                await pageContentClient.create({ slug: upperSlug, content });
-            }
+            await upsertPageContent({ slug: upperSlug, content, pageKeys: [pageKey], historyLabel: `${pageKey} — Merge sections` });
             if (lowerItem?.id) {
-                await pageContentClient.delete({ id: lowerItem.id });
+                await deletePageContentById({ id: lowerItem.id, pageKeys: [pageKey], historyLabel: `${pageKey} — Merge sections` });
             }
             const updatedSections = sections.filter((_, i) => i !== idx);
             setSections(updatedSections);

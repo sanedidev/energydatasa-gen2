@@ -22,6 +22,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import { buildDynamicItems, DEFAULT_SECTION_CONFIG } from "./CarrierPicker";
 import ConfirmDialog from "./ui/ConfirmDialog";
 
@@ -33,7 +34,7 @@ function FolderIcon() {
     );
 }
 
-export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTION_CONFIG, onCancel, onMoved }) {
+export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTION_CONFIG, onCancel, onMoved, pageKeys = [] }) {
     const [query, setQuery] = useState("");
     const [dynTargets, setDynTargets] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -92,11 +93,7 @@ export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTIO
             }
             const updated = [...destCards, { id: card.id, title: card.title, desc: card.desc, href: card.href, hidden: false }];
             const content = JSON.stringify(updated);
-            if (record) {
-                await client.models.PageContent.update({ id: record.id, content });
-            } else {
-                await client.models.PageContent.create({ slug: target.cardsSlug, content });
-            }
+            await upsertPageContent({ slug: target.cardsSlug, content, pageKeys, historyLabel: `${target.cardsSlug} — Cards` });
             onMoved();
         } catch (e) {
             console.error(e);

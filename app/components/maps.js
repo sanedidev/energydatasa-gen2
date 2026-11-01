@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import Breadcrumbs from "./breadcrumbs";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import { usePermissions } from "@/app/context/permissions";
 import ConfirmDialog from "./ui/ConfirmDialog";
 
@@ -288,13 +289,8 @@ export default function Maps() {
         setSaving(true);
         const content = JSON.stringify(updated);
         try {
-            if (record) {
-                const { data } = await client.models.PageContent.update({ id: record.id, content });
-                setRecord(data);
-            } else {
-                const { data } = await client.models.PageContent.create({ slug: MAP_SLUG, content });
-                setRecord(data);
-            }
+            const saved = await upsertPageContent({ slug: MAP_SLUG, content, pageKeys: [MAP_SLUG], historyLabel: "Power stations map" });
+            setRecord(saved ?? record);
             setStations(updated);
         } finally {
             setSaving(false);

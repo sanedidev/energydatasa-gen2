@@ -5,12 +5,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent, createContentRecord, deleteContentRecord } from "@/app/lib/manageContent";
 import MediaLibrary from "@/app/components/MediaLibrary";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
 
 const HIDDEN_SLUG = "energyinsights.hidden";
+const ENERGY_INSIGHTS_PAGE_KEYS = ["energyinsights.__index__", "insight.*"];
 
 function slugify(str) {
     return str.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
@@ -99,13 +101,8 @@ export default function EnergyInsightsIndex() {
         next.has(id) ? next.delete(id) : next.add(id);
         const content = JSON.stringify([...next]);
         try {
-            if (hiddenRecord) {
-                const { data } = await client.models.PageContent.update({ id: hiddenRecord.id, content });
-                setHiddenRecord(data);
-            } else {
-                const { data } = await client.models.PageContent.create({ slug: HIDDEN_SLUG, content });
-                setHiddenRecord(data);
-            }
+            const saved = await upsertPageContent({ slug: HIDDEN_SLUG, content, pageKeys: ENERGY_INSIGHTS_PAGE_KEYS, historyLabel: "Energy Insights — Hidden" });
+            setHiddenRecord(saved ?? hiddenRecord);
             setHiddenIds(next);
         } catch (err) {
             console.error("Failed to update hidden state", err);
@@ -124,14 +121,18 @@ export default function EnergyInsightsIndex() {
         if (!title || !slug) return;
         setCreating(true); setCreateErr("");
         try {
-            const { data, errors } = await client.models.InsightArticle.create({
-                title, slug,
-                excerpt: newExcerpt.trim() || "",
-                body: "",
-                imageKey: newImageKey || "",
-                publishedAt: new Date().toISOString().split("T")[0],
+            const data = await createContentRecord({
+                model: "InsightArticle",
+                data: {
+                    title, slug,
+                    excerpt: newExcerpt.trim() || "",
+                    body: "",
+                    imageKey: newImageKey || "",
+                    publishedAt: new Date().toISOString().split("T")[0],
+                },
+                pageKeys: ENERGY_INSIGHTS_PAGE_KEYS,
+                historyLabel: `Insight — ${title}`,
             });
-            if (errors?.length) throw errors[0];
             if (data) {
                 router.push(`/energyInsights/${data.slug}`);
             } else {
@@ -150,7 +151,7 @@ export default function EnergyInsightsIndex() {
         const { id } = confirmTarget;
         setDeletingId(id);
         try {
-            await client.models.InsightArticle.delete({ id });
+            await deleteContentRecord({ model: "InsightArticle", id, pageKeys: ENERGY_INSIGHTS_PAGE_KEYS, historyLabel: "Insight — delete" });
             setArticles((prev) => prev.filter((a) => a.id !== id));
             setConfirmTarget(null);
         } catch (err) {

@@ -2,6 +2,7 @@
 
 import { use as usePromise, useEffect, useState } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
+import { updateContentRecord } from "@/app/lib/manageContent";
 import Image from "next/image";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import EditableSections from "@/app/components/EditableSections";
@@ -78,11 +79,12 @@ export default function Page({ params }) {
         if (!article?.id) return;
         setSavingHeader(true);
         try {
-            await client.models.InsightArticle.update({
+            await updateContentRecord({
+                model: "InsightArticle",
                 id: article.id,
-                title: headerDraft.title,
-                excerpt: headerDraft.excerpt || "",
-                imageKey: headerDraft.imageKey || "",
+                data: { title: headerDraft.title, excerpt: headerDraft.excerpt || "", imageKey: headerDraft.imageKey || "" },
+                pageKeys: ["energyinsights.__index__", "insight.*", `insight.${slug}`],
+                historyLabel: `Insight — ${headerDraft.title} header`,
             });
             setArticle((p) => ({ ...p, title: headerDraft.title, excerpt: headerDraft.excerpt, imageKey: headerDraft.imageKey }));
             setEditingHeader(false);

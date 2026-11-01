@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { apiClient as client } from "@/app/lib/apiClient";
+import { upsertPageContent } from "@/app/lib/manageContent";
 import { usePermissions } from "@/app/context/permissions";
 import { useNEBData } from "@/app/context/NEBData";
 import Link from "next/link";
@@ -63,11 +63,9 @@ export default function EnergyBalancePage() {
             sankeyTitle: next,
         });
         try {
-            if (uploadMeta?.recordId) {
-                await client.models.PageContent.update({ id: uploadMeta.recordId, content });
-            } else {
-                const res = await client.models.PageContent.create({ slug: NEB_SLUG, content });
-                setUploadMeta((prev) => ({ ...prev, recordId: res?.data?.id }));
+            const record = await upsertPageContent({ slug: NEB_SLUG, content, pageKeys: ["neb.balance"], historyLabel: "NEB — Sankey title" });
+            if (!uploadMeta?.recordId && record?.id) {
+                setUploadMeta((prev) => ({ ...prev, recordId: record.id }));
             }
             setSankeyTitle(next);
         } catch { /* silent */ }

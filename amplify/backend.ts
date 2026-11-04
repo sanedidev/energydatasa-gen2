@@ -32,6 +32,19 @@ backend.auth.resources.cfnResources.cfnUserPool.addPropertyOverride(
   true
 );
 
+// Send verification/invite emails through our own verified, DKIM-signed SES
+// domain identity instead of Cognito's shared default sender - the shared
+// sender is why OTP emails were landing in spam. energydata.org.za is
+// verified in SES (DKIM: SUCCESS) and the account has production access, so
+// this is safe to flip on now. Same addPropertyOverride pattern as above,
+// for the same reason (Amplify's auth construct sets EmailConfiguration
+// internally too - a plain assignment would risk the same silent clobber).
+backend.auth.resources.cfnResources.cfnUserPool.addPropertyOverride('EmailConfiguration', {
+  EmailSendingAccount: 'DEVELOPER',
+  From: 'Energy Data SA <no-reply@energydata.org.za>',
+  SourceArn: 'arn:aws:ses:us-west-2:048767651457:identity/energydata.org.za',
+});
+
 // Least-privilege: only the specific Cognito admin actions this function
 // actually uses, scoped to this one user pool's ARN - never a wildcard
 // resource or broader account access. No static credentials involved at

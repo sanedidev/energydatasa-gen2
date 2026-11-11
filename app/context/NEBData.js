@@ -229,45 +229,6 @@ export function NEBDataProvider({ children }) {
         return entry;
     }, [availableYears]);
 
-    // One-time, Admin-triggered migration: writes the legacy single-blob
-    // 2024 JSON into the new per-section/meta slugs. Safe to click more than
-    // once - it just re-writes the same source values, never touches other
-    // years, and never runs on its own (no auto-invocation anywhere).
-    const migrate2024FromStatic = useCallback(async ({ userEmail }) => {
-        const key = DEFAULT_YEAR;
-
-        await Promise.all(
-            seed2024.sections.map((s) =>
-                upsertPageContent({
-                    slug:         sectionSlug(key, s.id),
-                    content:      JSON.stringify({ rows: s.rows }),
-                    pageKeys:     [sectionPageKey(s.id)],
-                    historyLabel: `NEB ${key} — migrate (${s.id})`,
-                })
-            )
-        );
-
-        const migratedMeta = {
-            ...defaultMeta(key),
-            sankeyTitle: "Energy Flow — 2024",
-            uploadedAt:  new Date().toISOString(),
-            uploadedBy:  userEmail ?? null,
-        };
-        await upsertPageContent({
-            slug:         metaSlug(key),
-            content:      JSON.stringify(migratedMeta),
-            pageKeys:     [META_PAGE_KEY],
-            historyLabel: `NEB ${key} — migrate (meta)`,
-        });
-
-        delete cacheRef.current[key];
-        if (activeYear === key) {
-            const fresh = await loadYear(key);
-            setSections(fresh.sections);
-            setMeta(fresh.meta);
-        }
-    }, [activeYear, loadYear]);
-
     return (
         <NEBDataContext.Provider value={{
             sections, meta, loading,
@@ -276,7 +237,6 @@ export function NEBDataProvider({ children }) {
             activeYear, setActiveYear,
             availableYears, loadingYears,
             saveSectionData, saveMeta, createYear, loadYear,
-            migrate2024FromStatic,
         }}>
             {children}
         </NEBDataContext.Provider>

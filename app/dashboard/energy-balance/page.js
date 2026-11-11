@@ -10,6 +10,7 @@ import Link from "next/link";
 const NEB_SLUG = "neb.data.current";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
+const FinalConsumptionBars = dynamic(() => import("@/app/components/FinalConsumptionBars"), { ssr: false });
 
 const GROUP_LABELS = { coal: "Coal & Coke", biomass: "Biomass", liquid: "Liquid Fuels", other: "Gas & Electricity" };
 const COMMODITY_GROUP_ORDER = ["coal", "biomass", "liquid", "other"];
@@ -219,7 +220,8 @@ export default function EnergyBalancePage() {
 
             {/* ── Sankey Diagram ────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
+                <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
+                    <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500" />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             {canEditTitle && editingTitle ? (
@@ -267,6 +269,23 @@ export default function EnergyBalancePage() {
                             <EnergySankey sections={sections} />
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* ── Final Consumption by Sector (fuel-mix bar chart) ─────────────── */}
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
+                <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
+                    <div className="h-1 w-full bg-gradient-to-r from-orange-400 via-teal-500 to-blue-500" />
+                    <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
+                        <div>
+                            <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>
+                            <p className="text-xs text-slate-500 mt-0.5">
+                                Energy delivered to each end-use sector, by fuel · {meta.year}. Hover a segment for its PJ value.
+                            </p>
+                        </div>
+                        <span className="text-xs text-slate-400 pt-0.5">Source: SANEDI / UCT ESRG · {meta.year} · Values in PJ</span>
+                    </div>
+                    <FinalConsumptionBars sections={sections} />
                 </div>
             </div>
 

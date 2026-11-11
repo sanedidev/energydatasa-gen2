@@ -120,6 +120,25 @@ export default function EnergyBalancePage() {
 
     return (
         <main>
+            {/* Slow-drifting two-tone accent line used atop the chart cards below -
+                each card passes its own pair of colors (drawn from that chart's
+                own palette, not arbitrary ones) via CSS custom properties. */}
+            <style>{`
+                @keyframes cardAccentDrift {
+                    0%, 100% { background-position: 0% 50%; }
+                    50%      { background-position: 100% 50%; }
+                }
+                .card-accent {
+                    height: 2px;
+                    background-image: linear-gradient(90deg, transparent, var(--accent-a), var(--accent-b), transparent);
+                    background-size: 200% 100%;
+                    animation: cardAccentDrift 7s ease-in-out infinite;
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .card-accent { animation: none; background-position: 50% 50%; }
+                }
+            `}</style>
+
             {/* ── Hero ──────────────────────────────────────────────────────── */}
             <section
                 className="relative overflow-hidden text-white"
@@ -221,7 +240,7 @@ export default function EnergyBalancePage() {
             {/* ── Sankey Diagram ────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
                 <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
-                    <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-violet-500 to-emerald-500" />
+                    <div className="card-accent" style={{ "--accent-a": "#2563eb", "--accent-b": "#8b5cf6" }} />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             {canEditTitle && editingTitle ? (
@@ -275,7 +294,7 @@ export default function EnergyBalancePage() {
             {/* ── Final Consumption by Sector (fuel-mix bar chart) ─────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
                 <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
-                    <div className="h-1 w-full bg-gradient-to-r from-orange-400 via-teal-500 to-blue-500" />
+                    <div className="card-accent" style={{ "--accent-a": "#ea580c", "--accent-b": "#2563eb" }} />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>

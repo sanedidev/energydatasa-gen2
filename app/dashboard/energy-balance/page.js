@@ -2,12 +2,10 @@
 
 import { useState, useMemo } from "react";
 import dynamic from "next/dynamic";
-import { upsertPageContent } from "@/app/lib/manageContent";
 import { usePermissions } from "@/app/context/permissions";
+import { useAuth } from "@/app/context/auth";
 import { useNEBData } from "@/app/context/NEBData";
 import Link from "next/link";
-
-const NEB_SLUG = "neb.data.current";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
 const FinalConsumptionBars = dynamic(() => import("@/app/components/FinalConsumptionBars"), { ssr: false });
@@ -35,13 +33,36 @@ function valueClass(val) {
 // ── Main page ─────────────────────────────────────────────────────────────────
 
 export default function EnergyBalancePage() {
-    const { canEdit } = usePermissions();
+    const { canEdit, isAdmin } = usePermissions();
     const canEditTitle = canEdit("neb.balance");
+    const { user } = useAuth();
 
     const {
-        sections, uploadMeta, setUploadMeta, sankeyTitle, setSankeyTitle,
-        commodities, meta, loading: dataLoading,
+        sections, sankeyTitle, activeYear,
+        commodities, meta, loading: dataLoading, saveMeta,
+        migrate2024FromStatic,
     } = useNEBData();
+
+    // ── One-time 2024 migration (Admin-only, temporary) ─────────────────────
+    const [migrating, setMigrating] = useState(false);
+    const [migrateResult, setMigrateResult] = useState(null); // "ok" | "error" | null
+
+    async function runMigration() {
+        if (!window.confirm(
+            "This writes the static 2024 energy-balance data into the new per-section storage. " +
+            "Safe to run more than once (it only overwrites 2024's own records). Continue?"
+        )) return;
+        setMigrating(true);
+        setMigrateResult(null);
+        try {
+            await migrate2024FromStatic({ userEmail: user?.email });
+            setMigrateResult("ok");
+        } catch {
+            setMigrateResult("error");
+        } finally {
+            setMigrating(false);
+        }
+    }
 
     // Table UI state
     const [activeGroup, setActiveGroup] = useState("all");
@@ -57,18 +78,13 @@ export default function EnergyBalancePage() {
         setEditingTitle(false);
         if (!next || next === sankeyTitle) return;
         setSavingTitle(true);
-        const content = JSON.stringify({
-            sections,
-            uploadedAt:  uploadMeta?.uploadedAt ?? null,
-            uploadedBy:  uploadMeta?.uploadedBy ?? null,
-            sankeyTitle: next,
-        });
         try {
-            const record = await upsertPageContent({ slug: NEB_SLUG, content, pageKeys: ["neb.balance"], historyLabel: "NEB — Sankey title" });
-            if (!uploadMeta?.recordId && record?.id) {
-                setUploadMeta((prev) => ({ ...prev, recordId: record.id }));
-            }
-            setSankeyTitle(next);
+            await saveMeta({
+                year: activeYear,
+                patch: { sankeyTitle: next },
+                userEmail: user?.email,
+                historyLabel: "NEB — Sankey title",
+            });
         } catch { /* silent */ }
         finally { setSavingTitle(false); }
     }
@@ -177,6 +193,27 @@ export default function EnergyBalancePage() {
                     </div>
                 </div>
             </section>
+
+            {/* ── TEMPORARY: one-time 2024 data migration (Admin-only) ─────────
+                Remove once the per-section storage has been confirmed live. */}
+            {isAdmin && (
+                <div className="border-b border-amber-200 bg-amber-50">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 py-3 flex items-center justify-between gap-4 flex-wrap">
+                        <p className="text-xs text-amber-800">
+                            <span className="font-semibold">Admin:</span> one-time migration of the static 2024 dataset into the new per-section storage.
+                            {migrateResult === "ok" && <span className="ml-2 font-medium text-emerald-700">Done — 2024 data migrated.</span>}
+                            {migrateResult === "error" && <span className="ml-2 font-medium text-red-600">Failed — check console / permissions.</span>}
+                        </p>
+                        <button
+                            onClick={runMigration}
+                            disabled={migrating}
+                            className="shrink-0 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 disabled:opacity-50 transition-colors"
+                        >
+                            {migrating ? "Migrating…" : "Migrate 2024 data"}
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* ── Sector strip ──────────────────────────────────────────────── */}
             <div className="border-b border-slate-200 bg-white">

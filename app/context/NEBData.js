@@ -1,58 +1,282 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
-import nebData from "@/app/data/energy-balance-2024.json";
+import { upsertPageContent } from "@/app/lib/manageContent";
+import structure from "@/app/data/neb-structure.json";
+import seed2024 from "@/app/data/energy-balance-2024.json";
 
-const NEB_SLUG = "neb.data.current";
+// Taxonomy (section/row/commodity ids and labels) is hardcoded and
+// year-invariant by design - only the values differ per year. These are
+// module-level, not year-aware, and other modules already import
+// COMMODITY_ID_MAP etc. directly from here rather than through the hook.
+export const COMMODITY_IDS       = structure.commodities.map((c) => c.id);
+export const COMMODITY_LABEL_MAP = Object.fromEntries(structure.commodities.map((c) => [c.label, c.id]));
+export const COMMODITY_ID_MAP    = Object.fromEntries(structure.commodities.map((c) => [c.id,    c.label]));
+export const SECTION_IDS         = structure.sections.map((s) => s.id);
 
-// Exported so other modules don't need to re-import the raw JSON
-export const COMMODITY_IDS       = nebData.commodities.map((c) => c.id);
-export const COMMODITY_LABEL_MAP = Object.fromEntries(nebData.commodities.map((c) => [c.label, c.id]));
-export const COMMODITY_ID_MAP    = Object.fromEntries(nebData.commodities.map((c) => [c.id,    c.label]));
+export const DEFAULT_YEAR = "2024";
+
+function sectionSlug(year, sectionId) { return `neb.data.${year}.${sectionId}`; }
+function metaSlug(year)               { return `neb.meta.${year}`; }
+export function sectionPageKey(sectionId) { return `neb.${sectionId}`; }
+
+const YEARS_INDEX_SLUG   = "neb.years.index";
+const YEARS_CREATE_KEY   = "neb.years.create";
+const META_PAGE_KEY      = "neb.balance";
+
+function blankSectionRows(template) {
+    return template.rows.map((r) => ({ ...r, values: { ...r.values } }));
+}
+
+function defaultMeta(year) {
+    return {
+        title:       `South Africa Energy Balance ${year}`,
+        sankeyTitle: `Energy Flow — ${year}`,
+        year:        String(year),
+        unit:        seed2024.meta.unit,
+        source:      seed2024.meta.source,
+        date:        seed2024.meta.date,
+        convention:  seed2024.meta.convention,
+        uploadedAt:  null,
+        uploadedBy:  null,
+    };
+}
 
 const NEBDataContext = createContext(null);
 
 export function NEBDataProvider({ children }) {
-    const [sections,    setSections]    = useState(nebData.sections);
-    const [uploadMeta,  setUploadMeta]  = useState(null);
-    const [sankeyTitle, setSankeyTitle] = useState("Energy Flow — 2024");
-    const [loading,     setLoading]     = useState(true);
+    const [activeYear, setActiveYearState] = useState(DEFAULT_YEAR);
+    const [availableYears, setAvailableYears] = useState([{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }]);
+    const [loadingYears, setLoadingYears] = useState(true);
+
+    const [sections, setSections] = useState(() => structure.sections.map((s) => ({ ...s, rows: blankSectionRows(s) })));
+    const [meta, setMeta] = useState(() => defaultMeta(DEFAULT_YEAR));
+    const [loading, setLoading] = useState(true);
+
+    // year -> { sections, meta } - avoids re-fetching a year already seen
+    // this session (switching back and forth via the year picker is then
+    // instant), invalidated only by this provider's own save calls below.
+    const cacheRef = useRef({});
 
     useEffect(() => {
         let alive = true;
-        async function load() {
+        (async () => {
             try {
-                const res  = await client.models.PageContent.pageContentBySlug({ slug: NEB_SLUG }, { authMode: "apiKey" });
+                const res  = await client.models.PageContent.pageContentBySlug({ slug: YEARS_INDEX_SLUG }, { authMode: "apiKey" });
                 const item = res?.data?.[0];
                 if (item?.content && alive) {
                     const parsed = JSON.parse(item.content);
-                    if (parsed.sections?.length) setSections(parsed.sections);
-                    if (parsed.sankeyTitle)      setSankeyTitle(parsed.sankeyTitle);
-                    if (parsed.uploadedAt)       setUploadMeta({
-                        uploadedAt: parsed.uploadedAt,
-                        uploadedBy: parsed.uploadedBy,
-                        recordId:   item.id,
-                    });
+                    if (Array.isArray(parsed)) {
+                        setAvailableYears(
+                            [{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }, ...parsed.filter((y) => y.year !== DEFAULT_YEAR)]
+                                .sort((a, b) => Number(b.year) - Number(a.year))
+                        );
+                    }
                 }
-            } catch { /* fall through to static JSON */ }
-            finally   { if (alive) setLoading(false); }
-        }
-        load();
+            } catch { /* fall through to default-only */ }
+            finally { if (alive) setLoadingYears(false); }
+        })();
         return () => { alive = false; };
     }, []);
 
+    // Reads one year's full data straight from storage (8 parallel exact-slug
+    // section reads + 1 meta read - never a Scan, the slugs are deterministic).
+    // A section with no saved record yet (new/blank year) falls back to the
+    // structure template for that section, not an error.
+    const loadYear = useCallback(async (year) => {
+        const key = String(year);
+        if (cacheRef.current[key]) return cacheRef.current[key];
+
+        const [sectionResults, metaResult] = await Promise.all([
+            Promise.all(structure.sections.map((template) =>
+                client.models.PageContent.pageContentBySlug({ slug: sectionSlug(key, template.id) }, { authMode: "apiKey" })
+                    .then((r) => r?.data?.[0])
+                    .catch(() => null)
+            )),
+            client.models.PageContent.pageContentBySlug({ slug: metaSlug(key) }, { authMode: "apiKey" })
+                .then((r) => r?.data?.[0])
+                .catch(() => null),
+        ]);
+
+        const loadedSections = structure.sections.map((template, i) => {
+            const item = sectionResults[i];
+            if (item?.content) {
+                try {
+                    const parsed = JSON.parse(item.content);
+                    if (Array.isArray(parsed.rows)) {
+                        return { id: template.id, label: template.label, description: template.description, rows: parsed.rows };
+                    }
+                } catch { /* fall through to blank template below */ }
+            }
+            return { id: template.id, label: template.label, description: template.description, rows: blankSectionRows(template) };
+        });
+
+        let loadedMeta = defaultMeta(key);
+        if (metaResult?.content) {
+            try { loadedMeta = { ...loadedMeta, ...JSON.parse(metaResult.content) }; } catch { /* keep default */ }
+        }
+
+        const result = { sections: loadedSections, meta: loadedMeta };
+        cacheRef.current[key] = result;
+        return result;
+    }, []);
+
+    useEffect(() => {
+        let alive = true;
+        (async () => {
+            setLoading(true);
+            const data = await loadYear(activeYear);
+            if (alive) {
+                setSections(data.sections);
+                setMeta(data.meta);
+                setLoading(false);
+            }
+        })();
+        return () => { alive = false; };
+    }, [activeYear, loadYear]);
+
+    const setActiveYear = useCallback((year) => setActiveYearState(String(year)), []);
+
+    // One section, one save - never the whole year's data just to change one
+    // table (that's what made the old single-blob title edit re-serialize a
+    // 26KB payload for a one-line change).
+    const saveSectionData = useCallback(async ({ year, sectionId, rows, userEmail, historyLabel }) => {
+        const key = String(year);
+        await upsertPageContent({
+            slug:         sectionSlug(key, sectionId),
+            content:      JSON.stringify({ rows }),
+            pageKeys:     [sectionPageKey(sectionId)],
+            historyLabel: historyLabel ?? `NEB ${key} — ${sectionId}`,
+        });
+
+        if (cacheRef.current[key]) {
+            cacheRef.current[key] = {
+                ...cacheRef.current[key],
+                sections: cacheRef.current[key].sections.map((s) => (s.id === sectionId ? { ...s, rows } : s)),
+            };
+        }
+        if (key === activeYear) {
+            setSections((prev) => prev.map((s) => (s.id === sectionId ? { ...s, rows } : s)));
+        }
+    }, [activeYear]);
+
+    // Meta (title, sankey title, upload attribution) - small, independent of
+    // section data, gated by the existing neb.balance key.
+    const saveMeta = useCallback(async ({ year, patch, userEmail, historyLabel }) => {
+        const key     = String(year);
+        const current = cacheRef.current[key]?.meta ?? (key === activeYear ? meta : defaultMeta(key));
+        const next    = { ...current, ...patch, uploadedAt: new Date().toISOString(), uploadedBy: userEmail ?? current.uploadedBy ?? null };
+
+        await upsertPageContent({
+            slug:         metaSlug(key),
+            content:      JSON.stringify(next),
+            pageKeys:     [META_PAGE_KEY],
+            historyLabel: historyLabel ?? `NEB ${key} — meta`,
+        });
+
+        if (cacheRef.current[key]) cacheRef.current[key] = { ...cacheRef.current[key], meta: next };
+        if (key === activeYear) setMeta(next);
+        return next;
+    }, [activeYear, meta]);
+
+    // Creates a brand-new, entirely blank year from the structure template -
+    // never copies another year's values. Every seed write (8 sections + 1
+    // meta + the years-index update) carries YEARS_CREATE_KEY alongside its
+    // own section key, so a user who holds only "create a year" - and none
+    // of the 8 section edit keys - can still successfully create one; the
+    // Lambda's permission check is an OR across pageKeys, so omitting this
+    // on any single write would silently break the feature for exactly the
+    // users it's meant to empower.
+    const createYear = useCallback(async ({ year, label, userEmail }) => {
+        const key = String(year);
+        if (availableYears.some((y) => y.year === key)) {
+            throw new Error(`Year ${key} already exists.`);
+        }
+
+        await Promise.all(
+            structure.sections.map((template) =>
+                upsertPageContent({
+                    slug:         sectionSlug(key, template.id),
+                    content:      JSON.stringify({ rows: blankSectionRows(template) }),
+                    pageKeys:     [YEARS_CREATE_KEY, sectionPageKey(template.id)],
+                    historyLabel: `NEB ${key} — create (${template.id})`,
+                })
+            )
+        );
+
+        const seededMeta = defaultMeta(key);
+        await upsertPageContent({
+            slug:         metaSlug(key),
+            content:      JSON.stringify(seededMeta),
+            pageKeys:     [YEARS_CREATE_KEY, META_PAGE_KEY],
+            historyLabel: `NEB ${key} — create (meta)`,
+        });
+
+        const entry = { year: key, label: label || `${key} NEB`, uploadedAt: null, uploadedBy: userEmail ?? null };
+        const next  = [{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }, ...availableYears.filter((y) => y.year !== DEFAULT_YEAR && y.year !== key), entry]
+            .sort((a, b) => Number(b.year) - Number(a.year));
+
+        await upsertPageContent({
+            slug:         YEARS_INDEX_SLUG,
+            content:      JSON.stringify(next.filter((y) => y.year !== DEFAULT_YEAR)),
+            pageKeys:     [YEARS_CREATE_KEY],
+            historyLabel: `NEB — create year ${key}`,
+        });
+
+        cacheRef.current[key] = { sections: structure.sections.map((t) => ({ id: t.id, label: t.label, description: t.description, rows: blankSectionRows(t) })), meta: seededMeta };
+        setAvailableYears(next);
+        return entry;
+    }, [availableYears]);
+
+    // One-time, Admin-triggered migration: writes the legacy single-blob
+    // 2024 JSON into the new per-section/meta slugs. Safe to click more than
+    // once - it just re-writes the same source values, never touches other
+    // years, and never runs on its own (no auto-invocation anywhere).
+    const migrate2024FromStatic = useCallback(async ({ userEmail }) => {
+        const key = DEFAULT_YEAR;
+
+        await Promise.all(
+            seed2024.sections.map((s) =>
+                upsertPageContent({
+                    slug:         sectionSlug(key, s.id),
+                    content:      JSON.stringify({ rows: s.rows }),
+                    pageKeys:     [sectionPageKey(s.id)],
+                    historyLabel: `NEB ${key} — migrate (${s.id})`,
+                })
+            )
+        );
+
+        const migratedMeta = {
+            ...defaultMeta(key),
+            sankeyTitle: "Energy Flow — 2024",
+            uploadedAt:  new Date().toISOString(),
+            uploadedBy:  userEmail ?? null,
+        };
+        await upsertPageContent({
+            slug:         metaSlug(key),
+            content:      JSON.stringify(migratedMeta),
+            pageKeys:     [META_PAGE_KEY],
+            historyLabel: `NEB ${key} — migrate (meta)`,
+        });
+
+        delete cacheRef.current[key];
+        if (activeYear === key) {
+            const fresh = await loadYear(key);
+            setSections(fresh.sections);
+            setMeta(fresh.meta);
+        }
+    }, [activeYear, loadYear]);
+
     return (
         <NEBDataContext.Provider value={{
-            sections,
-            setSections,
-            uploadMeta,
-            setUploadMeta,
-            sankeyTitle,
-            setSankeyTitle,
-            commodities: nebData.commodities,
-            meta:        nebData.meta,
-            loading,
+            sections, meta, loading,
+            sankeyTitle: meta.sankeyTitle,
+            commodities: structure.commodities,
+            activeYear, setActiveYear,
+            availableYears, loadingYears,
+            saveSectionData, saveMeta, createYear, loadYear,
+            migrate2024FromStatic,
         }}>
             {children}
         </NEBDataContext.Provider>

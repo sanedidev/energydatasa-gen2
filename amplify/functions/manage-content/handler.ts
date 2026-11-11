@@ -96,7 +96,12 @@ async function logHistory(entry: {
   after?: unknown;
 }) {
   const MAX_ENTRIES = 150;
-  const MAX_CONTENT = 4000;
+  // 10000 rather than 4000: NEB sections now save per-section (see
+  // app/context/NEBData.js), and the three largest - conversion (~7.6KB),
+  // industry (~5KB) and transport (~4KB) - would still truncate their
+  // before/after history diff at the old limit, making revert useless for
+  // exactly the sections most likely to need it.
+  const MAX_CONTENT = 10000;
   const HISTORY_SLUG = '__history__.__index__';
 
   const truncate = (v: unknown) => {

@@ -7,6 +7,7 @@ import HeroSection from "./components/ui/HeroSection";
 import { ButtonPrimary } from "./components/ui/Button";
 import HomeEnergyInsights from "./components/HomeEnergyInsights";
 import HomeAudiences from "./components/HomeAudiences";
+import { useAuth } from "./context/auth";
 
 const topics = [
     { label: "Total Electricity Generated",     href: "/topics/total-electricity-generated" },
@@ -18,6 +19,7 @@ const topics = [
 ];
 
 function Hero() {
+    const { user } = useAuth();
     return (
         <HeroSection eyebrow="South Africa's Open Energy Platform" padding="pt-14 pb-12">
             <h1 className="text-3xl lg:text-5xl font-bold leading-tight tracking-tight max-w-3xl">
@@ -31,12 +33,14 @@ function Hero() {
                 Explore how energy is produced, consumed, and changing in South Africa
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-                <ButtonPrimary as={Link} href="/dashboard">
-                    Browse the Datasets
-                </ButtonPrimary>
-                <span className="text-sm text-[var(--color-ink-soft)]/70">Energy Carriers, Efficiency, Planning &amp; more</span>
-            </div>
+            {user && (
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                    <ButtonPrimary as={Link} href="/dashboard">
+                        Browse the Datasets
+                    </ButtonPrimary>
+                    <span className="text-sm text-[var(--color-ink-soft)]/70">Energy Carriers, Efficiency, Planning &amp; more</span>
+                </div>
+            )}
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {topics.map((topic) => (

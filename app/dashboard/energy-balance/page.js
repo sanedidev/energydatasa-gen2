@@ -186,7 +186,7 @@ export default function EnergyBalancePage() {
 
                     </div>
                 </div>
-                <FlowLine className="max-w-7xl mx-auto" />
+                <FlowLine />
             </div>
 
             {/* ── Sankey Diagram ────────────────────────────────────────────── */}

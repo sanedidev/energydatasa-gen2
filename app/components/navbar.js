@@ -9,7 +9,7 @@ import { useAuth } from "../context/auth";
 // group: "primary"   → tool links, logged-in only
 // group: "secondary" → editorial/info links, shown in both states
 // public: true       → visible to logged-out users
-const NAV_LINKS = [
+export const NAV_LINKS = [
     { href: "/dashboard",      label: "Datasets",  group: "primary",   public: false },
     { href: "/maps",           label: "Maps",      group: "primary",   public: false },
     { href: "/energyInsights", label: "Insights",  group: "secondary", public: true  },

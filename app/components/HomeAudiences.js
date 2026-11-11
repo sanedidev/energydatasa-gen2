@@ -20,7 +20,7 @@ export default function HomeAudiences({ audiences = [] }) {
 
     return (
         <section className="bg-[var(--color-cream-2)] pb-16">
-            <FlowLine className="max-w-7xl mx-auto" from="var(--color-link)" to="var(--color-accent)" />
+            <FlowLine from="var(--color-link)" to="var(--color-accent)" />
             <div className="mx-auto max-w-7xl px-4 md:px-6 pt-12">
                 <div className="mb-10">
                     <Link href="/whoisitfor" className="hover:text-[var(--color-accent)] transition-colors">

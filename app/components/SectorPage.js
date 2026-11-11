@@ -175,7 +175,7 @@ export default function SectorPage({ sectionId }) {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-8">
 
                 {/* ── Fuel group mix ────────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Fuel Mix</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Share of {cfg.label.toLowerCase()} energy by fuel group
@@ -206,7 +206,7 @@ export default function SectorPage({ sectionId }) {
 
                 {/* ── CO₂ emissions estimate ───────────────────────────────── */}
                 {co2.totalMtCO2 > 0 && (
-                    <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                    <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                         <div className="flex items-start justify-between gap-4 mb-1">
                             <h2 className="text-base font-semibold text-slate-900">CO₂ Emissions Estimate</h2>
                             <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 tabular-nums">
@@ -240,7 +240,7 @@ export default function SectorPage({ sectionId }) {
 
                 {/* ── Subsector breakdown ───────────────────────────────────── */}
                 {subsectors.length > 1 && (
-                    <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                    <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                         <h2 className="text-base font-semibold text-slate-900 mb-1">
                             {subsectors.length > 3 ? "Subsector Breakdown" : "End-Use Breakdown"}
                         </h2>
@@ -273,7 +273,7 @@ export default function SectorPage({ sectionId }) {
                 )}
 
                 {/* ── Full data table ───────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="font-semibold text-slate-900">Full Breakdown</h2>

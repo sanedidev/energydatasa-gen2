@@ -41,7 +41,7 @@ export default function HomeEnergyInsights({ articles = [] }) {
                 {articles.map((article) => (
                     <article
                         key={article.id}
-                        className="group flex flex-col overflow-hidden rounded-2xl bg-white border border-[var(--color-hairline)] transition-all hover:border-[var(--color-accent)]/40"
+                        className="group flex flex-col overflow-hidden rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] transition-all hover:border-[var(--color-accent)]/40"
                     >
                         <Link href={`/energyInsights/${article.slug}`} className="block overflow-hidden">
                             <CoverImage imageKey={article.imageKey} alt={article.title} />

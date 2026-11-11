@@ -8,6 +8,8 @@ import { useNEBData } from "@/app/context/NEBData";
 import NEBSectionCard from "@/app/components/NEBSectionCard";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
+import FlowLine from "@/app/components/ui/FlowLine";
+import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
 import Link from "next/link";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
@@ -100,25 +102,6 @@ export default function EnergyBalancePage() {
 
     return (
         <main>
-            {/* Slow-drifting two-tone accent line used atop the chart cards below -
-                each card passes its own pair of colors (drawn from that chart's
-                own palette, not arbitrary ones) via CSS custom properties. */}
-            <style>{`
-                @keyframes cardAccentDrift {
-                    0%, 100% { background-position: 0% 50%; }
-                    50%      { background-position: 100% 50%; }
-                }
-                .card-accent {
-                    height: 2px;
-                    background-image: linear-gradient(90deg, transparent, var(--accent-a), var(--accent-b), transparent);
-                    background-size: 200% 100%;
-                    animation: cardAccentDrift 7s ease-in-out infinite;
-                }
-                @media (prefers-reduced-motion: reduce) {
-                    .card-accent { animation: none; background-position: 50% 50%; }
-                }
-            `}</style>
-
             {/* ── Hero ──────────────────────────────────────────────────────── */}
             {/* The active year lives in the YearSwitcher bar directly above this
                 page (app/components/YearSwitcher.js, rendered from this route's
@@ -137,7 +120,9 @@ export default function EnergyBalancePage() {
                     {summaryStats.map((s) => (
                         <div key={s.label} className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
                             <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-                            <div className="text-xl font-bold text-[var(--color-cream)]">{s.value}</div>
+                            <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
+                                <AnimatedNumber value={Math.abs(s.raw)} format={(n) => `${Math.round(n).toLocaleString("en-US")} PJ`} />
+                            </div>
                             <div className="mt-0.5 text-xs text-white/50">{s.label}</div>
                         </div>
                     ))}
@@ -145,7 +130,7 @@ export default function EnergyBalancePage() {
             </HeroSection>
 
             {/* ── Sector strip ──────────────────────────────────────────────── */}
-            <div className="border-b border-[var(--color-hairline)] bg-white">
+            <div className="bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5">
                     <div className="flex flex-col gap-5 sm:flex-row sm:gap-0 sm:divide-x sm:divide-slate-100">
 
@@ -201,12 +186,13 @@ export default function EnergyBalancePage() {
 
                     </div>
                 </div>
+                <FlowLine className="max-w-7xl mx-auto" />
             </div>
 
             {/* ── Sankey Diagram ────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
-                <div className="rounded-[28px] bg-white border border-[var(--color-hairline)] overflow-hidden">
-                    <div className="card-accent" style={{ "--accent-a": "var(--color-accent)", "--accent-b": "var(--color-link)" }} />
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
+                    <FlowLine />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             {canEditTitle && editingTitle ? (
@@ -258,8 +244,8 @@ export default function EnergyBalancePage() {
 
             {/* ── Final Consumption by Sector (fuel-mix bar chart) ─────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-                <div className="rounded-[28px] bg-white border border-[var(--color-hairline)] overflow-hidden">
-                    <div className="card-accent" style={{ "--accent-a": "var(--color-link)", "--accent-b": "var(--color-accent)" }} />
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
+                    <FlowLine from="var(--color-link)" to="var(--color-accent)" />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>

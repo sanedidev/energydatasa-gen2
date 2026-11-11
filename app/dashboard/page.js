@@ -68,7 +68,7 @@ export default function DashboardPage() {
                         <Link
                             key={s.href}
                             href={s.href}
-                            className="group flex flex-col rounded-2xl bg-white border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
+                            className="group flex flex-col rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
                         >
                             <div className="p-6 flex-1">
                                 <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-accent-soft)] text-[var(--color-accent)]">

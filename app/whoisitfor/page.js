@@ -295,7 +295,7 @@ export default function WhoIsItForIndex() {
 
                                 <Link
                                     href={`/whoisitfor/${a.slug}`}
-                                    className="flex items-start gap-4 rounded-2xl bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
+                                    className="flex items-start gap-4 rounded-[var(--radius-card)] bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
                                 >
                                     <AudienceLogo logo={a.logo} title={a.title} />
                                     <div className="min-w-0 flex-1">

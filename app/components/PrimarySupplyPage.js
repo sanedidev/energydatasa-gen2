@@ -181,7 +181,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── TPES composition by group ─────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Supply Mix by Fuel Group</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Net supply by energy carrier group (production + imports − exports − losses)
@@ -214,7 +214,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── Top individual fuels ──────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Top Energy Sources</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Largest contributors by commodity — as a share of TPES ({tpesTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ)
@@ -238,7 +238,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── Full data table ───────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="font-semibold text-slate-900">Full Breakdown</h2>

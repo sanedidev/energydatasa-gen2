@@ -112,7 +112,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
             {(ps.tocVisible || ps.canEditThisPage) && (
                 <div
                     id="on-this-page"
-                    className={`mb-4 rounded-2xl border border-[var(--color-hairline)] p-5 transition-opacity ${
+                    className={`mb-4 rounded-[var(--radius-card)] border border-[var(--color-hairline)] p-5 transition-opacity ${
                         ps.tocVisible
                             ? "bg-slate-50"
                             : "bg-slate-50/50 opacity-40"

@@ -337,7 +337,7 @@ export default function EnergyInsightsIndex() {
                         return (
                             <article
                                 key={article.id}
-                                className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-[var(--color-hairline)] transition-all hover:border-[var(--color-accent)]/40 ${isHidden ? "opacity-40" : ""}`}
+                                className={`group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] transition-all hover:border-[var(--color-accent)]/40 ${isHidden ? "opacity-40" : ""}`}
                             >
                                 {/* Admin controls — only visible in manage mode */}
                                 {canManage && managing && (

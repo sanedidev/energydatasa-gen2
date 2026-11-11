@@ -141,7 +141,7 @@ export default function ConversionPage() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-8">
 
                 {/* ── Power generation by source ────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100">
                         <h2 className="font-semibold text-slate-900">Power Generation by Source</h2>
                         <p className="text-xs text-slate-400 mt-0.5">
@@ -225,7 +225,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Electricity balance ───────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Electricity Balance</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         From gross generation to net electricity available for final consumption
@@ -263,7 +263,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Refinery section ──────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Liquid Fuel Transformation</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Crude oil refining and Sasol&apos;s Coal-to-Liquids (CTL) process
@@ -345,7 +345,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Full data table ───────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
+                <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="font-semibold text-slate-900">Full Breakdown</h2>

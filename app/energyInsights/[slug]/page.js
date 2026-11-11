@@ -245,7 +245,7 @@ export default function Page({ params }) {
             ) : (
                 <div className="flex items-start gap-5">
                     {/* Cover image */}
-                    <div className={`shrink-0 overflow-hidden rounded-2xl border border-[var(--color-hairline)] bg-slate-50 ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
+                    <div className={`shrink-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-slate-50 ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
                         {currentSrc ? (
                             <Image src={currentSrc} alt={title} width={80} height={80} className="object-cover" unoptimized />
                         ) : (

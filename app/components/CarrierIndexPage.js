@@ -52,7 +52,7 @@ function CardForm({ initial, onSave, onCancel, saveLabel = "Save", isFolder = fa
     function set(k, v) { setDraft((d) => ({ ...d, [k]: v })); }
     const valid = draft.title.trim() && (isFolder || draft.href.trim());
     return (
-        <div className="rounded-2xl border border-[var(--color-hairline)] bg-white p-4 space-y-3">
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-white p-4 space-y-3">
             <div className="space-y-1">
                 <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
                 <input className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.title} onChange={(e) => set("title", e.target.value)} placeholder="Card title" />
@@ -83,7 +83,7 @@ function DynamicItemForm({ type, pathname, onSave, onCancel, saving }) {
     const valid = draft.title.trim();
     const saveLabel = saving ? "Creating…" : (type === "carrier" ? "Create carrier" : "Create file");
     return (
-        <div className="rounded-2xl border border-[var(--color-hairline)] bg-white p-4 space-y-3">
+        <div className="rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-white p-4 space-y-3">
             <div className="space-y-1">
                 <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
                 <input
@@ -531,7 +531,7 @@ export default function CarrierIndexPage({
                                 return (
                                     <div
                                         key={card.id ?? idx}
-                                        className={`col-span-full rounded-2xl bg-white border border-[var(--color-hairline)] transition-all ${card.hidden ? "opacity-40" : ""}`}
+                                        className={`col-span-full rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] transition-all ${card.hidden ? "opacity-40" : ""}`}
                                     >
                                         {/* Folder header */}
                                         <button

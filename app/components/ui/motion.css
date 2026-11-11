@@ -18,8 +18,23 @@
   animation: pulseDot 6s ease-in-out infinite;
 }
 
+/* "Energy flow" line - FlowLine.js. The site's one recurring motion motif,
+   used as a section hand-off in place of a hard border: a thin gradient
+   that slowly drifts between its two given colors. */
+@keyframes flowDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.flow-line {
+  height: 3px;
+  background-image: linear-gradient(90deg, transparent, var(--flow-a, var(--color-accent)), var(--flow-a, var(--color-accent)), var(--flow-b, var(--color-link)), var(--flow-b, var(--color-link)), transparent);
+  background-size: 220% 100%;
+  animation: flowDrift 7s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  [class*="motion-"] {
+  [class*="motion-"], .flow-line {
     animation: none !important;
   }
+  .flow-line { background-position: 50% 50%; }
 }

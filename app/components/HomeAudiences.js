@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import FlowLine from "@/app/components/ui/FlowLine";
 
 function AudienceLogo({ logo, title }) {
     const src = useResolvedImageUrl(logo);
@@ -18,8 +19,9 @@ export default function HomeAudiences({ audiences = [] }) {
     if (!audiences.length) return null;
 
     return (
-        <section className="bg-slate-50 py-16">
-            <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <section className="bg-[var(--color-cream-2)] pb-16">
+            <FlowLine className="max-w-7xl mx-auto" from="var(--color-link)" to="var(--color-accent)" />
+            <div className="mx-auto max-w-7xl px-4 md:px-6 pt-12">
                 <div className="mb-10">
                     <Link href="/whoisitfor" className="hover:text-[var(--color-accent)] transition-colors">
                         <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
@@ -37,7 +39,7 @@ export default function HomeAudiences({ audiences = [] }) {
                         <Link
                             key={a.id}
                             href={`/whoisitfor/${a.slug}`}
-                            className="group flex items-start gap-4 rounded-2xl bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
+                            className="group flex items-start gap-4 rounded-[var(--radius-card)] bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
                         >
                             <AudienceLogo logo={a.logo} title={a.title} />
                             <div className="min-w-0 flex-1">

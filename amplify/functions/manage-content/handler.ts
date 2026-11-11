@@ -94,6 +94,17 @@ async function logHistory(entry: {
   action: 'create' | 'update' | 'delete';
   before?: unknown;
   after?: unknown;
+  // Which model this entry belongs to (shown in the admin history UI so an
+  // entry never reads as "vague" about what kind of record it touched).
+  model?: ModelName;
+  // True only when before/after are guaranteed to be plain content strings
+  // the revert op can safely write back (PageContent's upsert path, and a
+  // delete of a record that only ever had a flat `content` field). Every
+  // other action logs a full record object for audit/display purposes but
+  // must NOT be revertable through the single-field revert endpoint - doing
+  // so would silently write a JSON dump of the whole old record into
+  // `content` instead of restoring it.
+  revertable?: boolean;
 }) {
   const MAX_ENTRIES = 150;
   // 10000 rather than 4000: NEB sections now save per-section (see
@@ -118,6 +129,8 @@ async function logHistory(entry: {
       label: entry.label || entry.slug,
       email: entry.email,
       action: entry.action,
+      model: entry.model ?? null,
+      revertable: entry.revertable === true,
       timestamp: new Date().toISOString(),
       before: truncate(entry.before),
       after: truncate(entry.after),
@@ -184,9 +197,22 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
     if (payload?.content === undefined) throw new Error('data.content is required');
 
     const existing = await findBySlug('PageContent', slug);
-    if (!existing) throw new Error('Record not found');
-    const before = existing.content;
 
+    if (!existing) {
+      // The record was deleted since this history entry was made (revert is
+      // only ever offered for entries the client marked revertable, which
+      // for a delete means it only ever had a flat `content` field) -
+      // recreate it under the same slug rather than failing outright, so
+      // "revert a delete" actually restores something instead of being a
+      // button that can never work.
+      const now = new Date().toISOString();
+      const item = { id: randomUUID(), slug, content: payload.content, createdAt: now, updatedAt: now, __typename: 'PageContent' };
+      await ddb.send(new PutCommand({ TableName: TABLES.PageContent, Item: item }));
+      await logHistory({ slug, label: 'Revert (restored)', email: callerEmail, action: 'create', before: null, after: payload.content, model: 'PageContent', revertable: false });
+      return { ok: true };
+    }
+
+    const before = existing.content;
     await ddb.send(
       new UpdateCommand({
         TableName: TABLES.PageContent,
@@ -195,7 +221,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
         ExpressionAttributeValues: { ':c': payload.content, ':u': new Date().toISOString() },
       })
     );
-    await logHistory({ slug, label: 'Revert', email: callerEmail, action: 'update', before, after: payload.content });
+    await logHistory({ slug, label: 'Revert', email: callerEmail, action: 'update', before, after: payload.content, model: 'PageContent', revertable: true });
     return { ok: true };
   }
 
@@ -218,13 +244,20 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
     const existing = await ddb.send(new GetCommand({ TableName: tableName, Key: { id } }));
     await ddb.send(new DeleteCommand({ TableName: tableName, Key: { id } }));
     if (existing.Item) {
+      // A flat `content` field (every PageContent record) is the only shape
+      // the revert op can safely restore - log that directly so revert can
+      // recreate it later. Anything else (InsightArticle, AudienceProfile -
+      // multi-field records) logs the full item for audit display only.
+      const hasFlatContent = model === 'PageContent' && typeof existing.Item.content === 'string';
       await logHistory({
         slug: (existing.Item.slug as string) ?? id,
         label: historyLabel,
         email: callerEmail,
         action: 'delete',
-        before: existing.Item,
+        before: hasFlatContent ? existing.Item.content : existing.Item,
         after: null,
+        model,
+        revertable: hasFlatContent,
       });
     }
     return { ok: true };
@@ -250,13 +283,13 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
           ExpressionAttributeValues: { ':c': payload.content ?? null, ':u': now },
         })
       );
-      await logHistory({ slug, label: historyLabel, email: callerEmail, action: 'update', before, after: payload.content });
+      await logHistory({ slug, label: historyLabel, email: callerEmail, action: 'update', before, after: payload.content, model, revertable: true });
       return { ok: true, record: { ...existing, content: payload.content, updatedAt: now } };
     }
 
     const item = { id: randomUUID(), slug, content: payload.content ?? null, createdAt: now, updatedAt: now, __typename: TYPENAMES[model] };
     await ddb.send(new PutCommand({ TableName: tableName, Item: item }));
-    await logHistory({ slug, label: historyLabel, email: callerEmail, action: 'create', before: null, after: payload.content });
+    await logHistory({ slug, label: historyLabel, email: callerEmail, action: 'create', before: null, after: payload.content, model, revertable: false });
     return { ok: true, record: item };
   }
 
@@ -266,7 +299,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
     if (!recordSlug) throw new Error('slug is required');
     const item = { id: randomUUID(), ...payload, slug: recordSlug, createdAt: now, updatedAt: now, __typename: TYPENAMES[model] };
     await ddb.send(new PutCommand({ TableName: tableName, Item: item }));
-    await logHistory({ slug: recordSlug, label: historyLabel, email: callerEmail, action: 'create', before: null, after: payload });
+    await logHistory({ slug: recordSlug, label: historyLabel, email: callerEmail, action: 'create', before: null, after: payload, model, revertable: false });
     return { ok: true, record: item };
   }
 
@@ -305,6 +338,11 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
       action: 'update',
       before: existing.Item,
       after: { ...existing.Item, ...payload },
+      model,
+      // Multi-field update (InsightArticle/AudienceProfile, etc.) - before/
+      // after are full records here, not a single content string, so the
+      // single-field revert op must not be offered for this entry.
+      revertable: false,
     });
     return { ok: true, record: { ...existing.Item, ...payload, updatedAt: now } };
   }

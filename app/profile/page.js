@@ -6,6 +6,7 @@ import { useAuth } from "@/app/context/auth";
 import { usePermissions } from "@/app/context/permissions";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { fetchHistory, revertEntry, labelFromSlug } from "@/app/lib/editHistory";
+import { lineDiff, prettyMaybeJson } from "@/app/lib/lineDiff";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 
 // ── Static page groups (single fixed key per page, not card-driven) ─────────
@@ -640,6 +641,7 @@ export default function Profile() {
     const [revertingId,     setRevertingId]     = useState(null);
     const [revertDone,      setRevertDone]      = useState(null);
     const [historyFilter,   setHistoryFilter]   = useState("");
+    const [confirmRevertEntry, setConfirmRevertEntry] = useState(null);
 
     // Cognito account management (list / invite / delete / reset-password)
     const [cognitoUsers,   setCognitoUsers]   = useState([]);
@@ -826,6 +828,7 @@ export default function Profile() {
     }
 
     async function handleRevert(entry) {
+        setConfirmRevertEntry(null);
         setRevertingId(entry.id);
         try {
             const ok = await revertEntry(client, entry);
@@ -1198,9 +1201,14 @@ export default function Profile() {
                                                                 <div className="min-w-0">
                                                                     <div className="flex items-center gap-1.5 flex-wrap">
                                                                         <span className="text-xs font-semibold text-slate-800">{entry.email ?? "Unknown"}</span>
-                                                                        <span className={`text-[10px] font-medium rounded px-1.5 py-0.5 ${entry.action === "create" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"}`}>
+                                                                        <span className={`text-[10px] font-medium rounded px-1.5 py-0.5 ${entry.action === "create" ? "bg-green-100 text-green-700" : entry.action === "delete" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
                                                                             {entry.action}
                                                                         </span>
+                                                                        {entry.model && (
+                                                                            <span className="text-[10px] font-medium rounded px-1.5 py-0.5 bg-slate-100 text-slate-500">
+                                                                                {entry.model}
+                                                                            </span>
+                                                                        )}
                                                                     </div>
                                                                     <p className="text-xs text-slate-600 mt-0.5 truncate font-medium">{entry.label || labelFromSlug(entry.slug)}</p>
                                                                     <p className="text-[11px] text-slate-400 mt-0.5">
@@ -1216,7 +1224,7 @@ export default function Profile() {
                                                                 >
                                                                     {historyExpanded === entry.id ? "Hide" : "View"}
                                                                 </button>
-                                                                {entry.before !== null && (
+                                                                {entry.revertable === true && (
                                                                     revertDone === entry.id ? (
                                                                         <span className="text-[11px] text-green-700 font-medium flex items-center gap-1">
                                                                             <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -1224,7 +1232,7 @@ export default function Profile() {
                                                                         </span>
                                                                     ) : (
                                                                         <button
-                                                                            onClick={() => handleRevert(entry)}
+                                                                            onClick={() => setConfirmRevertEntry(entry)}
                                                                             disabled={revertingId === entry.id}
                                                                             className="text-[11px] border border-amber-200 rounded px-2 py-1 text-amber-600 hover:bg-amber-50 disabled:opacity-40 transition-colors"
                                                                         >
@@ -1235,24 +1243,39 @@ export default function Profile() {
                                                             </div>
                                                         </div>
 
-                                                        {historyExpanded === entry.id && (
-                                                            <div className="mt-3 ml-10 space-y-2">
-                                                                {entry.before !== null && entry.before !== undefined && (
-                                                                    <div>
-                                                                        <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Before</p>
-                                                                        <pre className="text-[11px] bg-red-50 border border-red-100 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap text-red-700 max-h-40 overflow-y-auto leading-relaxed">
-                                                                            {entry.before}
+                                                        {historyExpanded === entry.id && (() => {
+                                                            const before = prettyMaybeJson(entry.before);
+                                                            const after  = entry.after !== null && entry.after !== undefined ? prettyMaybeJson(entry.after) : "(deleted)";
+                                                            const diff   = lineDiff(before, after);
+                                                            const unchanged = diff.every((l) => l.type === "same");
+                                                            return (
+                                                                <div className="mt-3 ml-10">
+                                                                    {!entry.revertable && entry.before !== null && (
+                                                                        <p className="mb-2 text-[11px] text-slate-400">
+                                                                            Revert isn&apos;t offered for this entry — it touches more than a single content field, so it can&apos;t be safely restored through this tool.
+                                                                        </p>
+                                                                    )}
+                                                                    {unchanged ? (
+                                                                        <p className="text-[11px] text-slate-400 italic">No textual difference.</p>
+                                                                    ) : (
+                                                                        <pre className="text-[11px] rounded-lg border border-slate-200 p-3 overflow-x-auto whitespace-pre-wrap max-h-64 overflow-y-auto leading-relaxed font-mono">
+                                                                            {diff.map((l, i) => (
+                                                                                <div
+                                                                                    key={i}
+                                                                                    className={
+                                                                                        l.type === "add" ? "bg-green-50 text-green-700" :
+                                                                                        l.type === "remove" ? "bg-red-50 text-red-700" :
+                                                                                        "text-slate-500"
+                                                                                    }
+                                                                                >
+                                                                                    {l.type === "add" ? "+ " : l.type === "remove" ? "− " : "  "}{l.text}
+                                                                                </div>
+                                                                            ))}
                                                                         </pre>
-                                                                    </div>
-                                                                )}
-                                                                <div>
-                                                                    <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1">After</p>
-                                                                    <pre className="text-[11px] bg-green-50 border border-green-100 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap text-green-700 max-h-40 overflow-y-auto leading-relaxed">
-                                                                        {entry.after ?? "(deleted)"}
-                                                                    </pre>
+                                                                    )}
                                                                 </div>
-                                                            </div>
-                                                        )}
+                                                            );
+                                                        })()}
                                                     </div>
                                                 ))}
                                             </div>
@@ -1261,6 +1284,17 @@ export default function Profile() {
                                 </div>
                             )}
                         </section>
+
+                        {confirmRevertEntry && (
+                            <ConfirmDialog
+                                title="Revert this change?"
+                                message={`"${confirmRevertEntry.label || labelFromSlug(confirmRevertEntry.slug)}" will be restored to its state before this ${confirmRevertEntry.action === "delete" ? "deletion" : "change"} by ${confirmRevertEntry.email ?? "an unknown user"} on ${new Date(confirmRevertEntry.timestamp).toLocaleString()}. This overwrites whatever is there right now, even if someone has edited it again since.`}
+                                confirmLabel="Yes, revert"
+                                confirmClass="flex-1 rounded-xl bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 transition-all"
+                                onConfirm={() => handleRevert(confirmRevertEntry)}
+                                onCancel={() => setConfirmRevertEntry(null)}
+                            />
+                        )}
                     </>
                 )}
             </div>

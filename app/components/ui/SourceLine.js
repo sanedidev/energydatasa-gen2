@@ -4,8 +4,12 @@
 // should call this exactly once near its hero and drop any other
 // restatement of the same fact (footer "Source:" lines, a second card's
 // subtitle, etc.) rather than keep both.
-export default function SourceLine({ source, date, year, unit, className = "" }) {
+export default function SourceLine({ source, date, year, unit, dark = false, className = "" }) {
     const parts = [source, date, year != null ? String(year) : null, unit].filter(Boolean);
     if (parts.length === 0) return null;
-    return <p className={`text-xs text-[var(--color-ink-soft)] ${className}`}>Source: {parts.join(" · ")}</p>;
+    return (
+        <p className={`text-xs ${dark ? "text-[var(--color-cream)]/40" : "text-[var(--color-ink-soft)]"} ${className}`}>
+            Source: {parts.join(" · ")}
+        </p>
+    );
 }

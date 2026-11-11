@@ -9,6 +9,8 @@ import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid"
 import EditableDataTable from "@/app/components/EditableDataTable";
 import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
+import HeroSection from "@/app/components/ui/HeroSection";
+import SourceLine from "@/app/components/ui/SourceLine";
 
 const SUPPLY_FUELS = [
     "bituminous", "coking", "anthracite", "coke", "charcoal",
@@ -97,67 +99,50 @@ export default function PrimarySupplyPage() {
     return (
         <main>
             {/* ── Hero ──────────────────────────────────────────────────────── */}
-            <section
-                className="relative overflow-hidden text-white"
-                style={{ background: "linear-gradient(135deg, #091520 0%, #0d2035 55%, #091520 100%)" }}
-            >
-                <div
-                    className="absolute inset-0 opacity-[0.04]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-                                          linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
-                        backgroundSize: "64px 64px",
-                    }}
-                />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-14 pb-14">
-                    <nav className="flex items-center gap-1.5 text-xs text-white/50 mb-4 flex-wrap">
-                        <Link href="/dashboard" className="hover:text-white/80 transition-colors">Dashboard</Link>
-                        <span>/</span>
-                        <Link href="/dashboard/energy-balance" className="hover:text-white/80 transition-colors">National Energy Planning</Link>
-                        <span>/</span>
-                        <span className="text-white/80">Primary Energy Supply</span>
-                    </nav>
+            {/* No "· {year}" badge - the active year lives once in the
+                YearSwitcher bar shared by every NEB route. Breadcrumb stops at
+                the parent rather than repeating the page title a second time. */}
+            <HeroSection variant="dark">
+                <nav className="flex items-center gap-1.5 text-xs text-[var(--color-cream)]/50 mb-4 flex-wrap">
+                    <Link href="/dashboard" className="hover:text-[var(--color-cream)]/80 transition-colors">Dashboard</Link>
+                    <span>/</span>
+                    <Link href="/dashboard/energy-balance" className="hover:text-[var(--color-cream)]/80 transition-colors">National Energy Planning</Link>
+                </nav>
 
-                    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/60 ring-1 ring-inset ring-white/15">
-                        <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
-                        Supply Side · 2024 NEB
+                <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
+                    <span className="text-[var(--color-accent)]">Primary Energy Supply</span>
+                </h1>
+                <p className="mt-4 max-w-2xl text-base text-[var(--color-cream)]/60 leading-relaxed">
+                    South Africa&apos;s total primary energy supply — domestic production, imports, exports, and stock changes before any transformation or conversion.
+                </p>
+
+                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div className="text-xl font-bold text-[var(--color-accent)]">
+                            {tpesTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        </div>
+                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Primary Energy Supply</div>
                     </div>
-
-                    <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                        <span className="text-sky-400">Primary Energy Supply</span>
-                    </h1>
-                    <p className="mt-4 max-w-2xl text-base text-white/60 leading-relaxed">
-                        South Africa&apos;s total primary energy supply — domestic production, imports, exports, and stock changes before any transformation or conversion.
-                    </p>
-
-                    <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className="text-xl font-bold text-sky-400">
-                                {tpesTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">Total Primary Energy Supply</div>
+                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div className="text-xl font-bold text-emerald-400">
+                            {prodTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
                         </div>
-                        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className="text-xl font-bold text-emerald-400">
-                                {prodTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">Domestic Production</div>
+                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Domestic Production</div>
+                    </div>
+                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div className="text-xl font-bold text-amber-400">
+                            {importsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
                         </div>
-                        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className="text-xl font-bold text-amber-400">
-                                {importsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">Total Imports</div>
+                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Imports</div>
+                    </div>
+                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div className="text-xl font-bold text-red-400">
+                            {exportsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
                         </div>
-                        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className="text-xl font-bold text-red-400">
-                                {exportsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">Total Exports</div>
-                        </div>
+                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Exports</div>
                     </div>
                 </div>
-            </section>
+            </HeroSection>
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-8">
 
@@ -286,11 +271,11 @@ export default function PrimarySupplyPage() {
                                     total_pj: row.values.total ?? null,
                                     ...Object.fromEntries(SUPPLY_FUELS.map((id) => [id, row.values[id] ?? null])),
                                 }));
-                                const json = JSON.stringify({ source: "SA NEB 2024", section: "primary-supply", unit: "PJ", rows: data }, null, 2);
+                                const json = JSON.stringify({ source: `SA NEB ${activeYear}`, section: "primary-supply", unit: "PJ", rows: data }, null, 2);
                                 const blob = new Blob([json], { type: "application/json" });
                                 const url  = URL.createObjectURL(blob);
                                 const a    = document.createElement("a");
-                                a.href = url; a.download = "SA_NEB_2024_Primary_Supply.json"; a.click();
+                                a.href = url; a.download = `SA_NEB_${activeYear}_Primary_Supply.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-white ring-1 ring-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
@@ -327,7 +312,7 @@ export default function PrimarySupplyPage() {
                         <li>• All values in Petajoules (PJ). Negative values represent outflows — exports, losses, or stock draws.</li>
                         <li>• TPES = domestic production + imports − exports ± stock changes. Crude oil and refined products are both present in the supply rows; the TPES total reconciles these through conversion accounting.</li>
                         <li>• Nuclear energy (28 PJ) is reported as a thermal equivalent input to Koeberg.</li>
-                        <li>• Source: {meta.source} · {meta.date}.</li>
+                        <li><SourceLine source={meta.source} date={meta.date} className="inline" /></li>
                         <li>
                             <Link href="/dashboard/energy-balance" className="underline hover:text-slate-700">
                                 ← Back to National Energy Planning

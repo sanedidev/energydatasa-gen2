@@ -8,47 +8,37 @@ import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid"
 import EditableDataTable from "@/app/components/EditableDataTable";
 import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
+import HeroSection from "@/app/components/ui/HeroSection";
+import SourceLine from "@/app/components/ui/SourceLine";
 import { computeSectorCO2 } from "@/app/lib/co2Factors";
 
+// Sectors are told apart by label/position, not a unique hue each - the
+// redesign's one terracotta accent covers all 5 (it used to be a different
+// gradient + text color per sector, 5 one-off palettes doing one job).
 const SECTOR_CONFIG = {
     agriculture: {
         label:       "Agriculture",
         description: "Energy consumed for heating, irrigation, and traction across South Africa's farming sector.",
-        accent:      "text-lime-400",
-        badge:       "bg-lime-500",
-        gradient:    "linear-gradient(135deg, #0a1a0a 0%, #0f2310 55%, #0a1a0a 100%)",
         fuels:       ["diesel", "electricity", "lpg", "gasoline", "kerosene"],
     },
     commerce: {
         label:       "Commerce",
         description: "Energy use in commercial and public buildings — offices, retail, schools, and hospitals.",
-        accent:      "text-teal-400",
-        badge:       "bg-teal-500",
-        gradient:    "linear-gradient(135deg, #0a1a1a 0%, #0d2626 55%, #0a1a1a 100%)",
         fuels:       ["electricity", "wood", "charcoal", "kerosene", "gasoline", "hfo", "naturalGas"],
     },
     industry: {
         label:       "Industry",
         description: "South Africa's largest consuming sector — covering chemicals, metals, mining, and manufacturing.",
-        accent:      "text-cyan-400",
-        badge:       "bg-cyan-500",
-        gradient:    "linear-gradient(135deg, #0d1526 0%, #0f2030 55%, #0d1526 100%)",
         fuels:       ["electricity", "bituminous", "biomass", "naturalGas", "hfo", "coking", "anthracite", "coke"],
     },
     residential: {
         label:       "Residential",
         description: "Household energy use across low, middle, and high income groups.",
-        accent:      "text-pink-400",
-        badge:       "bg-pink-500",
-        gradient:    "linear-gradient(135deg, #1a0d1a 0%, #2a0f2a 55%, #1a0d1a 100%)",
         fuels:       ["electricity", "wood", "lpg", "gasoline", "bituminous", "charcoal", "solar"],
     },
     transport: {
         label:       "Transport",
         description: "Energy consumed by road, rail, aviation, and pipeline across passenger and freight modes.",
-        accent:      "text-violet-400",
-        badge:       "bg-violet-500",
-        gradient:    "linear-gradient(135deg, #120d1a 0%, #1a1030 55%, #120d1a 100%)",
         fuels:       ["diesel", "gasoline", "kerosene", "aviationGas", "electricity", "naturalGas", "hfo"],
     },
 };
@@ -124,77 +114,63 @@ export default function SectorPage({ sectionId }) {
     return (
         <main>
             {/* ── Hero ──────────────────────────────────────────────────────── */}
-            <section className="relative overflow-hidden text-white" style={{ background: cfg.gradient }}>
-                <div
-                    className="absolute inset-0 opacity-[0.04]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-                                          linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
-                        backgroundSize: "64px 64px",
-                    }}
-                />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-14 pb-14">
-                    {/* Breadcrumb */}
-                    <nav className="flex items-center gap-1.5 text-xs text-white/50 mb-4 flex-wrap">
-                        <Link href="/dashboard" className="hover:text-white/80 transition-colors">Dashboard</Link>
-                        <span>/</span>
-                        <Link href="/dashboard/energy-balance" className="hover:text-white/80 transition-colors">National Energy Planning</Link>
-                        <span>/</span>
-                        <span className="text-white/80">{cfg.label}</span>
-                    </nav>
+            {/* No "· {year}" badge here - the active year lives once in the
+                YearSwitcher bar shared by every NEB route (see layout.js). The
+                breadcrumb also stops at the parent rather than repeating
+                {cfg.label} a second time right above the identical H1. */}
+            <HeroSection variant="dark">
+                <nav className="flex items-center gap-1.5 text-xs text-[var(--color-cream)]/50 mb-4 flex-wrap">
+                    <Link href="/dashboard" className="hover:text-[var(--color-cream)]/80 transition-colors">Dashboard</Link>
+                    <span>/</span>
+                    <Link href="/dashboard/energy-balance" className="hover:text-[var(--color-cream)]/80 transition-colors">National Energy Planning</Link>
+                </nav>
 
-                    {/* Sector quick-nav */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                        {[
-                            { id: "industry",    label: "Industry",    href: "/dashboard/energy-balance/industry"    },
-                            { id: "transport",   label: "Transport",   href: "/dashboard/energy-balance/transport"   },
-                            { id: "residential", label: "Residential", href: "/dashboard/energy-balance/residential" },
-                            { id: "commerce",    label: "Commerce",    href: "/dashboard/energy-balance/commerce"    },
-                            { id: "agriculture", label: "Agriculture", href: "/dashboard/energy-balance/agriculture" },
-                        ].map((s) => (
-                            <Link
-                                key={s.id}
-                                href={s.href}
-                                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                                    s.id === sectionId
-                                        ? "bg-white/20 text-white ring-1 ring-white/30"
-                                        : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80"
-                                }`}
-                            >
-                                {s.label}
-                            </Link>
-                        ))}
-                    </div>
-
-                    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/60 ring-1 ring-inset ring-white/15">
-                        <span className={`h-1.5 w-1.5 rounded-full ${cfg.badge}`} />
-                        Final Consumption · 2024 NEB
-                    </div>
-
-                    <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                        <span className={cfg.accent}>{cfg.label}</span>
-                    </h1>
-                    <p className="mt-4 max-w-2xl text-base text-white/60 leading-relaxed">{cfg.description}</p>
-
-                    {/* Key stat cards */}
-                    <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className={`text-xl font-bold ${cfg.accent}`}>
-                                {sectorTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">Total Consumption</div>
-                        </div>
-                        {keyFuels.slice(0, 3).map((f) => (
-                            <div key={f.id} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                                <div className="text-xl font-bold text-white">
-                                    {f.total.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
-                                </div>
-                                <div className="mt-0.5 text-xs text-white/50">{f.label}</div>
-                            </div>
-                        ))}
-                    </div>
+                {/* Sector quick-nav */}
+                <div className="flex flex-wrap gap-2 mb-5">
+                    {[
+                        { id: "industry",    label: "Industry",    href: "/dashboard/energy-balance/industry"    },
+                        { id: "transport",   label: "Transport",   href: "/dashboard/energy-balance/transport"   },
+                        { id: "residential", label: "Residential", href: "/dashboard/energy-balance/residential" },
+                        { id: "commerce",    label: "Commerce",    href: "/dashboard/energy-balance/commerce"    },
+                        { id: "agriculture", label: "Agriculture", href: "/dashboard/energy-balance/agriculture" },
+                    ].map((s) => (
+                        <Link
+                            key={s.id}
+                            href={s.href}
+                            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                                s.id === sectionId
+                                    ? "bg-[var(--color-accent)]/20 text-[var(--color-cream)] ring-1 ring-[var(--color-accent)]/40"
+                                    : "bg-white/5 text-[var(--color-cream)]/50 hover:bg-white/10 hover:text-[var(--color-cream)]/80"
+                            }`}
+                        >
+                            {s.label}
+                        </Link>
+                    ))}
                 </div>
-            </section>
+
+                <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
+                    <span className="text-[var(--color-accent)]">{cfg.label}</span>
+                </h1>
+                <p className="mt-4 max-w-2xl text-base text-[var(--color-cream)]/60 leading-relaxed">{cfg.description}</p>
+
+                {/* Key stat cards */}
+                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div className="text-xl font-bold text-[var(--color-accent)]">
+                            {sectorTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        </div>
+                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Consumption</div>
+                    </div>
+                    {keyFuels.slice(0, 3).map((f) => (
+                        <div key={f.id} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                            <div className="text-xl font-bold text-[var(--color-cream)]">
+                                {f.total.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                            </div>
+                            <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">{f.label}</div>
+                        </div>
+                    ))}
+                </div>
+            </HeroSection>
 
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-8">
 
@@ -333,11 +309,11 @@ export default function SectorPage({ sectionId }) {
                                         return [id, v != null ? Math.abs(v) : null];
                                     })),
                                 }));
-                                const json = JSON.stringify({ source: "SA NEB 2024", section: sectionId, unit: "PJ", rows: data }, null, 2);
+                                const json = JSON.stringify({ source: `SA NEB ${activeYear}`, section: sectionId, unit: "PJ", rows: data }, null, 2);
                                 const blob = new Blob([json], { type: "application/json" });
                                 const url  = URL.createObjectURL(blob);
                                 const a    = document.createElement("a");
-                                a.href = url; a.download = `SA_NEB_2024_${sectionId}.json`; a.click();
+                                a.href = url; a.download = `SA_NEB_${activeYear}_${sectionId}.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-white ring-1 ring-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
@@ -376,8 +352,8 @@ export default function SectorPage({ sectionId }) {
                     <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
                     <ul className="space-y-1 text-xs text-slate-500">
                         <li>• All values in Petajoules (PJ). Absolute values shown — original sign convention: negative = consumption.</li>
-                        <li>• Source: {meta.source} · {meta.date}.</li>
                         <li>• A dash (—) indicates zero, negligible, or not applicable for that fuel/row combination.</li>
+                        <li><SourceLine source={meta.source} date={meta.date} className="inline" /></li>
                         <li>
                             <Link href="/dashboard/energy-balance" className="underline hover:text-slate-700">
                                 ← Back to National Energy Planning

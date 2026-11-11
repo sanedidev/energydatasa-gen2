@@ -6,6 +6,8 @@ import { usePermissions } from "@/app/context/permissions";
 import { useAuth } from "@/app/context/auth";
 import { useNEBData } from "@/app/context/NEBData";
 import NEBSectionCard from "@/app/components/NEBSectionCard";
+import HeroSection from "@/app/components/ui/HeroSection";
+import SourceLine from "@/app/components/ui/SourceLine";
 import Link from "next/link";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
@@ -118,43 +120,28 @@ export default function EnergyBalancePage() {
             `}</style>
 
             {/* ── Hero ──────────────────────────────────────────────────────── */}
-            <section
-                className="relative overflow-hidden text-white"
-                style={{ background: "linear-gradient(135deg, #0d1526 0%, #19223a 55%, #1a0f2a 100%)" }}
-            >
-                <div
-                    className="absolute inset-0 opacity-[0.04]"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)`,
-                        backgroundSize: "64px 64px",
-                    }}
-                />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-14 pb-14">
-                    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/60 ring-1 ring-inset ring-white/15">
-                        <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-                        {meta.year} · {meta.unit}
-                    </div>
-                    <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                        <span className="text-violet-400">National Energy Planning</span>
-                        <span className="ml-3 text-white/60">{meta.year}</span>
-                    </h1>
-                    <p className="mt-4 max-w-2xl text-base text-white/60 leading-relaxed">
-                        South Africa&apos;s complete energy flow from primary supply through conversion to final consumption. All values in Petajoules (PJ).
-                    </p>
-                    <p className="mt-2 text-xs text-white/40">
-                        Source: {meta.source} · {meta.date}
-                    </p>
+            {/* The active year lives in the YearSwitcher bar directly above this
+                page (app/components/YearSwitcher.js, rendered from this route's
+                layout) - it is deliberately not restated here, in the title, or
+                in any card below. */}
+            <HeroSection variant="dark" eyebrow="National Energy Balance">
+                <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
+                    <span className="text-[var(--color-accent)]">National Energy Planning</span>
+                </h1>
+                <p className="mt-4 max-w-2xl text-base text-[var(--color-cream)]/60 leading-relaxed">
+                    South Africa&apos;s complete energy flow from primary supply through conversion to final consumption. All values in Petajoules (PJ).
+                </p>
+                <SourceLine source={meta.source} date={meta.date} dark className="mt-2" />
 
-                    <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {summaryStats.map((s) => (
-                            <div key={s.label} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                                <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
-                                <div className="mt-0.5 text-xs text-white/50">{s.label}</div>
-                            </div>
-                        ))}
-                    </div>
+                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {summaryStats.map((s) => (
+                        <div key={s.label} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                            <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
+                            <div className="mt-0.5 text-xs text-white/50">{s.label}</div>
+                        </div>
+                    ))}
                 </div>
-            </section>
+            </HeroSection>
 
             {/* ── Sector strip ──────────────────────────────────────────────── */}
             <div className="border-b border-slate-200 bg-white">
@@ -256,10 +243,9 @@ export default function EnergyBalancePage() {
                                 </div>
                             )}
                             <p className="text-xs text-slate-500 mt-0.5">
-                                Primary supply through transformation to final consumption · {meta.year}. Hover over flows for PJ values.
+                                Primary supply through transformation to final consumption. Hover over flows for PJ values.
                             </p>
                         </div>
-                        <span className="text-xs text-slate-400 pt-0.5">Source: SANEDI / UCT ESRG · {meta.year} · Values in PJ</span>
                     </div>
                     <div className="overflow-x-auto">
                         <div style={{ minWidth: 820 }}>
@@ -277,10 +263,9 @@ export default function EnergyBalancePage() {
                         <div>
                             <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>
                             <p className="text-xs text-slate-500 mt-0.5">
-                                Energy delivered to each end-use sector, by fuel · {meta.year}. Hover a segment for its PJ value.
+                                Energy delivered to each end-use sector, by fuel. Hover a segment for its PJ value.
                             </p>
                         </div>
-                        <span className="text-xs text-slate-400 pt-0.5">Source: SANEDI / UCT ESRG · {meta.year} · Values in PJ</span>
                     </div>
                     <FinalConsumptionBars sections={sections} />
                 </div>
@@ -308,7 +293,7 @@ export default function EnergyBalancePage() {
             {/* ── Data table ────────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16 space-y-6">
                 {dataLoading ? (
-                    <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading {meta.year} data…</div>
+                    <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading data…</div>
                 ) : (
                     sections.map((section) => (
                         <NEBSectionCard
@@ -325,12 +310,11 @@ export default function EnergyBalancePage() {
             {/* ── Footer notes ──────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
                 <div className="rounded-xl bg-slate-50 ring-1 ring-slate-200 px-5 py-4">
-                    <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes — {meta.year}</h3>
+                    <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
                     <ul className="space-y-1 text-xs text-slate-500">
                         <li>• All values in Petajoules (PJ). Negative = consumption, Positive = production/supply.</li>
                         <li>• A dash (—) indicates zero, negligible, or not applicable for that commodity/row combination.</li>
                         <li>• TPES = Total Primary Energy Supply. OCGT = Open Cycle Gas Turbine. CHP = Combined Heat & Power. CTL = Coal to Liquids.</li>
-                        <li>• Source: {meta.source}, {meta.date}.</li>
                     </ul>
                 </div>
             </div>

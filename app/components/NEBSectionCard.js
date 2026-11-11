@@ -6,6 +6,7 @@ import { useAuth } from "@/app/context/auth";
 import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid";
 import EditableDataTable from "@/app/components/EditableDataTable";
 import EditSaveControls from "@/app/components/EditSaveControls";
+import NEBCsvControls from "@/app/components/NEBCsvControls";
 
 function fmt(val) {
     if (val === null || val === undefined) return "—";
@@ -51,8 +52,8 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
                         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                     </svg>
                 </button>
-                {canEditSection && (
-                    <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+                <div className="flex shrink-0 items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                    {canEditSection && (
                         <EditSaveControls
                             canEdit={canEditSection}
                             isEditing={grid.isEditing}
@@ -63,8 +64,16 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
                             onSave={grid.handleSave}
                             onCancel={grid.handleCancel}
                         />
-                    </div>
-                )}
+                    )}
+                    {!grid.isEditing && (
+                        <NEBCsvControls
+                            section={section}
+                            year={activeYear}
+                            canEdit={canEditSection}
+                            saveSectionData={saveSectionData}
+                        />
+                    )}
+                </div>
             </div>
 
             {!collapsed && (

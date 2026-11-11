@@ -7,6 +7,7 @@ import { useAuth } from "@/app/context/auth";
 import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid";
 import EditableDataTable from "@/app/components/EditableDataTable";
 import EditSaveControls from "@/app/components/EditSaveControls";
+import NEBCsvControls from "@/app/components/NEBCsvControls";
 
 const COMMODITY_LABEL = COMMODITY_ID_MAP;
 
@@ -378,28 +379,14 @@ export default function ConversionPage() {
                             onSave={grid.handleSave}
                             onCancel={grid.handleCancel}
                         />
-                        <button
-                            onClick={() => {
-                                const headers = ["Row", "Total PJ", ...commodities.map((c) => c.label)];
-                                const rows = section.rows.map((row) => [
-                                    row.label,
-                                    row.values.total != null ? row.values.total.toFixed(2) : "",
-                                    ...commodities.map((c) => { const v = row.values[c.id]; return v != null ? v.toFixed(2) : ""; }),
-                                ]);
-                                const csv  = [headers, ...rows].map((r) => r.map((c) => { const s = String(c ?? ""); return s.includes(",") ? `"${s}"` : s; }).join(",")).join("\n");
-                                const blob = new Blob([csv], { type: "text/csv" });
-                                const url  = URL.createObjectURL(blob);
-                                const a    = document.createElement("a");
-                                a.href = url; a.download = "SA_NEB_2024_Conversion.csv"; a.click();
-                                URL.revokeObjectURL(url);
-                            }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-white ring-1 ring-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
-                        >
-                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                            </svg>
-                            CSV
-                        </button>
+                        {!grid.isEditing && (
+                            <NEBCsvControls
+                                section={section}
+                                year={activeYear}
+                                canEdit={canEditSection}
+                                saveSectionData={saveSectionData}
+                            />
+                        )}
                         <button
                             onClick={() => {
                                 const data = section.rows.map((row) => ({

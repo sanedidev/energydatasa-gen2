@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
-import { upsertPageContent } from "@/app/lib/manageContent";
+import { upsertPageContent, deletePageContentById } from "@/app/lib/manageContent";
 import structure from "@/app/data/neb-structure.json";
 import seed2024 from "@/app/data/energy-balance-2024.json";
 
@@ -262,6 +262,104 @@ export function NEBDataProvider({ children }) {
         return entry;
     }, [availableYears]);
 
+    // Moves a year's data to a new year label - for the "typed the wrong
+    // year, already entered real data under it" case. This is a genuine
+    // data move (every slug is keyed by the year string itself), not a
+    // relabel: read whatever's really stored under `from` (not the cache,
+    // which may hold blank-template placeholders for sections never
+    // actually saved), write it under `to`, then delete the `from` records.
+    // Gated by the same neb.years.create key as creating a year - it's a
+    // structural operation on the years list, not a single section edit.
+    const renameYear = useCallback(async ({ fromYear, toYear, userEmail }) => {
+        const from = String(fromYear);
+        const to   = String(toYear);
+        if (from === DEFAULT_YEAR) throw new Error(`${DEFAULT_YEAR} can't be renamed.`);
+        if (from === to) return;
+        if (!availableYears.some((y) => y.year === from)) throw new Error(`Year ${from} doesn't exist.`);
+        if (availableYears.some((y) => y.year === to)) throw new Error(`Year ${to} already exists.`);
+
+        const [sectionReads, metaRead] = await Promise.all([
+            Promise.all(structure.sections.map((t) =>
+                client.models.PageContent.pageContentBySlug({ slug: sectionSlug(from, t.id) }, { authMode: "apiKey" })
+                    .then((r) => r?.data?.[0]).catch(() => null)
+            )),
+            client.models.PageContent.pageContentBySlug({ slug: metaSlug(from) }, { authMode: "apiKey" })
+                .then((r) => r?.data?.[0]).catch(() => null),
+        ]);
+
+        // Copy under the new slug - only sections that actually had a saved
+        // record (an untouched section just keeps resolving to the blank
+        // template under its new slug too, same as any other year).
+        await Promise.all(
+            structure.sections.map((t, i) => {
+                const item = sectionReads[i];
+                if (!item?.content) return null;
+                return upsertPageContent({
+                    slug:         sectionSlug(to, t.id),
+                    content:      item.content,
+                    pageKeys:     [YEARS_CREATE_KEY, sectionPageKey(t.id)],
+                    historyLabel: `NEB ${to} — renamed from ${from} (${t.id})`,
+                });
+            })
+        );
+
+        let newMeta = { ...defaultMeta(to) };
+        if (metaRead?.content) {
+            try {
+                const parsed = JSON.parse(metaRead.content);
+                newMeta = {
+                    ...parsed,
+                    year:        to,
+                    title:       typeof parsed.title === "string" ? parsed.title.split(from).join(to) : parsed.title,
+                    sankeyTitle: typeof parsed.sankeyTitle === "string" ? parsed.sankeyTitle.split(from).join(to) : parsed.sankeyTitle,
+                };
+            } catch { /* keep the fresh default for `to` */ }
+        }
+        await upsertPageContent({
+            slug:         metaSlug(to),
+            content:      JSON.stringify(newMeta),
+            pageKeys:     [YEARS_CREATE_KEY, META_PAGE_KEY],
+            historyLabel: `NEB ${to} — renamed from ${from} (meta)`,
+        });
+
+        // Now that everything is safely copied, remove the old slugs.
+        await Promise.all([
+            ...sectionReads.map((item, i) => item?.id
+                ? deletePageContentById({ id: item.id, pageKeys: [YEARS_CREATE_KEY, sectionPageKey(structure.sections[i].id)], historyLabel: `NEB ${from} — removed after rename to ${to}` })
+                : null),
+            metaRead?.id
+                ? deletePageContentById({ id: metaRead.id, pageKeys: [YEARS_CREATE_KEY, META_PAGE_KEY], historyLabel: `NEB ${from} — meta removed after rename to ${to}` })
+                : null,
+        ]);
+
+        const oldEntry = availableYears.find((y) => y.year === from);
+        const newEntry = {
+            year:       to,
+            label:      (oldEntry?.label ?? `${from} NEB`).split(from).join(to),
+            uploadedAt: oldEntry?.uploadedAt ?? null,
+            uploadedBy: userEmail ?? oldEntry?.uploadedBy ?? null,
+        };
+        const next = [
+            { year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true },
+            ...availableYears.filter((y) => y.year !== DEFAULT_YEAR && y.year !== from && y.year !== to),
+            newEntry,
+        ].sort((a, b) => Number(b.year) - Number(a.year));
+
+        await upsertPageContent({
+            slug:         YEARS_INDEX_SLUG,
+            content:      JSON.stringify(next.filter((y) => y.year !== DEFAULT_YEAR)),
+            pageKeys:     [YEARS_CREATE_KEY],
+            historyLabel: `NEB — renamed year ${from} to ${to}`,
+        });
+
+        delete cacheRef.current[from];
+        delete cacheRef.current[to];
+        setAvailableYears(next);
+        if (activeYear === from) setActiveYear(to);
+
+        return newEntry;
+    }, [availableYears, activeYear, setActiveYear]);
+
     return (
         <NEBDataContext.Provider value={{
             sections, meta, loading,
@@ -269,7 +367,7 @@ export function NEBDataProvider({ children }) {
             commodities: structure.commodities,
             activeYear, setActiveYear,
             availableYears, loadingYears,
-            saveSectionData, saveMeta, createYear, loadYear,
+            saveSectionData, saveMeta, createYear, renameYear, loadYear,
         }}>
             {children}
         </NEBDataContext.Provider>

@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-            <body className="bg-white text-slate-900 min-h-screen flex flex-col antialiased">
+            <body className="bg-[var(--color-cream)] text-[var(--color-ink)] min-h-screen flex flex-col antialiased">
                 <AuthProvider>
                     <PermissionsProvider>
                         <Navbar />

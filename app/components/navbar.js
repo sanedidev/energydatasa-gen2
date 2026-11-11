@@ -37,13 +37,13 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/95 backdrop-blur-sm">
+        <nav className="sticky top-0 z-50 w-full border-b border-[var(--color-hairline)] bg-[var(--color-cream)]/95 backdrop-blur-sm">
             <div className="mx-auto flex h-14 max-w-7xl items-center px-4 md:px-6">
 
                 {/* Brand */}
                 <Link
                     href="/"
-                    className="shrink-0 text-sm font-bold tracking-widest text-slate-900 uppercase hover:text-green-700 transition-colors"
+                    className="shrink-0 text-sm font-bold tracking-widest text-[var(--color-ink)] uppercase transition-colors hover:text-[var(--color-accent)]"
                 >
                     Energy Data SA
                 </Link>
@@ -60,8 +60,8 @@ export default function Navbar() {
                                     className={[
                                         "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
                                         isActive(l.href)
-                                            ? "text-green-700 bg-green-50"
-                                            : "text-slate-700 hover:text-slate-900 hover:bg-slate-50",
+                                            ? "text-[var(--color-accent)]"
+                                            : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
                                     ].join(" ")}
                                 >
                                     {l.label}
@@ -70,7 +70,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Divider */}
-                        <div className="mx-3 h-4 w-px bg-slate-200" />
+                        <div className="mx-3 h-4 w-px bg-[var(--color-hairline)]" />
 
                         {/* Secondary links */}
                         <div className="flex items-center gap-0.5">
@@ -81,8 +81,8 @@ export default function Navbar() {
                                     className={[
                                         "px-3 py-1.5 text-sm rounded-lg transition-colors",
                                         isActive(l.href)
-                                            ? "text-slate-700 bg-slate-50 font-medium"
-                                            : "text-slate-400 hover:text-slate-600 hover:bg-slate-50",
+                                            ? "text-[var(--color-ink)] font-medium bg-[var(--color-cream-2)]"
+                                            : "text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]",
                                     ].join(" ")}
                                 >
                                     {l.label}
@@ -91,7 +91,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Divider */}
-                        <div className="mx-3 h-4 w-px bg-slate-200" />
+                        <div className="mx-3 h-4 w-px bg-[var(--color-hairline)]" />
 
                         {/* Profile + Sign out */}
                         <div className="flex items-center gap-1">
@@ -100,15 +100,15 @@ export default function Navbar() {
                                 className={[
                                     "px-3 py-1.5 text-sm rounded-lg transition-colors",
                                     isActive("/profile")
-                                        ? "text-slate-700 bg-slate-50 font-medium"
-                                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50",
+                                        ? "text-[var(--color-ink)] font-medium bg-[var(--color-cream-2)]"
+                                        : "text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]",
                                 ].join(" ")}
                             >
                                 Profile
                             </Link>
                             <button
                                 onClick={doSignOut}
-                                className="ml-1 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-500 transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-700"
+                                className="ml-1 rounded-lg border border-[var(--color-hairline)] px-3 py-1.5 text-sm text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
                             >
                                 Sign out
                             </button>
@@ -126,8 +126,8 @@ export default function Navbar() {
                                 className={[
                                     "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
                                     isActive(l.href)
-                                        ? "text-green-700 bg-green-50"
-                                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50",
+                                        ? "text-[var(--color-accent)]"
+                                        : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
                                 ].join(" ")}
                             >
                                 {l.label}
@@ -135,7 +135,7 @@ export default function Navbar() {
                         ))}
                         <Link
                             href="/login"
-                            className="ml-2 rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-slate-700 transition-colors"
+                            className="ml-2 rounded-lg bg-[var(--color-ink)] px-4 py-1.5 text-sm font-medium text-[var(--color-cream)] transition-colors hover:bg-[var(--color-ink-soft)]"
                         >
                             Login
                         </Link>
@@ -144,7 +144,7 @@ export default function Navbar() {
 
                 {/* Mobile menu button */}
                 <button
-                    className="md:hidden ml-auto rounded-lg p-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                    className="md:hidden ml-auto rounded-lg p-2 text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
                     aria-label="Toggle menu"
                     aria-expanded={open}
                     onClick={() => setOpen((v) => !v)}
@@ -163,7 +163,7 @@ export default function Navbar() {
 
             {/* Mobile panel */}
             {open && (
-                <div className="md:hidden border-t border-slate-100 bg-white px-4 py-3">
+                <div className="md:hidden border-t border-[var(--color-hairline)] bg-[var(--color-cream)] px-4 py-3">
                     <ul className="space-y-0.5">
                         {(user ? [...PRIMARY_LINKS, ...SECONDARY_LINKS, { href: "/profile", label: "Profile" }] : [...PUBLIC_LINKS, { href: "/login", label: "Login" }]).map((l) => (
                             <li key={l.href}>
@@ -173,8 +173,8 @@ export default function Navbar() {
                                     className={[
                                         "block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                                         isActive(l.href)
-                                            ? "text-green-700 bg-green-50"
-                                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-50",
+                                            ? "text-[var(--color-accent)] bg-[var(--color-cream-2)]"
+                                            : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
                                     ].join(" ")}
                                 >
                                     {l.label}
@@ -185,7 +185,7 @@ export default function Navbar() {
                             <li className="pt-1">
                                 <button
                                     onClick={doSignOut}
-                                    className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-left text-sm text-slate-500 hover:bg-slate-50 transition-colors"
+                                    className="w-full rounded-lg border border-[var(--color-hairline)] px-3 py-2.5 text-left text-sm text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)]"
                                 >
                                     Sign out
                                 </button>

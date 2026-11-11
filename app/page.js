@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiClient as client } from "@/app/lib/apiClient";
 import HeroSection from "./components/ui/HeroSection";
+import { ButtonPrimary } from "./components/ui/Button";
 import HomeEnergyInsights from "./components/HomeEnergyInsights";
 import HomeAudiences from "./components/HomeAudiences";
 
@@ -23,24 +24,18 @@ function Hero() {
                 Open Data and Analytics
                 <br className="hidden sm:block" />
                 for a{" "}
-                <span className="text-green-400">sustainable energy</span>{" "}
+                <span className="text-[var(--color-accent)]">sustainable energy</span>{" "}
                 future
             </h1>
-            <p className="mt-4 text-base md:text-lg text-white/60 max-w-[52ch] leading-relaxed">
+            <p className="mt-4 text-base md:text-lg text-[var(--color-ink-soft)] max-w-[52ch] leading-relaxed">
                 Explore how energy is produced, consumed, and changing in South Africa
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                    href="/dashboard"
-                    className="inline-flex items-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-sm font-semibold text-[#0d1526] transition-colors hover:bg-green-400"
-                >
+                <ButtonPrimary as={Link} href="/dashboard">
                     Browse the Datasets
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
-                </Link>
-                <span className="text-sm text-white/40">Energy Carriers, Efficiency, Planning &amp; more</span>
+                </ButtonPrimary>
+                <span className="text-sm text-[var(--color-ink-soft)]/70">Energy Carriers, Efficiency, Planning &amp; more</span>
             </div>
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
@@ -48,7 +43,7 @@ function Hero() {
                     <Link
                         key={topic.href}
                         href={topic.href}
-                        className="group flex items-center justify-center rounded-xl border border-white/15 bg-white/10 px-4 py-4 text-center text-sm font-medium text-white/80 transition-all hover:bg-white hover:text-[#0d1526] hover:border-transparent"
+                        className="group flex items-center justify-center rounded-xl border border-[var(--color-hairline)] bg-white px-4 py-4 text-center text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] hover:border-transparent"
                     >
                         {topic.label}
                     </Link>

@@ -429,15 +429,15 @@ export default function Partners() {
 
             <HeroSection eyebrow="Ecosystem">
                 <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                    Our <span className="text-green-400">Partners</span>
+                    Our <span className="text-[var(--color-accent)]">Partners</span>
                 </h1>
-                <p className="mt-4 max-w-2xl text-base md:text-lg text-white/60 leading-relaxed">
+                <p className="mt-4 max-w-2xl text-base md:text-lg text-[var(--color-ink-soft)] leading-relaxed">
                     Energy Data SA is built in collaboration with government departments, utilities,
                     academic institutions, and organisations committed to open energy data in South Africa.
                 </p>
-                <div className="mt-8 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-5 py-3 backdrop-blur-sm">
-                    <span className="text-2xl font-bold text-white">{visible.filter((p) => !p.hidden).length}</span>
-                    <span className="text-sm text-white/50 uppercase tracking-wider">Partners</span>
+                <div className="mt-8 inline-flex items-center gap-2 rounded-xl border border-[var(--color-hairline)] bg-white px-5 py-3">
+                    <span className="text-2xl font-bold text-[var(--color-ink)]">{visible.filter((p) => !p.hidden).length}</span>
+                    <span className="text-sm text-[var(--color-ink-soft)] uppercase tracking-wider">Partners</span>
                 </div>
             </HeroSection>
 

@@ -59,9 +59,9 @@ export default function DashboardPage() {
         <main>
             <HeroSection eyebrow="Open Data" maxWidth="max-w-6xl">
                 <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                    <span className="text-green-400">Datasets</span>
+                    <span className="text-[var(--color-accent)]">Datasets</span>
                 </h1>
-                <p className="mt-4 max-w-xl text-base text-white/60 leading-relaxed">
+                <p className="mt-4 max-w-xl text-base text-[var(--color-ink-soft)] leading-relaxed">
                     Explore South African energy data across carriers, efficiency programmes, and long-term planning frameworks.
                 </p>
             </HeroSection>

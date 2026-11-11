@@ -72,7 +72,7 @@ export default function About() {
 
                 <div className="mx-auto max-w-4xl px-4 md:px-6 py-10">
                     <div className="mb-8">
-                        <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-green-600">About</p>
+                        <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">About</p>
                         <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Energy Data SA</h1>
                     </div>
 

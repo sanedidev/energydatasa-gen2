@@ -103,7 +103,7 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
-            <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-xl ring-1 ring-slate-100 my-8">
+            <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-xl border border-[var(--color-hairline)] my-8">
                 <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
                     <p className="font-semibold text-slate-900">{isNew ? "Add partner" : "Edit partner"}</p>
                     <button onClick={onCancel} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
@@ -113,7 +113,7 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                     <div>
                         <label className="block text-xs font-medium text-slate-500 mb-1.5">Logo</label>
                         <div className="flex items-center gap-3">
-                            <div className="h-14 w-14 shrink-0 rounded-xl bg-slate-50 ring-1 ring-slate-100 flex items-center justify-center overflow-hidden">
+                            <div className="h-14 w-14 shrink-0 rounded-xl bg-slate-50 border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
                                 {logoUrl ? (
                                     <Image src={logoUrl} alt="logo" width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
                                 ) : (
@@ -134,7 +134,7 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                         <label className="block text-xs font-medium text-slate-500 mb-1">Name <span className="text-red-400">*</span></label>
                         <input type="text" value={form.name} onChange={(e) => onChange("name", e.target.value)}
                             placeholder="e.g. Eskom Holdings SOC Ltd"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400" />
+                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Type */}
@@ -142,7 +142,7 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                         <label className="block text-xs font-medium text-slate-500 mb-1">Type / Category</label>
                         <input type="text" value={form.type} onChange={(e) => onChange("type", e.target.value)}
                             placeholder="e.g. Clean Energy, Utility, Institution…"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400" />
+                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Website */}
@@ -150,7 +150,7 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                         <label className="block text-xs font-medium text-slate-500 mb-1">Website URL</label>
                         <input type="url" value={form.site} onChange={(e) => onChange("site", e.target.value)}
                             placeholder="https://example.org"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400" />
+                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Blurb */}
@@ -159,12 +159,12 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                         <textarea value={form.blurb} onChange={(e) => onChange("blurb", e.target.value)}
                             rows={3}
                             placeholder="Short description of the partner…"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 resize-y" />
+                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60 resize-y" />
                     </div>
                 </div>
                 <div className="flex gap-2 px-6 py-4 border-t border-slate-100">
                     <button type="button" onClick={onSave} disabled={!form.name.trim() || saving}
-                        className="rounded-xl bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800 disabled:opacity-50 transition-all">
+                        className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-all">
                         {saving ? "Saving…" : isNew ? "Add partner" : "Save changes"}
                     </button>
                     <button type="button" onClick={onCancel} disabled={saving}
@@ -189,11 +189,11 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragEnd={onDragEnd}
-            className={`group relative flex flex-col rounded-2xl bg-white ring-1 shadow-sm transition-all
+            className={`group relative flex flex-col rounded-[var(--radius-card)] bg-white transition-all
                 ${isHidden ? "opacity-40" : ""}
                 ${isDragging  ? "opacity-50 scale-[0.98]" : ""}
-                ${isDragOver  ? "ring-2 ring-green-400 shadow-md" : "ring-slate-100"}
-                ${managing    ? "ring-2 ring-dashed ring-slate-200" : "hover:-translate-y-0.5 hover:shadow-md"}
+                ${isDragOver  ? "ring-2 ring-orange-400 border border-transparent" : "border border-[var(--color-hairline)]"}
+                ${managing    ? "ring-2 ring-dashed ring-slate-300" : "hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"}
             `}
         >
             {managing && (
@@ -249,7 +249,7 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                 className={`flex flex-col flex-1 ${managing ? "pointer-events-none" : ""}`}
             >
                 <div className="flex items-start gap-4 p-6">
-                    <div className="shrink-0 h-14 w-14 rounded-xl bg-slate-50 ring-1 ring-slate-100 flex items-center justify-center overflow-hidden">
+                    <div className="shrink-0 h-14 w-14 rounded-xl bg-slate-50 border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
                         {logoUrl ? (
                             <Image src={logoUrl} alt={`${p.name} logo`} width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
                         ) : (
@@ -265,13 +265,13 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                                 {p.type}
                             </span>
                         )}
-                        <h3 className={`mt-1.5 text-sm font-semibold text-slate-900 leading-snug ${!managing ? "group-hover:text-green-700 transition-colors" : ""}`}>
+                        <h3 className={`mt-1.5 text-sm font-semibold text-slate-900 leading-snug ${!managing ? "group-hover:text-[var(--color-accent)] transition-colors" : ""}`}>
                             {p.name}
                         </h3>
                     </div>
 
                     {!managing && p.site && (
-                        <svg className="shrink-0 h-4 w-4 text-slate-300 group-hover:text-green-500 transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <svg className="shrink-0 h-4 w-4 text-slate-300 group-hover:text-[var(--color-accent)] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                         </svg>
                     )}
@@ -449,7 +449,7 @@ export default function Partners() {
                             onClick={() => setManaging((v) => !v)}
                             className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium shadow-sm transition-all ${
                                 managing
-                                    ? "border-green-300 bg-green-50 text-green-700 hover:bg-green-100"
+                                    ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
                                     : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
                             }`}
                         >
@@ -474,7 +474,7 @@ export default function Partners() {
                             <button
                                 type="button"
                                 onClick={openAdd}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-green-300 bg-green-50 px-4 py-2 text-sm font-medium text-green-700 hover:bg-green-100 transition-all"
+                                className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition-all"
                             >
                                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

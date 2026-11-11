@@ -85,8 +85,18 @@ const STATIC_GROUPS = [
     {
         group: "National Energy Planning",
         pages: [
-            { key: "neb.methodology", label: "Methodology & Data Sources page" },
-            { key: "neb.balance",     label: "Energy flow diagram title (overview page)" },
+            { key: "neb.*",            label: "Whole National Energy Planning page, all years (wildcard)" },
+            { key: "neb.methodology",  label: "Methodology & Data Sources page" },
+            { key: "neb.balance",      label: "Energy flow diagram title (overview page)" },
+            { key: "neb.years.create", label: "Create a new NEB year" },
+            { key: "neb.primary-supply", label: "Data table — Primary Energy Supply" },
+            { key: "neb.conversion",     label: "Data table — Conversion & Transformation" },
+            { key: "neb.final-supply",   label: "Data table — Total Final Energy Supply" },
+            { key: "neb.agriculture",    label: "Data table — Final Consumption: Agriculture" },
+            { key: "neb.commerce",       label: "Data table — Final Consumption: Commerce" },
+            { key: "neb.industry",       label: "Data table — Final Consumption: Industry" },
+            { key: "neb.residential",    label: "Data table — Final Consumption: Residential" },
+            { key: "neb.transport",      label: "Data table — Final Consumption: Transport" },
         ],
     },
 ];
@@ -327,8 +337,21 @@ function PermissionGroup({ group, pages, editablePages, onChange, defaultCollaps
     );
 }
 
+// Mirrors manage-permissions' isGrantable() server check - a Moderator can
+// only ever delegate a pageKey they hold themselves (exact match, "*", or a
+// broader "prefix.*" that subsumes it). Used here purely to decide what the
+// UI shows; the server re-enforces this regardless.
+function isGrantable(viewerPages, candidateKey) {
+    return viewerPages.some((p) => {
+        if (p === "*") return true;
+        if (p === candidateKey) return true;
+        if (p.endsWith(".*")) return candidateKey.startsWith(p.slice(0, -1));
+        return false;
+    });
+}
+
 // ── Per-user permission editor modal ──────────────────────────────────────────
-function UserEditor({ record, viewerIsAdmin, onClose, onDeleted, onSaved }) {
+function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, onDeleted, onSaved }) {
     const [editablePages, setEditablePages] = useState(record.editablePages ?? []);
     const [isModerator,   setIsModerator]   = useState(record.isModerator === true);
     const [dirty,         setDirty]         = useState(false);
@@ -399,7 +422,19 @@ function UserEditor({ record, viewerIsAdmin, onClose, onDeleted, onSaved }) {
         }
     }
 
-    const allGroups = [...STATIC_GROUPS, ...dynamicGroups];
+    // A Moderator only ever sees - and can only ever "Grant all" - the pages
+    // they themselves hold; an Admin sees everything. This mirrors the
+    // server's isGrantable check so the UI never offers a checkbox that
+    // would just come back Forbidden on save.
+    function visibleOnly(groups) {
+        if (viewerIsAdmin) return groups;
+        return groups
+            .map((g) => ({ ...g, pages: g.pages.filter((p) => isGrantable(viewerEditablePages, p.key)) }))
+            .filter((g) => g.pages.length > 0);
+    }
+    const visibleStatic  = visibleOnly(STATIC_GROUPS);
+    const visibleDynamic = visibleOnly(dynamicGroups);
+    const allGroups = [...visibleStatic, ...visibleDynamic];
     const allKeys   = allGroups.flatMap((g) => g.pages.map((p) => p.key));
 
     return (
@@ -465,7 +500,7 @@ function UserEditor({ record, viewerIsAdmin, onClose, onDeleted, onSaved }) {
                                     pages={g.pages}
                                     editablePages={editablePages}
                                     onChange={update}
-                                    defaultCollapsed={i >= STATIC_GROUPS.length}
+                                    defaultCollapsed={i >= visibleStatic.length}
                                 />
                             ))}
                         </div>
@@ -826,6 +861,7 @@ export default function Profile() {
                 <UserEditor
                     record={editingRecord}
                     viewerIsAdmin={isAdmin}
+                    viewerEditablePages={permissions?.editablePages ?? []}
                     onClose={() => setEditingId(null)}
                     onDeleted={(id) => { setGrants((prev) => prev.filter((g) => g.id !== id)); setEditingId(null); }}
                     onSaved={(updated) => setGrants((prev) => prev.map((g) => g.id === updated.id ? updated : g))}

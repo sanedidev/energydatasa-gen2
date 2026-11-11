@@ -40,6 +40,23 @@ async function isCognitoAdmin(email: string): Promise<boolean> {
   }
 }
 
+// Mirrors manage-content's hasAccess() exactly - a Moderator can only ever
+// delegate a pageKey they hold themselves (exact match, "*", or a broader
+// "prefix.*" that subsumes it). Before this, setPages had no such check at
+// all: any Moderator could grant any key - including ones they didn't
+// hold - to anyone they were otherwise allowed to edit.
+function isGrantable(callerPages: string[], candidateKey: string): boolean {
+  return callerPages.some((p) => {
+    if (p === '*') return true;
+    if (p === candidateKey) return true;
+    if (p.endsWith('.*')) {
+      const prefix = p.slice(0, -1); // keeps the trailing dot
+      return candidateKey.startsWith(prefix);
+    }
+    return false;
+  });
+}
+
 export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
   const identity = event.identity as AppSyncIdentityCognito | undefined;
   const callerGroups = identity?.groups ?? [];
@@ -52,11 +69,13 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
 
   const isCallerAdmin = callerGroups.includes('Admins');
 
-  // Defense in depth: re-derive the caller's own moderator status from the
-  // database rather than trusting anything the client sent.
+  // Defense in depth: re-derive the caller's own moderator status (and,
+  // further down, their own editablePages for the isGrantable check) from
+  // the database rather than trusting anything the client sent.
   let isCallerModerator = false;
+  let callerRecord: Record<string, unknown> | null = null;
   if (!isCallerAdmin) {
-    const callerRecord = await findByEmail(callerEmail);
+    callerRecord = await findByEmail(callerEmail);
     isCallerModerator = callerRecord?.isModerator === true;
     if (!isCallerModerator) throw new Error('Forbidden');
   }
@@ -134,6 +153,15 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
   }
 
   if (action === 'setPages') {
+    const requestedPages = editablePages ?? [];
+    if (!isCallerAdmin) {
+      const callerPages = (callerRecord?.editablePages as string[] | undefined) ?? [];
+      const ungrantable = requestedPages.filter((k) => !isGrantable(callerPages, k));
+      if (ungrantable.length > 0) {
+        throw new Error(`Forbidden: you can't grant page(s) you don't hold yourself: ${ungrantable.join(', ')}`);
+      }
+    }
+
     const existing = await findByEmail(targetEmail);
     const now = new Date().toISOString();
     if (existing) {
@@ -142,7 +170,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
           TableName: TABLE_NAME,
           Key: { id: existing.id },
           UpdateExpression: 'SET editablePages = :p, updatedAt = :u',
-          ExpressionAttributeValues: { ':p': editablePages ?? [], ':u': now },
+          ExpressionAttributeValues: { ':p': requestedPages, ':u': now },
         })
       );
       return { ok: true };
@@ -150,7 +178,7 @@ export const handler: AppSyncResolverHandler<Args, unknown> = async (event) => {
     const item = {
       id: randomUUID(),
       email: targetEmail,
-      editablePages: editablePages ?? [],
+      editablePages: requestedPages,
       isModerator: false,
       createdAt: now,
       updatedAt: now,

@@ -173,6 +173,11 @@ function LinkTooltip({ link }) {
 // offsets from the node's own y0, confirmed by reading nivo's own link-path
 // builder in its built source.
 function AnimatedFlowLayer({ links, currentLink, isCurrentLink, isInteractive }) {
+    // Heavier flows read as "heavier": their dash animates slower. Lighter
+    // flows feel quicker/thinner. Duration is scaled off this layer's own
+    // value range rather than a fixed PJ scale, so it stays meaningful
+    // whether the diagram is showing one year or a very different one.
+    const maxValue = Math.max(1, ...links.map((l) => l.value ?? 0));
     return (
         <g>
             {links.map((link) => {
@@ -183,6 +188,8 @@ function AnimatedFlowLayer({ links, currentLink, isCurrentLink, isInteractive })
                 const y1 = link.pos1;
                 const xMid = (x0 + x1) / 2;
                 const d = `M${x0},${y0} C${xMid},${y0} ${xMid},${y1} ${x1},${y1}`;
+                const ratio = Math.min(1, Math.max(0, (link.value ?? 0) / maxValue));
+                const duration = 1.6 + ratio * 2.4; // 1.6s (smallest flows) .. 4.0s (largest)
                 return (
                     <path
                         key={`flow-${link.index}`}
@@ -194,7 +201,7 @@ function AnimatedFlowLayer({ links, currentLink, isCurrentLink, isInteractive })
                         strokeDasharray="1,9"
                         strokeLinecap="round"
                         className="sankeyFlowDash"
-                        style={{ transition: "stroke-opacity 150ms ease" }}
+                        style={{ transition: "stroke-opacity 150ms ease", animationDuration: `${duration}s` }}
                     />
                 );
             })}

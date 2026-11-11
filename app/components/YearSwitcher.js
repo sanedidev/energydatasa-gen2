@@ -81,7 +81,7 @@ export default function YearSwitcher() {
     if (loadingYears) return null;
 
     return (
-        <div className="border-b border-slate-200 bg-slate-50">
+        <div className="border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)]">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-2.5 flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-medium text-slate-400">Year</span>
                 {availableYears.map((y) =>
@@ -117,8 +117,8 @@ export default function YearSwitcher() {
                                 onClick={() => setActiveYear(y.year)}
                                 className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                                     activeYear === y.year
-                                        ? "bg-slate-900 text-white"
-                                        : "bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-100"
+                                        ? "bg-[var(--color-ink)] text-white"
+                                        : "bg-white text-slate-600 border border-[var(--color-hairline)] hover:bg-slate-100"
                                 }`}
                             >
                                 {y.year}

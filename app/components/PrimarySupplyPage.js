@@ -181,7 +181,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── TPES composition by group ─────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Supply Mix by Fuel Group</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Net supply by energy carrier group (production + imports − exports − losses)
@@ -214,7 +214,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── Top individual fuels ──────────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Top Energy Sources</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Largest contributors by commodity — as a share of TPES ({tpesTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ)
@@ -238,7 +238,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── Full data table ───────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="font-semibold text-slate-900">Full Breakdown</h2>
@@ -278,7 +278,7 @@ export default function PrimarySupplyPage() {
                                 a.href = url; a.download = `SA_NEB_${activeYear}_Primary_Supply.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-white ring-1 ring-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
                         >
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -306,7 +306,7 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}
-                <div className="rounded-xl bg-slate-50 ring-1 ring-slate-200 px-5 py-4">
+                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
                     <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
                     <ul className="space-y-1 text-xs text-slate-500">
                         <li>• All values in Petajoules (PJ). Negative values represent outflows — exports, losses, or stock draws.</li>

@@ -38,7 +38,7 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
     });
 
     return (
-        <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
+        <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
             <div className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
                 <button onClick={onToggle} className="flex min-w-0 flex-1 items-center justify-between gap-4 text-left">
                     <div className="min-w-0">

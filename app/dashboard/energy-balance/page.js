@@ -79,10 +79,10 @@ export default function EnergyBalancePage() {
 
         return {
             summaryStats: [
-                { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal, color: "text-blue-700"    },
-                { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal, color: "text-purple-700"  },
-                { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal, color: "text-emerald-700" },
-                { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal,  color: "text-red-600"     },
+                { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal },
+                { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal },
+                { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal },
+                { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal  },
             ],
             sectorTotals: SECTOR_IDS.map((id) => {
                 const row = byId[id]?.rows.find((r) => r.isTotal);
@@ -135,8 +135,9 @@ export default function EnergyBalancePage() {
 
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {summaryStats.map((s) => (
-                        <div key={s.label} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className={`text-xl font-bold ${s.color}`}>{s.value}</div>
+                        <div key={s.label} className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                            <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+                            <div className="text-xl font-bold text-[var(--color-cream)]">{s.value}</div>
                             <div className="mt-0.5 text-xs text-white/50">{s.label}</div>
                         </div>
                     ))}
@@ -144,7 +145,7 @@ export default function EnergyBalancePage() {
             </HeroSection>
 
             {/* ── Sector strip ──────────────────────────────────────────────── */}
-            <div className="border-b border-slate-200 bg-white">
+            <div className="border-b border-[var(--color-hairline)] bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5">
                     <div className="flex flex-col gap-5 sm:flex-row sm:gap-0 sm:divide-x sm:divide-slate-100">
 
@@ -156,18 +157,18 @@ export default function EnergyBalancePage() {
                             <div className="flex flex-wrap gap-2">
                                 <Link
                                     href="/dashboard/energy-balance/primary-supply"
-                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-green-200 hover:bg-green-50"
+                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                 >
-                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-green-500" />
-                                    <span className="font-medium text-slate-700 group-hover:text-green-700">Primary Energy Supply</span>
+                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                                    <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">Primary Energy Supply</span>
                                     <span className="font-mono text-slate-500">{summaryStats[0].value}</span>
                                 </Link>
                                 <Link
                                     href="/dashboard/energy-balance/conversion"
-                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-green-200 hover:bg-green-50"
+                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                 >
                                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
-                                    <span className="font-medium text-slate-700 group-hover:text-green-700">Conversion &amp; Transformation</span>
+                                    <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">Conversion &amp; Transformation</span>
                                     <span className="font-mono text-slate-500">{summaryStats[1].value}</span>
                                 </Link>
                             </div>
@@ -183,9 +184,9 @@ export default function EnergyBalancePage() {
                                     <Link
                                         key={s.id}
                                         href={`/dashboard/energy-balance/${s.id}`}
-                                        className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-green-200 hover:bg-green-50"
+                                        className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                     >
-                                        <span className="font-medium text-slate-700 group-hover:text-green-700">{s.label}</span>
+                                        <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">{s.label}</span>
                                         <span className="font-mono text-red-500">{s.value}</span>
                                     </Link>
                                 ))}
@@ -204,8 +205,8 @@ export default function EnergyBalancePage() {
 
             {/* ── Sankey Diagram ────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
-                <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
-                    <div className="card-accent" style={{ "--accent-a": "#2563eb", "--accent-b": "#8b5cf6" }} />
+                <div className="rounded-[28px] bg-white border border-[var(--color-hairline)] overflow-hidden">
+                    <div className="card-accent" style={{ "--accent-a": "var(--color-accent)", "--accent-b": "var(--color-link)" }} />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             {canEditTitle && editingTitle ? (
@@ -257,8 +258,8 @@ export default function EnergyBalancePage() {
 
             {/* ── Final Consumption by Sector (fuel-mix bar chart) ─────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-                <div className="rounded-[28px] bg-white ring-1 ring-slate-200/70 shadow-[0_8px_30px_-12px_rgba(15,23,42,0.12)] transition-shadow duration-300 hover:shadow-[0_16px_48px_-12px_rgba(15,23,42,0.18)] overflow-hidden">
-                    <div className="card-accent" style={{ "--accent-a": "#ea580c", "--accent-b": "#2563eb" }} />
+                <div className="rounded-[28px] bg-white border border-[var(--color-hairline)] overflow-hidden">
+                    <div className="card-accent" style={{ "--accent-a": "var(--color-link)", "--accent-b": "var(--color-accent)" }} />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>
@@ -275,7 +276,7 @@ export default function EnergyBalancePage() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 flex flex-wrap gap-2">
                 <button
                     onClick={() => setActiveGroup("all")}
-                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === "all" ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
+                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === "all" ? "bg-[var(--color-ink)] text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
                 >
                     All Commodities
                 </button>
@@ -283,7 +284,7 @@ export default function EnergyBalancePage() {
                     <button
                         key={g}
                         onClick={() => setActiveGroup(g)}
-                        className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === g ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
+                        className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === g ? "bg-[var(--color-ink)] text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
                     >
                         {GROUP_LABELS[g]}
                     </button>
@@ -309,7 +310,7 @@ export default function EnergyBalancePage() {
 
             {/* ── Footer notes ──────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
-                <div className="rounded-xl bg-slate-50 ring-1 ring-slate-200 px-5 py-4">
+                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
                     <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
                     <ul className="space-y-1 text-xs text-slate-500">
                         <li>• All values in Petajoules (PJ). Negative = consumption, Positive = production/supply.</li>

@@ -141,7 +141,7 @@ export default function ConversionPage() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 space-y-8">
 
                 {/* ── Power generation by source ────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100">
                         <h2 className="font-semibold text-slate-900">Power Generation by Source</h2>
                         <p className="text-xs text-slate-400 mt-0.5">
@@ -225,7 +225,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Electricity balance ───────────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Electricity Balance</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         From gross generation to net electricity available for final consumption
@@ -263,7 +263,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Refinery section ──────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm p-6">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] p-6">
                     <h2 className="text-base font-semibold text-slate-900 mb-1">Liquid Fuel Transformation</h2>
                     <p className="text-xs text-slate-500 mb-5">
                         Crude oil refining and Sasol&apos;s Coal-to-Liquids (CTL) process
@@ -305,7 +305,7 @@ export default function ConversionPage() {
                         </div>
 
                         {/* Sasol CTL */}
-                        <div className="rounded-xl bg-slate-50 ring-1 ring-slate-200 p-5">
+                        <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 className="text-sm font-semibold text-slate-900">Coal to Liquids — Sasol CTL</h3>
@@ -330,7 +330,7 @@ export default function ConversionPage() {
                                         />
                                     </div>
                                 </div>
-                                <div className="rounded-lg bg-white ring-1 ring-slate-200 px-4 py-3 flex items-center justify-between">
+                                <div className="rounded-lg bg-white border border-[var(--color-hairline)] px-4 py-3 flex items-center justify-between">
                                     <span className="text-xs text-slate-600">Conversion Efficiency</span>
                                     <span className="text-sm font-bold text-red-500">
                                         {(ctlOutput / ctlInput * 100).toFixed(1)}%
@@ -345,7 +345,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Full data table ───────────────────────────────────────── */}
-                <div className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
+                <div className="rounded-2xl bg-white border border-[var(--color-hairline)] overflow-hidden">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
                         <div>
                             <h2 className="font-semibold text-slate-900">Full Breakdown</h2>
@@ -387,7 +387,7 @@ export default function ConversionPage() {
                                 a.href = url; a.download = `SA_NEB_${activeYear}_Conversion.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-white ring-1 ring-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
                         >
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -416,7 +416,7 @@ export default function ConversionPage() {
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}
-                <div className="rounded-xl bg-slate-50 ring-1 ring-slate-200 px-5 py-4">
+                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
                     <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
                     <ul className="space-y-1 text-xs text-slate-500">
                         <li>• All values in Petajoules (PJ). Negative = energy input consumed. Positive = energy output produced.</li>

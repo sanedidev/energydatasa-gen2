@@ -2,7 +2,12 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { useNEBData } from "@/app/context/NEBData";
+import { useNEBData, useNEBSection } from "@/app/context/NEBData";
+import { usePermissions } from "@/app/context/permissions";
+import { useAuth } from "@/app/context/auth";
+import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid";
+import EditableDataTable from "@/app/components/EditableDataTable";
+import EditSaveControls from "@/app/components/EditSaveControls";
 
 const SUPPLY_FUELS = [
     "bituminous", "coking", "anthracite", "coke", "charcoal",
@@ -18,10 +23,17 @@ const GROUP_STYLE = {
 };
 
 export default function PrimarySupplyPage() {
-    const { sections, commodities, meta } = useNEBData();
+    const { commodities, meta, activeYear, saveSectionData } = useNEBData();
+    const section = useNEBSection("primary-supply");
+    const { canEdit } = usePermissions();
+    const { user } = useAuth();
     const COMMODITY_LABEL = useMemo(() => Object.fromEntries(commodities.map((c) => [c.id, c.label])), [commodities]);
     const COMMODITY_GROUP = useMemo(() => Object.fromEntries(commodities.map((c) => [c.id, c.group])), [commodities]);
-    const section = sections.find((s) => s.id === "primary-supply");
+    const canEditSection = canEdit("neb.primary-supply");
+    const grid = useEditableSectionGrid({
+        year: activeYear, sectionId: "primary-supply", section,
+        canEdit: canEditSection, userEmail: user?.email, saveSectionData,
+    });
     if (!section) return null;
 
     const totalRow  = section.rows.find((r) => r.isTotal);
@@ -247,6 +259,16 @@ export default function PrimarySupplyPage() {
                             <p className="text-xs text-slate-400 mt-0.5">All values in PJ · Negative = outflow (exports / losses)</p>
                         </div>
                         <div className="flex items-center gap-2">
+                        <EditSaveControls
+                            canEdit={canEditSection}
+                            isEditing={grid.isEditing}
+                            saving={grid.saving}
+                            error={grid.error}
+                            draftRestored={grid.draftRestored}
+                            onStartEdit={grid.handleStartEdit}
+                            onSave={grid.handleSave}
+                            onCancel={grid.handleCancel}
+                        />
                         <button
                             onClick={() => {
                                 const headers = ["Row", "Total PJ", ...SUPPLY_FUELS.map((id) => COMMODITY_LABEL[id] ?? id)];
@@ -294,55 +316,20 @@ export default function PrimarySupplyPage() {
                         </div>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full text-xs">
-                            <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="sticky left-0 z-10 bg-slate-50 px-4 py-2.5 text-left font-semibold text-slate-600 min-w-48">
-                                        Row
-                                    </th>
-                                    <th className="px-3 py-2.5 text-right font-semibold text-slate-600 min-w-20 border-r border-slate-200">
-                                        Total PJ
-                                    </th>
-                                    {SUPPLY_FUELS.map((id) => (
-                                        <th key={id} className="px-3 py-2.5 text-right font-medium text-slate-500 min-w-24 whitespace-nowrap">
-                                            {COMMODITY_LABEL[id] ?? id}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                {section.rows.map((row) => (
-                                    <tr
-                                        key={row.id}
-                                        className={row.isTotal ? "bg-slate-900 font-semibold" : "hover:bg-slate-50 transition-colors"}
-                                    >
-                                        <td className={`sticky left-0 z-10 px-4 py-2.5 font-medium ${row.isTotal ? "bg-slate-900 text-white" : "bg-white text-slate-800"}`}>
-                                            {row.label}
-                                        </td>
-                                        <td className={`px-3 py-2.5 text-right font-mono border-r border-slate-200 ${row.isTotal ? "text-emerald-400" : "text-slate-700"}`}>
-                                            {row.values.total != null ? row.values.total.toFixed(2) : "—"}
-                                        </td>
-                                        {SUPPLY_FUELS.map((id) => {
-                                            const v = row.values[id];
-                                            const isNeg = v != null && v < 0;
-                                            return (
-                                                <td
-                                                    key={id}
-                                                    className={`px-3 py-2.5 text-right font-mono ${
-                                                        v == null
-                                                            ? row.isTotal ? "text-slate-600" : "text-slate-300"
-                                                            : row.isTotal ? "text-emerald-400"
-                                                            : isNeg ? "text-red-500" : "text-slate-700"
-                                                    }`}
-                                                >
-                                                    {v != null ? v.toFixed(2) : "—"}
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <EditableDataTable
+                            rows={grid.isEditing ? grid.draftRows : section.rows}
+                            commodities={SUPPLY_FUELS.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
+                            totalLabel="Total PJ"
+                            isEditing={grid.isEditing}
+                            setCell={grid.setCell}
+                            formatValue={(v) => (v != null ? Number(v).toFixed(2) : "—")}
+                            cellClassName={(v, { isTotalRow, isTotalColumn }) => {
+                                if (isTotalColumn) return isTotalRow ? "text-emerald-400" : "text-slate-700";
+                                if (v == null) return isTotalRow ? "text-slate-600" : "text-slate-300";
+                                if (isTotalRow) return "text-emerald-400";
+                                return Number(v) < 0 ? "text-red-500" : "text-slate-700";
+                            }}
+                        />
                     </div>
                 </div>
 

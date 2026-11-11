@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent, deletePageContentById } from "@/app/lib/manageContent";
@@ -378,4 +378,11 @@ export function useNEBData() {
     const ctx = useContext(NEBDataContext);
     if (!ctx) throw new Error("useNEBData must be used within NEBDataProvider");
     return ctx;
+}
+
+// One section of the active year - replaces every page's own
+// sections.find((s) => s.id === sectionId).
+export function useNEBSection(sectionId) {
+    const { sections } = useNEBData();
+    return useMemo(() => sections.find((s) => s.id === sectionId) ?? null, [sections, sectionId]);
 }

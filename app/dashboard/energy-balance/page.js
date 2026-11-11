@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { usePermissions } from "@/app/context/permissions";
 import { useAuth } from "@/app/context/auth";
 import { useNEBData } from "@/app/context/NEBData";
+import NEBSectionCard from "@/app/components/NEBSectionCard";
 import Link from "next/link";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
@@ -12,23 +13,6 @@ const FinalConsumptionBars = dynamic(() => import("@/app/components/FinalConsump
 
 const GROUP_LABELS = { coal: "Coal & Coke", biomass: "Biomass", liquid: "Liquid Fuels", other: "Gas & Electricity" };
 const COMMODITY_GROUP_ORDER = ["coal", "biomass", "liquid", "other"];
-
-// ── Formatting ────────────────────────────────────────────────────────────────
-
-function fmt(val) {
-    if (val === null || val === undefined) return "—";
-    const n = Number(val);
-    if (isNaN(n)) return "—";
-    return n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function valueClass(val) {
-    if (val === null || val === undefined) return "text-slate-300";
-    const n = Number(val);
-    if (n < 0) return "text-red-600 tabular-nums";
-    if (n > 0) return "text-emerald-700 tabular-nums";
-    return "text-slate-400 tabular-nums";
-}
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 
@@ -326,61 +310,15 @@ export default function EnergyBalancePage() {
                 {dataLoading ? (
                     <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading {meta.year} data…</div>
                 ) : (
-                    sections.map((section) => {
-                        const isCollapsed = collapsed[section.id];
-                        return (
-                            <div key={section.id} className="rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm overflow-hidden">
-                                <button
-                                    onClick={() => toggleSection(section.id)}
-                                    className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-slate-50 transition-colors"
-                                >
-                                    <div>
-                                        <h2 className="text-base font-semibold text-slate-900">{section.label}</h2>
-                                        <p className="text-xs text-slate-500 mt-0.5">{section.description}</p>
-                                    </div>
-                                    <svg
-                                        className={`h-4 w-4 text-slate-400 transition-transform shrink-0 ml-4 ${isCollapsed ? "-rotate-90" : ""}`}
-                                        fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </button>
-
-                                {!isCollapsed && (
-                                    <div className="overflow-x-auto border-t border-slate-100">
-                                        <table className="min-w-full text-xs">
-                                            <thead>
-                                                <tr className="bg-slate-50 border-b border-slate-200">
-                                                    <th className="sticky left-0 z-10 bg-slate-50 px-4 py-2.5 text-left font-semibold text-slate-600 min-w-50">Row</th>
-                                                    <th className="px-3 py-2.5 text-right font-semibold text-slate-600 min-w-20 border-r border-slate-200">Total</th>
-                                                    {visibleCommodities.map((c) => (
-                                                        <th key={c.id} className="px-3 py-2.5 text-right font-medium text-slate-500 min-w-22.5 whitespace-nowrap">{c.label}</th>
-                                                    ))}
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-50">
-                                                {section.rows.map((row) => (
-                                                    <tr key={row.id} className={row.isTotal ? "bg-slate-900 font-semibold" : "hover:bg-slate-50 transition-colors"}>
-                                                        <td className={`sticky left-0 z-10 px-4 py-2.5 font-medium ${row.isTotal ? "bg-slate-900 text-white" : "bg-white text-slate-800"}`}>
-                                                            {row.label}
-                                                        </td>
-                                                        <td className={`px-3 py-2.5 text-right font-mono border-r border-slate-200 ${row.isTotal ? (row.values?.total < 0 ? "text-red-400" : "text-emerald-400") : valueClass(row.values?.total)}`}>
-                                                            {fmt(row.values?.total)}
-                                                        </td>
-                                                        {visibleCommodities.map((c) => (
-                                                            <td key={c.id} className={`px-3 py-2.5 text-right font-mono ${row.isTotal ? (row.values?.[c.id] == null ? "text-slate-600" : row.values[c.id] < 0 ? "text-red-400" : "text-emerald-400") : valueClass(row.values?.[c.id])}`}>
-                                                                {fmt(row.values?.[c.id])}
-                                                            </td>
-                                                        ))}
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })
+                    sections.map((section) => (
+                        <NEBSectionCard
+                            key={section.id}
+                            section={section}
+                            collapsed={!!collapsed[section.id]}
+                            onToggle={() => toggleSection(section.id)}
+                            visibleCommodities={visibleCommodities}
+                        />
+                    ))
                 )}
             </div>
 

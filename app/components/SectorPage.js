@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useNEBData, COMMODITY_ID_MAP } from "@/app/context/NEBData";
+import { useNEBData, useNEBSection, COMMODITY_ID_MAP } from "@/app/context/NEBData";
+import { usePermissions } from "@/app/context/permissions";
+import { useAuth } from "@/app/context/auth";
+import { useEditableSectionGrid } from "@/app/components/useEditableSectionGrid";
+import EditableDataTable from "@/app/components/EditableDataTable";
+import EditSaveControls from "@/app/components/EditSaveControls";
 import { computeSectorCO2 } from "@/app/lib/co2Factors";
 
 const SECTOR_CONFIG = {
@@ -66,9 +71,16 @@ function rowTotal(row, commodities) {
 }
 
 export default function SectorPage({ sectionId }) {
-    const { sections, commodities, meta } = useNEBData();
+    const { commodities, meta, activeYear, saveSectionData } = useNEBData();
     const cfg     = SECTOR_CONFIG[sectionId];
-    const section = sections.find((s) => s.id === sectionId);
+    const section = useNEBSection(sectionId);
+    const { canEdit } = usePermissions();
+    const { user } = useAuth();
+    const canEditSection = canEdit(`neb.${sectionId}`);
+    const grid = useEditableSectionGrid({
+        year: activeYear, sectionId, section,
+        canEdit: canEditSection, userEmail: user?.email, saveSectionData,
+    });
     if (!section || !cfg) return null;
 
     const totalRow     = section.rows.find((r) => r.isTotal);
@@ -291,6 +303,16 @@ export default function SectorPage({ sectionId }) {
                             <p className="text-xs text-slate-400 mt-0.5">All values in PJ · Absolute values shown</p>
                         </div>
                         <div className="flex items-center gap-2">
+                        <EditSaveControls
+                            canEdit={canEditSection}
+                            isEditing={grid.isEditing}
+                            saving={grid.saving}
+                            error={grid.error}
+                            draftRestored={grid.draftRestored}
+                            onStartEdit={grid.handleStartEdit}
+                            onSave={grid.handleSave}
+                            onCancel={grid.handleCancel}
+                        />
                         <button
                             onClick={() => {
                                 const headers = ["Row", "Total PJ", ...cfg.fuels.map((id) => COMMODITY_LABEL[id] ?? id)];
@@ -340,56 +362,25 @@ export default function SectorPage({ sectionId }) {
                         </button>
                         </div>
                     </div>
+                    {grid.isEditing && (
+                        <p className="px-6 pt-3 text-[11px] text-amber-600">
+                            Editing shows real stored values, not the absolute values shown above — consumption is negative, production/embedded generation (e.g. rooftop solar) is positive.
+                        </p>
+                    )}
                     <div className="overflow-x-auto">
-                        <table className="min-w-full text-xs">
-                            <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200">
-                                    <th className="sticky left-0 z-10 bg-slate-50 px-4 py-2.5 text-left font-semibold text-slate-600 min-w-48">
-                                        Row
-                                    </th>
-                                    <th className="px-3 py-2.5 text-right font-semibold text-slate-600 min-w-20 border-r border-slate-200">
-                                        Total PJ
-                                    </th>
-                                    {cfg.fuels.map((id) => (
-                                        <th key={id} className="px-3 py-2.5 text-right font-medium text-slate-500 min-w-24 whitespace-nowrap">
-                                            {COMMODITY_LABEL[id] ?? id}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-50">
-                                {section.rows.map((row) => (
-                                    <tr
-                                        key={row.id}
-                                        className={row.isTotal ? "bg-slate-900 font-semibold" : "hover:bg-slate-50 transition-colors"}
-                                    >
-                                        <td className={`sticky left-0 z-10 px-4 py-2.5 font-medium ${row.isTotal ? "bg-slate-900 text-white" : "bg-white text-slate-800"}`}>
-                                            {row.label}
-                                        </td>
-                                        <td className={`px-3 py-2.5 text-right font-mono border-r border-slate-200 ${row.isTotal ? "text-emerald-400" : "text-slate-700"}`}>
-                                            {row.values.total != null
-                                                ? Math.abs(row.values.total).toFixed(2)
-                                                : "—"}
-                                        </td>
-                                        {cfg.fuels.map((id) => {
-                                            const v = row.values[id];
-                                            return (
-                                                <td
-                                                    key={id}
-                                                    className={`px-3 py-2.5 text-right font-mono ${
-                                                        v == null
-                                                            ? row.isTotal ? "text-slate-600" : "text-slate-300"
-                                                            : row.isTotal ? "text-emerald-400" : "text-slate-700"
-                                                    }`}
-                                                >
-                                                    {v != null ? Math.abs(v).toFixed(2) : "—"}
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <EditableDataTable
+                            rows={grid.isEditing ? grid.draftRows : section.rows}
+                            commodities={cfg.fuels.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
+                            totalLabel="Total PJ"
+                            isEditing={grid.isEditing}
+                            setCell={grid.setCell}
+                            formatValue={(v) => (v != null ? Math.abs(Number(v)).toFixed(2) : "—")}
+                            cellClassName={(v, { isTotalRow, isTotalColumn }) => {
+                                if (isTotalColumn) return isTotalRow ? "text-emerald-400" : "text-slate-700";
+                                if (v == null) return isTotalRow ? "text-slate-600" : "text-slate-300";
+                                return isTotalRow ? "text-emerald-400" : "text-slate-700";
+                            }}
+                        />
                     </div>
                 </div>
 

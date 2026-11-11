@@ -22,7 +22,7 @@ export default function EditToolbar({
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="rounded-xl bg-green-700 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-800 disabled:opacity-60"
+                    className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-60"
                 >
                     {saving ? "Saving…" : "Save"}
                 </button>
@@ -51,8 +51,8 @@ export default function EditToolbar({
                         disabled={saving}
                         className={`inline-flex items-center gap-1.5 rounded-xl border border-dashed px-4 py-2 text-sm font-medium transition-all disabled:opacity-50 ${
                             showBlockPicker
-                                ? "border-green-400 bg-green-50 text-green-700"
-                                : "border-slate-300 bg-white text-slate-500 hover:border-green-400 hover:text-green-700"
+                                ? "border-[var(--color-accent)]/70 bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                                : "border-slate-300 bg-white text-slate-500 hover:border-[var(--color-accent)]/70 hover:text-[var(--color-accent)]"
                         }`}
                     >
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

@@ -38,11 +38,11 @@ export default function Page() {
                             className="group flex flex-col rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
                         >
                             <div className="flex-1 p-5">
-                                <h2 className="text-sm font-semibold text-slate-900 group-hover:text-green-700 transition-colors">{name}</h2>
+                                <h2 className="text-sm font-semibold text-slate-900 group-hover:text-[var(--color-accent)] transition-colors">{name}</h2>
                                 <p className="mt-1 text-xs text-slate-400">Coal-fired power station</p>
                             </div>
                             <div className="flex items-center justify-end border-t border-slate-50 px-5 py-2.5">
-                                <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700">
+                                <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
                                     Open
                                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

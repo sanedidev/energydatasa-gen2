@@ -219,7 +219,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
                         <div className="flex-1 flex items-center gap-3">
                             <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
                                 <div
-                                    className="h-full bg-green-500 rounded-full transition-all duration-200"
+                                    className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-200"
                                     style={{ width: `${uploadProgress}%` }}
                                 />
                             </div>
@@ -251,7 +251,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
                                     onClick={() => setSelected(img.key === selected ? null : img.key)}
                                     className={`group relative aspect-square rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
                                         selected === img.key
-                                            ? "border-green-500 ring-2 ring-green-300"
+                                            ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30"
                                             : "border-transparent hover:border-slate-300"
                                     }`}
                                 >
@@ -265,7 +265,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
                                     />
                                     {/* Selected checkmark */}
                                     {selected === img.key && (
-                                        <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-green-500 flex items-center justify-center">
+                                        <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-[var(--color-accent)] flex items-center justify-center">
                                             <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
@@ -303,7 +303,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
                             Cancel
                         </button>
                         <button onClick={handleConfirm} disabled={!selected}
-                            className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-40 transition-colors">
+                            className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors">
                             Use selected image
                         </button>
                     </div>

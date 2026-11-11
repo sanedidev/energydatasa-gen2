@@ -21,7 +21,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Natural Gas</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Natural Gas</p>
                 <h1 className="text-2xl font-bold text-slate-900">LNG</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Liquefied natural gas terminals, shipping routes, regasification, contracts, and pricing for South Africa.

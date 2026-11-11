@@ -29,7 +29,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Energy Efficiency</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency</p>
                 <h1 className="text-2xl font-bold text-slate-900">Standards & Labelling</h1>
                 <p className="mt-2 text-sm text-slate-500 max-w-2xl">
                     Minimum energy performance standards (MEPS) and product labelling requirements for appliances and equipment in South Africa.

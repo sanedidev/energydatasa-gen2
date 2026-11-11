@@ -134,9 +134,9 @@ function DragHandleBtn({ setDraggable }) {
 }
 
 function draggableCardClass(isDragging, isSwapTarget, isHidden, extra = "") {
-    return `relative rounded-xl border bg-white shadow-sm transition-all select-none
+    return `relative rounded-xl border bg-white transition-all select-none
         ${isDragging   ? "opacity-40 scale-[0.98]" : ""}
-        ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-slate-200"}
+        ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-[var(--color-hairline)]"}
         ${isHidden     ? "opacity-50" : ""}
         ${extra}`;
 }
@@ -175,9 +175,9 @@ export function BlockEditor({
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragEnd={(e) => { setDraggable(false); onDragEnd(e); }}
-            className={`relative rounded-xl border bg-white shadow-sm transition-all
+            className={`relative rounded-xl border bg-white transition-all
                 ${isDragging   ? "opacity-40 scale-[0.98]" : ""}
-                ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-slate-200"}
+                ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-[var(--color-hairline)]"}
                 ${isHidden     ? "opacity-50" : ""}
             `}
         >
@@ -242,7 +242,7 @@ export function BlockEditor({
             <textarea
                 ref={registerTextarea}
                 draggable={false}
-                className="w-full rounded-b-xl bg-white p-3 font-mono text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-green-200 focus:ring-inset transition-all resize-y select-text"
+                className="w-full rounded-b-xl bg-white p-3 font-mono text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:ring-inset transition-all resize-y select-text"
                 rows={6}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
@@ -294,7 +294,7 @@ export function ImageBlockEditor({
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                 </svg>
                 <span className="text-xs font-medium text-slate-500">Image</span>
-                <button type="button" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onChangeImage(); }} className="text-xs text-green-700 hover:text-green-900 underline underline-offset-2">
+                <button type="button" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onChangeImage(); }} className="text-xs text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] underline underline-offset-2">
                     Change
                 </button>
                 <div className="ml-auto flex items-center gap-1">
@@ -316,11 +316,11 @@ export function ImageBlockEditor({
 
             <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-3 border-t border-slate-100 bg-slate-50/70 px-4 py-3">
                 <span className="text-[11px] font-medium text-slate-500">Width</span>
-                <input type="range" min={10} max={100} step={5} value={width} onChange={(e) => onUpdate({ width: Number(e.target.value) })} className="w-full h-1.5 accent-green-600 cursor-pointer py-2" />
+                <input type="range" min={10} max={100} step={5} value={width} onChange={(e) => onUpdate({ width: Number(e.target.value) })} className="w-full h-1.5 accent-[var(--color-accent)] cursor-pointer py-2" />
                 <span className="w-10 text-right text-[11px] font-mono text-slate-600">{width}%</span>
 
                 <span className="text-[11px] font-medium text-slate-500">Height</span>
-                <input type="range" min={100} max={800} step={25} value={maxHeight} onChange={(e) => onUpdate({ maxHeight: Number(e.target.value) })} className="w-full h-1.5 accent-green-600 cursor-pointer py-2" />
+                <input type="range" min={100} max={800} step={25} value={maxHeight} onChange={(e) => onUpdate({ maxHeight: Number(e.target.value) })} className="w-full h-1.5 accent-[var(--color-accent)] cursor-pointer py-2" />
                 <span className="w-10 text-right text-[11px] font-mono text-slate-600">{maxHeight}px</span>
 
                 <span className="text-[11px] font-medium text-slate-500">Align</span>
@@ -331,7 +331,7 @@ export function ImageBlockEditor({
                             type="button"
                             title={opt.label}
                             onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onUpdate({ align: opt.value }); }}
-                            className={`inline-flex h-6 w-6 items-center justify-center rounded transition-colors ${align === opt.value ? "bg-green-100 text-green-700" : "text-slate-400 hover:bg-slate-200 hover:text-slate-700"}`}
+                            className={`inline-flex h-6 w-6 items-center justify-center rounded transition-colors ${align === opt.value ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]" : "text-slate-400 hover:bg-slate-200 hover:text-slate-700"}`}
                         >
                             {opt.icon}
                         </button>
@@ -382,7 +382,7 @@ export function TitleBlockEditor({
                     value={block.title ?? ""}
                     onChange={(e) => onUpdate({ title: e.target.value })}
                     placeholder="Title"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 select-text"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
                 />
                 <textarea
                     draggable={false}
@@ -390,7 +390,7 @@ export function TitleBlockEditor({
                     onChange={(e) => onUpdate({ subtitle: e.target.value })}
                     placeholder="Subtitle / description (optional)"
                     rows={2}
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 resize-none select-text"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none select-text"
                 />
             </div>
         </div>
@@ -437,7 +437,7 @@ export function SectionBlockEditor({
                     value={block.label ?? ""}
                     onChange={(e) => onUpdate({ label: e.target.value })}
                     placeholder="Section heading"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 select-text"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
                 />
             </div>
         </div>

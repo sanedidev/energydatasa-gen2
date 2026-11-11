@@ -20,7 +20,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Renewable Energy</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Renewable Energy</p>
                 <h1 className="text-2xl font-bold text-slate-900">Wind</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Installed wind capacity, generation volumes, plant locations, wind resource data, and REIPPP project details for South Africa.

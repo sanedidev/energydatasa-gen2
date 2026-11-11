@@ -20,7 +20,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Natural Gas</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Natural Gas</p>
                 <h1 className="text-2xl font-bold text-slate-900">Piped Gas</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Transmission pipelines, supply sources, distribution networks, and market data for piped natural gas in South Africa.

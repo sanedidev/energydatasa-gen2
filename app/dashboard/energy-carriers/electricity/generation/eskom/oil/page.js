@@ -22,7 +22,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Eskom Generation</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Eskom Generation</p>
                 <h1 className="text-2xl font-bold text-slate-900">Oil</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Eskom&apos;s oil-fired generation units — capacity, fuel usage, operational role, and technology context.

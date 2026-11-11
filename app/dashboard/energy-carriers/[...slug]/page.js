@@ -50,7 +50,7 @@ export default function DynamicCarrierPage({ params }) {
         return (
             <div className="py-16 text-center">
                 <p className="text-slate-500 text-sm">Page not found.</p>
-                <Link href="/dashboard/energy-carriers" className="mt-4 inline-block text-sm text-green-700 hover:underline">
+                <Link href="/dashboard/energy-carriers" className="mt-4 inline-block text-sm text-[var(--color-accent)] hover:underline">
                     ← Back to Energy Carriers
                 </Link>
             </div>

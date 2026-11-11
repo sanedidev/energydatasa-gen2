@@ -57,7 +57,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Energy Carriers</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Carriers</p>
                 <h1 className="text-2xl font-bold text-slate-900">Geothermal</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Low- and high-enthalpy geothermal resources, exploration status, and technology potential for South Africa.

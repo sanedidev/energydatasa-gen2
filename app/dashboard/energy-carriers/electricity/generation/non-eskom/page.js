@@ -21,7 +21,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Generation</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Generation</p>
                 <h1 className="text-2xl font-bold text-slate-900">Non-Eskom Generation</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Municipal generators, industrial self-generators, and other non-Eskom electricity producers in South Africa.

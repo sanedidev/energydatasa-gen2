@@ -15,7 +15,7 @@ export default function Page() {
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Coal</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Coal</p>
                 <h1 className="text-2xl font-bold text-slate-900">Production &amp; Mining</h1>
                 <p className="mt-2 text-sm text-slate-500">
                     Mining methods, producing regions, annual volumes, major companies, and supply-chain notes for South African coal.

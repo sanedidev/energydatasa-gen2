@@ -280,14 +280,14 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">How would you like to add this?</p>
 
                         <button onClick={handleDuplicate} disabled={actioning}
-                            className="w-full flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-green-300 hover:bg-green-50 transition-all group disabled:opacity-40">
-                            <span className="mt-0.5 rounded-lg bg-green-100 p-1.5 text-green-700 group-hover:bg-green-200 transition-colors">
+                            className="w-full flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent-soft)] transition-all group disabled:opacity-40">
+                            <span className="mt-0.5 rounded-lg bg-[var(--color-accent-soft)] p-1.5 text-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/30 transition-colors">
                                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
                                 </svg>
                             </span>
                             <div>
-                                <p className="text-sm font-semibold text-slate-900 group-hover:text-green-800">Duplicate here</p>
+                                <p className="text-sm font-semibold text-slate-900 group-hover:text-[var(--color-accent-hover)]">Duplicate here</p>
                                 <p className="text-xs text-slate-500 mt-0.5">Keep the original in <span className="font-medium">{selected.path[selected.path.length - 2] ?? "its carrier"}</span> and also add a copy here.</p>
                             </div>
                         </button>
@@ -351,7 +351,7 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
                                 className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors group">
                                 <span className="mt-0.5">{item.type === "carrier" ? <FolderIcon /> : <FileIcon />}</span>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-slate-900 group-hover:text-green-700 transition-colors truncate">{item.label}</p>
+                                    <p className="text-sm font-medium text-slate-900 group-hover:text-[var(--color-accent)] transition-colors truncate">{item.label}</p>
                                     <p className="text-[11px] text-slate-400 truncate mt-0.5">{item.path.slice(0, -1).join(" / ")}</p>
                                 </div>
                                 <span className={`shrink-0 self-center text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded-md ${item.type === "carrier" ? "bg-amber-50 text-amber-600" : "bg-blue-50 text-blue-500"}`}>

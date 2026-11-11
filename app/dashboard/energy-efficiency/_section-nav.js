@@ -41,7 +41,7 @@ export default function SectionNav() {
     return (
         <nav aria-label="Energy Efficiency" className="select-none">
             <div className="mb-3 flex items-center gap-2 px-3">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]/70" />
                 <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                     Energy Efficiency
                 </p>
@@ -56,12 +56,12 @@ export default function SectionNav() {
                                 className={[
                                     "flex items-center rounded-lg px-3 py-1.5 text-sm transition-colors",
                                     active
-                                        ? "bg-green-50 text-green-700 font-medium"
+                                        ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-medium"
                                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
                                 ].join(" ")}
                             >
                                 {active && (
-                                    <span className="mr-2 h-1.5 w-1.5 rounded-full bg-green-500 shrink-0" />
+                                    <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[var(--color-accent-soft)]0 shrink-0" />
                                 )}
                                 {item.label}
                             </Link>

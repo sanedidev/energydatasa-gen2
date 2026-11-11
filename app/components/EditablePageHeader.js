@@ -83,12 +83,12 @@ export default function EditablePageHeader({
 
     if (editing) {
         return (
-            <div className="rounded-2xl border border-green-200 bg-green-50 p-5 space-y-3">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-green-700">Editing page header</p>
+            <div className="rounded-2xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] p-5 space-y-3">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Editing page header</p>
                 <div className="space-y-1">
                     <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Label (e.g. Topic)</label>
                     <input
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         value={draft.label}
                         onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))}
                         placeholder="Topic"
@@ -97,7 +97,7 @@ export default function EditablePageHeader({
                 <div className="space-y-1">
                     <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
                     <input
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-green-300"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         value={draft.title}
                         onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
                         placeholder="Page title"
@@ -107,7 +107,7 @@ export default function EditablePageHeader({
                     <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Description</label>
                     <textarea
                         rows={3}
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-green-300 resize-none"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40 resize-none"
                         value={draft.desc}
                         onChange={(e) => setDraft((d) => ({ ...d, desc: e.target.value }))}
                         placeholder="Short description…"
@@ -117,7 +117,7 @@ export default function EditablePageHeader({
                     <button
                         onClick={saveEdit}
                         disabled={saving || !draft.title.trim()}
-                        className="rounded-xl bg-green-700 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-800 disabled:opacity-40"
+                        className="rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40"
                     >
                         {saving ? "Saving…" : "Save"}
                     </button>
@@ -134,7 +134,7 @@ export default function EditablePageHeader({
 
     return (
         <div>
-            {label && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">{label}</p>}
+            {label && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">{label}</p>}
             <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
             {desc && <p className="mt-2 text-sm text-slate-500 max-w-2xl">{desc}</p>}
             {canManage && pageEditMode && (

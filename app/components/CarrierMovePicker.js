@@ -145,7 +145,7 @@ export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTIO
                                 className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors group">
                                 <span className="mt-0.5"><FolderIcon /></span>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-slate-900 group-hover:text-green-700 transition-colors truncate">{t.label}</p>
+                                    <p className="text-sm font-medium text-slate-900 group-hover:text-[var(--color-accent)] transition-colors truncate">{t.label}</p>
                                     {t.path && <p className="text-[11px] text-slate-400 truncate mt-0.5">{t.path.slice(0, -1).join(" / ")}</p>}
                                 </div>
                             </button>

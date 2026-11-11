@@ -22,9 +22,9 @@ function SectionCard({
             onDragOver={isManaging ? onDragOver : undefined}
             onDrop={isManaging ? onDrop : undefined}
             onDragEnd={isManaging ? onDragEnd : undefined}
-            className={`relative scroll-mt-24 rounded-2xl bg-white ring-1 shadow-sm p-6 transition-all
+            className={`relative scroll-mt-24 rounded-2xl bg-white p-6 transition-all
                 ${isManaging && isDragging   ? "opacity-40 scale-[0.99]" : ""}
-                ${isManaging && isSwapTarget ? "ring-orange-400 ring-2" : "ring-slate-100"}
+                ${isManaging && isSwapTarget ? "ring-orange-400 ring-2 border border-transparent" : "border border-[var(--color-hairline)]"}
                 ${isManaging && isHidden     ? "opacity-50" : ""}
             `}
         >
@@ -63,7 +63,7 @@ function SectionCard({
                         onChange={onRenameChange}
                         onBlur={onRenameCommit}
                         onKeyDown={onRenameKeyDown}
-                        className="flex-1 rounded-lg border border-green-300 bg-white px-2 py-0.5 text-base font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200"
+                        className="flex-1 rounded-lg border border-[var(--color-accent)]/40 bg-white px-2 py-0.5 text-base font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                     />
                 ) : !hideTitle ? (
                     <h2 className="flex-1 text-base font-semibold text-slate-900">{title}</h2>

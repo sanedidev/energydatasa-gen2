@@ -63,7 +63,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                         onClick={() => ps.setInternalEditMode((v) => !v)}
                         className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
                             ps.internalEditMode
-                                ? "border-green-300 bg-green-50 text-green-700 hover:bg-green-100"
+                                ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
                                 : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
                         }`}
                     >
@@ -112,10 +112,10 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
             {(ps.tocVisible || ps.canEditThisPage) && (
                 <div
                     id="on-this-page"
-                    className={`mb-4 rounded-2xl ring-1 p-5 transition-opacity ${
+                    className={`mb-4 rounded-2xl border border-[var(--color-hairline)] p-5 transition-opacity ${
                         ps.tocVisible
-                            ? "bg-slate-50 ring-slate-100"
-                            : "bg-slate-50/50 ring-slate-100 opacity-40"
+                            ? "bg-slate-50"
+                            : "bg-slate-50/50 opacity-40"
                     }`}
                 >
                     <div className="flex items-center justify-between mb-3">
@@ -148,7 +148,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                         {list.filter((f) => !f.hidden || ps.canEditThisPage).map((f) => (
                             <a key={f.id} href={`#${f.id}`}
-                                className="rounded-lg bg-white ring-1 ring-slate-100 px-3 py-2 text-sm text-slate-600 hover:text-green-700 hover:ring-green-100 transition-all"
+                                className="rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-2 text-sm text-slate-600 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all"
                             >
                                 {f.label}
                             </a>

@@ -1,24 +1,53 @@
 @import "tailwindcss";
 @import "maplibre-gl/dist/maplibre-gl.css";
+@import "./components/ui/motion.css";
 
 :root {
-  --background: #ffffff;
-  /* white */
-  --foreground: #171717;
-  /* near-black text */
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
 }
 
 /* keep it light even if the OS is dark */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    --background: var(--color-cream);
+    --foreground: var(--color-ink);
   }
 }
 
 /* tell the browser to use light UI styling for form controls, etc. */
 html {
   color-scheme: light;
+}
+
+/* ---- Design tokens: curi3.com-derived redesign palette ----
+   Reserved status colors (red/emerald/amber, used for NEB value signs and
+   upload success/error/warning panels) are intentionally NOT redefined here
+   - they keep using Tailwind's own red/emerald/amber scales untouched. This
+   block only ever introduces new tokens, never remaps an existing Tailwind
+   color name, so nothing semantic can be swept up by the decorative-color
+   cleanup this redesign is doing elsewhere. */
+@theme {
+  --color-cream:      #f7f3ec; /* page background - warm off-white, not stark white */
+  --color-cream-2:    #efe9df; /* slightly deeper cream for alternating bands/footer */
+  --color-ink:        #16140f; /* near-black text */
+  --color-ink-soft:   #4a463d; /* secondary/muted text on cream */
+
+  --color-accent:        #c1643f; /* terracotta - the one decorative accent: CTAs, dots, numerals */
+  --color-accent-hover:  #a8512f;
+  --color-accent-soft:   #f0ddd3; /* tint for subtle accent backgrounds */
+
+  --color-link:        #2d3a5f; /* muted navy - secondary emphasis, links */
+  --color-link-hover:  #202b47;
+
+  --color-hairline:       #ddd5c6; /* 1px rules on cream */
+  --color-hairline-dark:  rgba(247,243,236,0.14); /* 1px rules on a dark section */
+
+  --radius-card: 0.75rem;
+
+  /* Geist Sans carries headlines for now; --font-display is a drop-in point
+     for a second display typeface later without touching any call site. */
+  --font-display: var(--font-geist-sans);
 }
 
 @theme inline {
@@ -31,7 +60,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }
 
 .no-scrollbar {

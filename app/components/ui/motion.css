@@ -1,0 +1,14 @@
+/* Shared ambient-animation keyframes for the redesign. Every rule that uses
+   one of these must stay inline-style + CSS-keyframe (no animation library,
+   no requestAnimationFrame loop) and must be paired with a
+   prefers-reduced-motion guard, matching the pattern already established by
+   EnergySankey.js's AnimatedFlowLayer and energy-balance/page.js's
+   .card-accent. This file only holds keyframes that are actually shared
+   across more than one component - a one-off animation used by a single
+   component can keep its own inline <style> block instead. */
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="motion-"] {
+    animation: none !important;
+  }
+}

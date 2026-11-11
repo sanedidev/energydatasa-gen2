@@ -169,7 +169,7 @@ export default function EnergyInsightsIndex() {
             </div>
             <div className="mb-10 flex items-start justify-between gap-4 flex-wrap">
                 <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-green-600">Latest</p>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Latest</p>
                     <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Energy Insights &amp; Updates</h1>
                     <p className="mt-2 text-sm text-slate-500 max-w-2xl">In-depth analysis and updates on South Africa&apos;s energy landscape.</p>
                 </div>
@@ -177,9 +177,9 @@ export default function EnergyInsightsIndex() {
                     <button
                         type="button"
                         onClick={() => { setManaging((v) => !v); setConfirmTarget(null); setCreateErr(""); }}
-                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium shadow-sm transition-all ${
+                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
                             managing
-                                ? "border-green-300 bg-green-50 text-green-700 hover:bg-green-100"
+                                ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
                                 : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -212,7 +212,7 @@ export default function EnergyInsightsIndex() {
 
             {/* New article form */}
             {canManage && managing && (
-                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-green-300 bg-green-50/40 p-6 space-y-4">
+                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
                     <p className="text-sm font-semibold text-slate-700">Create new article</p>
                     <div className="flex gap-4 items-start">
                         {/* Cover image picker */}
@@ -221,7 +221,7 @@ export default function EnergyInsightsIndex() {
                             <button
                                 type="button"
                                 onClick={() => setCreateMediaOpen(true)}
-                                className="group relative h-20 w-20 overflow-hidden rounded-xl border-2 border-dashed border-green-300 bg-white transition-all hover:border-green-400"
+                                className="group relative h-20 w-20 overflow-hidden rounded-xl border-2 border-dashed border-[var(--color-accent)]/40 bg-white transition-all hover:border-[var(--color-accent)]/70"
                                 title="Choose cover image"
                             >
                                 {newImageKey ? (
@@ -255,7 +255,7 @@ export default function EnergyInsightsIndex() {
                                     onChange={(e) => handleTitleChange(e.target.value)}
                                     placeholder="Article title…"
                                     required
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                                 />
                             </div>
                             <div>
@@ -266,7 +266,7 @@ export default function EnergyInsightsIndex() {
                                     onChange={(e) => { setNewSlug(e.target.value); setSlugEdited(true); }}
                                     placeholder="url-slug"
                                     required
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                                 />
                                 <p className="mt-1 text-xs text-slate-400">URL: /energyInsights/<strong>{newSlug || "slug"}</strong></p>
                             </div>
@@ -277,7 +277,7 @@ export default function EnergyInsightsIndex() {
                                     onChange={(e) => setNewExcerpt(e.target.value)}
                                     placeholder="Short description shown on the index page…"
                                     rows={2}
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400 resize-none"
+                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none"
                                 />
                             </div>
                         </div>
@@ -287,7 +287,7 @@ export default function EnergyInsightsIndex() {
                         <button
                             type="submit"
                             disabled={creating || !newTitle.trim() || !newSlug.trim()}
-                            className="rounded-xl bg-green-700 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-green-800 disabled:opacity-50"
+                            className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                         >
                             {creating ? "Creating…" : "Create & open"}
                         </button>
@@ -337,7 +337,7 @@ export default function EnergyInsightsIndex() {
                         return (
                             <article
                                 key={article.id}
-                                className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition-shadow hover:shadow-md ${isHidden ? "opacity-40" : ""}`}
+                                className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white border border-[var(--color-hairline)] transition-all hover:border-[var(--color-accent)]/40 ${isHidden ? "opacity-40" : ""}`}
                             >
                                 {/* Admin controls — only visible in manage mode */}
                                 {canManage && managing && (
@@ -370,7 +370,7 @@ export default function EnergyInsightsIndex() {
                                 )}
                                 <div className="flex flex-1 flex-col p-6">
                                     <Link href={`/energyInsights/${article.slug}`}>
-                                        <h2 className="text-base font-semibold leading-snug text-slate-900 transition-colors hover:text-green-700">
+                                        <h2 className="text-base font-semibold leading-snug text-slate-900 transition-colors hover:text-[var(--color-accent)]">
                                             {article.title}
                                         </h2>
                                     </Link>
@@ -379,7 +379,7 @@ export default function EnergyInsightsIndex() {
                                     )}
                                     <Link
                                         href={`/energyInsights/${article.slug}`}
-                                        className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-green-700 hover:text-green-800 transition-colors"
+                                        className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] transition-colors"
                                     >
                                         Read more
                                         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

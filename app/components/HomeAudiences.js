@@ -21,10 +21,7 @@ export default function HomeAudiences({ audiences = [] }) {
         <section className="bg-slate-50 py-16">
             <div className="mx-auto max-w-7xl px-4 md:px-6">
                 <div className="mb-10">
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-green-600">
-                        Audiences
-                    </p>
-                    <Link href="/whoisitfor" className="hover:text-green-700 transition-colors">
+                    <Link href="/whoisitfor" className="hover:text-[var(--color-accent)] transition-colors">
                         <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
                             Audiences
                         </h2>
@@ -40,11 +37,11 @@ export default function HomeAudiences({ audiences = [] }) {
                         <Link
                             key={a.id}
                             href={`/whoisitfor/${a.slug}`}
-                            className="group flex items-start gap-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                            className="group flex items-start gap-4 rounded-2xl bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
                         >
                             <AudienceLogo logo={a.logo} title={a.title} />
                             <div className="min-w-0 flex-1">
-                                <h3 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-green-700">
+                                <h3 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-[var(--color-accent)]">
                                     {a.title}
                                 </h3>
                                 {a.subtitle && (
@@ -52,7 +49,7 @@ export default function HomeAudiences({ audiences = [] }) {
                                         {a.subtitle}
                                     </p>
                                 )}
-                                <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-green-700">
+                                <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
                                     Explore
                                     <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

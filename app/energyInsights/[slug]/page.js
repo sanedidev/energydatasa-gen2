@@ -131,7 +131,7 @@ export default function Page({ params }) {
                         onClick={() => setEditMode((v) => !v)}
                         className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
                             editMode
-                                ? "border-green-300 bg-green-50 text-green-700 hover:bg-green-100"
+                                ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
                                 : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
                         }`}
                     >
@@ -152,14 +152,14 @@ export default function Page({ params }) {
                         )}
                     </button>
                     {editMode && headerSaved && (
-                        <span className="text-xs text-green-600 font-medium">Changes saved</span>
+                        <span className="text-xs text-[var(--color-accent)] font-medium">Changes saved</span>
                     )}
                 </div>
             )}
 
             {/* Edit mode banner */}
             {editMode && (
-                <div className="rounded-xl bg-green-50 border border-green-200 px-4 py-2.5 text-xs text-green-700">
+                <div className="rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 px-4 py-2.5 text-xs text-[var(--color-accent)]">
                     Editing — changes are saved immediately when you click Save.
                 </div>
             )}
@@ -186,7 +186,7 @@ export default function Page({ params }) {
                         <button
                             type="button"
                             onClick={() => setMediaOpen(true)}
-                            className="group relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-dashed border-green-300 bg-slate-50 transition-all hover:border-green-400"
+                            className="group relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-dashed border-[var(--color-accent)]/40 bg-slate-50 transition-all hover:border-[var(--color-accent)]/70"
                             title="Change image"
                         >
                             {editPreviewSrc ? (
@@ -211,24 +211,24 @@ export default function Page({ params }) {
                         </button>
                     </div>
                     <div className="flex-1 space-y-2">
-                        <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Energy Insights</p>
+                        <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Insights</p>
                         <input
                             value={headerDraft.title}
                             onChange={(e) => setHeaderDraft((d) => ({ ...d, title: e.target.value }))}
-                            className="w-full rounded-xl border border-green-200 bg-white px-3 py-1.5 text-2xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200"
+                            className="w-full rounded-xl border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-2xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                             placeholder="Article title"
                         />
                         <input
                             value={headerDraft.excerpt}
                             onChange={(e) => setHeaderDraft((d) => ({ ...d, excerpt: e.target.value }))}
-                            className="w-full rounded-xl border border-green-200 bg-white px-3 py-1.5 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-200"
+                            className="w-full rounded-xl border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                             placeholder="Subtitle / description (optional)"
                         />
                         <div className="flex gap-2 pt-1">
                             <button
                                 onClick={saveHeader}
                                 disabled={savingHeader}
-                                className="rounded-xl bg-green-700 px-4 py-1.5 text-xs font-medium text-white hover:bg-green-800 disabled:opacity-50"
+                                className="rounded-xl bg-[var(--color-accent)] px-4 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                             >
                                 {savingHeader ? "Saving…" : "Save"}
                             </button>
@@ -245,7 +245,7 @@ export default function Page({ params }) {
             ) : (
                 <div className="flex items-start gap-5">
                     {/* Cover image */}
-                    <div className={`shrink-0 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 shadow-sm ${editMode ? "ring-2 ring-green-200" : ""}`}>
+                    <div className={`shrink-0 overflow-hidden rounded-2xl border border-[var(--color-hairline)] bg-slate-50 ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
                         {currentSrc ? (
                             <Image src={currentSrc} alt={title} width={80} height={80} className="object-cover" unoptimized />
                         ) : (
@@ -257,7 +257,7 @@ export default function Page({ params }) {
                         )}
                     </div>
                     <div>
-                        <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-green-700">Energy Insights</p>
+                        <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Insights</p>
                         <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
                         {excerpt && <p className="mt-1 text-sm text-slate-500 max-w-2xl">{excerpt}</p>}
                         {editMode && (

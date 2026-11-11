@@ -149,7 +149,6 @@ export default function WhoIsItForIndex() {
             </div>
             <div className="mb-10 flex items-start justify-between gap-4 flex-wrap">
                 <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-green-600">Audiences</p>
                     <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Audiences</h1>
                     <p className="mt-2 text-sm text-slate-500 max-w-2xl">
                         Energy Data SA is built for a wide range of users—whether you&apos;re studying, planning, investing, or simply curious.
@@ -159,9 +158,9 @@ export default function WhoIsItForIndex() {
                     <button
                         type="button"
                         onClick={() => { setManaging((v) => !v); setConfirmTarget(null); setCreateErr(""); }}
-                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium shadow-sm transition-all ${
+                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
                             managing
-                                ? "border-green-300 bg-green-50 text-green-700 hover:bg-green-100"
+                                ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
                                 : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
                         }`}
                     >
@@ -186,7 +185,7 @@ export default function WhoIsItForIndex() {
 
             {/* New audience form */}
             {canManage && managing && (
-                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-green-300 bg-green-50/40 p-6 space-y-4">
+                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
                     <p className="text-sm font-semibold text-slate-700">Create new audience</p>
                     <div className="space-y-3">
                         <div>
@@ -197,7 +196,7 @@ export default function WhoIsItForIndex() {
                                 onChange={(e) => handleTitleChange(e.target.value)}
                                 placeholder="e.g. Industry & Investors"
                                 required
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
                         </div>
                         <div>
@@ -208,7 +207,7 @@ export default function WhoIsItForIndex() {
                                 onChange={(e) => { setNewSlug(e.target.value); setSlugEdited(true); }}
                                 placeholder="url-slug"
                                 required
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
                             <p className="mt-1 text-xs text-slate-400">URL: /whoisitfor/<strong>{newSlug || "slug"}</strong></p>
                         </div>
@@ -219,7 +218,7 @@ export default function WhoIsItForIndex() {
                                 value={newSubtitle}
                                 onChange={(e) => setNewSubtitle(e.target.value)}
                                 placeholder="Short description…"
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-200 focus:border-green-400"
+                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
                         </div>
                     </div>
@@ -228,7 +227,7 @@ export default function WhoIsItForIndex() {
                         <button
                             type="submit"
                             disabled={creating || !newTitle.trim() || !newSlug.trim()}
-                            className="rounded-xl bg-green-700 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-green-800 disabled:opacity-50"
+                            className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                         >
                             {creating ? "Creating…" : "Create & open"}
                         </button>
@@ -296,17 +295,17 @@ export default function WhoIsItForIndex() {
 
                                 <Link
                                     href={`/whoisitfor/${a.slug}`}
-                                    className="flex items-start gap-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                                    className="flex items-start gap-4 rounded-2xl bg-white p-6 border border-[var(--color-hairline)] transition-all hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"
                                 >
                                     <AudienceLogo logo={a.logo} title={a.title} />
                                     <div className="min-w-0 flex-1">
-                                        <h2 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-green-700">
+                                        <h2 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-[var(--color-accent)]">
                                             {a.title}
                                         </h2>
                                         {a.subtitle && (
                                             <p className="mt-1 text-xs leading-relaxed text-slate-500">{a.subtitle}</p>
                                         )}
-                                        <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-green-700">
+                                        <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
                                             Explore
                                             <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

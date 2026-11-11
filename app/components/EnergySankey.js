@@ -203,11 +203,28 @@ function AnimatedFlowLayer({ links, currentLink, isCurrentLink, isInteractive })
 }
 
 export default function EnergySankey({ sections, height = 440 }) {
-    const data = useMemo(() => {
-        const computed = buildSankeyData(sections);
-        return computed ?? FALLBACK_DATA;
-    }, [sections]);
+    const computed = useMemo(() => buildSankeyData(sections), [sections]);
 
+    // Distinguish "no sections prop at all" (a legacy call site - the
+    // illustrative fallback is appropriate) from "sections supplied but
+    // produced zero links" (a genuinely blank year - e.g. one just created
+    // via createYear). Without this split, a brand-new blank year would
+    // silently render 2024's real numbers under its own label, since
+    // buildSankeyData returns null in both cases.
+    if (!sections) {
+        return <SankeyBody data={FALLBACK_DATA} height={height} />;
+    }
+    if (!computed) {
+        return (
+            <div className="flex items-center justify-center text-sm text-slate-400" style={{ height }}>
+                No energy-flow data yet for this year.
+            </div>
+        );
+    }
+    return <SankeyBody data={computed} height={height} />;
+}
+
+function SankeyBody({ data, height }) {
     return (
         <div>
             {/* Slow, subtle dash-offset animation for the directional-flow

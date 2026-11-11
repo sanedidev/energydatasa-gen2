@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent } from "@/app/lib/manageContent";
 import structure from "@/app/data/neb-structure.json";
@@ -46,6 +47,10 @@ function defaultMeta(year) {
 const NEBDataContext = createContext(null);
 
 export function NEBDataProvider({ children }) {
+    const router       = useRouter();
+    const pathname     = usePathname();
+    const searchParams = useSearchParams();
+
     const [activeYear, setActiveYearState] = useState(DEFAULT_YEAR);
     const [availableYears, setAvailableYears] = useState([{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }]);
     const [loadingYears, setLoadingYears] = useState(true);
@@ -136,7 +141,35 @@ export function NEBDataProvider({ children }) {
         return () => { alive = false; };
     }, [activeYear, loadYear]);
 
-    const setActiveYear = useCallback((year) => setActiveYearState(String(year)), []);
+    // Active year lives in the URL (?year=) so it's shareable/bookmarkable,
+    // per-route (every NEB sub-page reads the same param), and survives
+    // back/forward navigation - this provider is the one place that owns
+    // that sync so no call site has to think about the URL at all.
+    const setActiveYear = useCallback((year) => {
+        const key = String(year);
+        setActiveYearState(key);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("year", key);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }, [pathname, router, searchParams]);
+
+    // Normalize the URL once the real years list is known: an explicit
+    // ?year= for a year that actually exists wins (supports deep links and
+    // back/forward); anything else - missing, or naming a year that was
+    // deleted/never existed - falls back to the most recent year.
+    useEffect(() => {
+        if (loadingYears) return;
+        const urlYear   = searchParams.get("year");
+        const validYears = availableYears.map((y) => y.year);
+        const resolved  = urlYear && validYears.includes(urlYear) ? urlYear : (validYears[0] ?? DEFAULT_YEAR);
+        setActiveYearState(resolved);
+        if (resolved !== urlYear) {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set("year", resolved);
+            router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loadingYears, availableYears, searchParams]);
 
     // One section, one save - never the whole year's data just to change one
     // table (that's what made the old single-blob title edit re-serialize a

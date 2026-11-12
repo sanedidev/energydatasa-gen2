@@ -360,6 +360,48 @@ export function NEBDataProvider({ children }) {
         return newEntry;
     }, [availableYears, activeYear, setActiveYear]);
 
+    // Permanently removes a year: every section + meta record it has, then
+    // the years-index entry. Same gate as create/rename (neb.years.create) -
+    // this is a structural operation on the years list, not a section edit.
+    // The built-in default year can never be deleted (there'd be nothing
+    // left to fall back to, and it's the one year every page already
+    // assumes exists when no ?year= is given).
+    const deleteYear = useCallback(async (year) => {
+        const key = String(year);
+        if (key === DEFAULT_YEAR) throw new Error(`${DEFAULT_YEAR} can't be deleted.`);
+        if (!availableYears.some((y) => y.year === key)) throw new Error(`Year ${key} doesn't exist.`);
+
+        const [sectionReads, metaRead] = await Promise.all([
+            Promise.all(structure.sections.map((t) =>
+                client.models.PageContent.pageContentBySlug({ slug: sectionSlug(key, t.id) }, { authMode: "apiKey" })
+                    .then((r) => r?.data?.[0]).catch(() => null)
+            )),
+            client.models.PageContent.pageContentBySlug({ slug: metaSlug(key) }, { authMode: "apiKey" })
+                .then((r) => r?.data?.[0]).catch(() => null),
+        ]);
+
+        await Promise.all([
+            ...sectionReads.map((item, i) => item?.id
+                ? deletePageContentById({ id: item.id, pageKeys: [YEARS_CREATE_KEY, sectionPageKey(structure.sections[i].id)], historyLabel: `NEB ${key} — ${structure.sections[i].id} deleted` })
+                : null),
+            metaRead?.id
+                ? deletePageContentById({ id: metaRead.id, pageKeys: [YEARS_CREATE_KEY, META_PAGE_KEY], historyLabel: `NEB ${key} — meta deleted` })
+                : null,
+        ]);
+
+        const next = availableYears.filter((y) => y.year !== key);
+        await upsertPageContent({
+            slug:         YEARS_INDEX_SLUG,
+            content:      JSON.stringify(next.filter((y) => y.year !== DEFAULT_YEAR)),
+            pageKeys:     [YEARS_CREATE_KEY],
+            historyLabel: `NEB — deleted year ${key}`,
+        });
+
+        delete cacheRef.current[key];
+        setAvailableYears(next);
+        if (activeYear === key) setActiveYear(next[0]?.year ?? DEFAULT_YEAR);
+    }, [availableYears, activeYear, setActiveYear]);
+
     return (
         <NEBDataContext.Provider value={{
             sections, meta, loading,
@@ -367,7 +409,7 @@ export function NEBDataProvider({ children }) {
             commodities: structure.commodities,
             activeYear, setActiveYear,
             availableYears, loadingYears,
-            saveSectionData, saveMeta, createYear, renameYear, loadYear,
+            saveSectionData, saveMeta, createYear, renameYear, deleteYear, loadYear,
         }}>
             {children}
         </NEBDataContext.Provider>

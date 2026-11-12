@@ -11,6 +11,7 @@ import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
 import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import YearSwitcher from "@/app/components/YearSwitcher";
 import { computeSectorCO2 } from "@/app/lib/co2Factors";
 
 const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
@@ -118,9 +119,9 @@ export default function SectorPage({ sectionId }) {
         <main>
             {/* ── Hero ──────────────────────────────────────────────────────── */}
             {/* No "· {year}" badge here - the active year lives once in the
-                YearSwitcher bar shared by every NEB route (see layout.js). The
-                breadcrumb also stops at the parent rather than repeating
-                {cfg.label} a second time right above the identical H1. */}
+                YearSwitcher embedded below, inside this hero. The breadcrumb
+                also stops at the parent rather than repeating {cfg.label} a
+                second time right above the identical H1. */}
             <HeroSection variant="dark">
                 <nav className="flex items-center gap-1.5 text-xs text-[var(--color-cream)]/50 mb-4 flex-wrap">
                     <Link href="/dashboard" className="hover:text-[var(--color-cream)]/80 transition-colors">Dashboard</Link>
@@ -156,8 +157,12 @@ export default function SectorPage({ sectionId }) {
                 </h1>
                 <p className="mt-4 max-w-2xl text-base text-[var(--color-cream)]/60 leading-relaxed">{cfg.description}</p>
 
+                <div className="mt-6">
+                    <YearSwitcher dark />
+                </div>
+
                 {/* Key stat cards */}
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                         <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">

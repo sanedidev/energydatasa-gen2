@@ -12,6 +12,7 @@ import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
 import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import YearSwitcher from "@/app/components/YearSwitcher";
 
 const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
 
@@ -103,8 +104,8 @@ export default function PrimarySupplyPage() {
         <main>
             {/* ── Hero ──────────────────────────────────────────────────────── */}
             {/* No "· {year}" badge - the active year lives once in the
-                YearSwitcher bar shared by every NEB route. Breadcrumb stops at
-                the parent rather than repeating the page title a second time. */}
+                YearSwitcher embedded below. Breadcrumb stops at the parent
+                rather than repeating the page title a second time. */}
             <HeroSection variant="dark">
                 <nav className="flex items-center gap-1.5 text-xs text-[var(--color-cream)]/50 mb-4 flex-wrap">
                     <Link href="/dashboard" className="hover:text-[var(--color-cream)]/80 transition-colors">Dashboard</Link>
@@ -119,7 +120,11 @@ export default function PrimarySupplyPage() {
                     South Africa&apos;s total primary energy supply — domestic production, imports, exports, and stock changes before any transformation or conversion.
                 </p>
 
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="mt-6">
+                    <YearSwitcher dark />
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                         <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">

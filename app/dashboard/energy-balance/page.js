@@ -7,7 +7,8 @@ import { useAuth } from "@/app/context/auth";
 import { useNEBData } from "@/app/context/NEBData";
 import NEBSectionCard from "@/app/components/NEBSectionCard";
 import HeroSection from "@/app/components/ui/HeroSection";
-import SourceLine from "@/app/components/ui/SourceLine";
+import EditableSourceLine from "@/app/components/ui/EditableSourceLine";
+import YearSwitcher from "@/app/components/YearSwitcher";
 import FlowLine from "@/app/components/ui/FlowLine";
 import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
 import { RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
@@ -54,6 +55,15 @@ export default function EnergyBalancePage() {
             });
         } catch { /* silent */ }
         finally { setSavingTitle(false); }
+    }
+
+    async function saveSourceDate({ source, date, userEmail }) {
+        await saveMeta({
+            year: activeYear,
+            patch: { source, date },
+            userEmail,
+            historyLabel: "NEB — source & date",
+        });
     }
 
     const visibleCommodities = useMemo(() => {
@@ -104,10 +114,9 @@ export default function EnergyBalancePage() {
     return (
         <main>
             {/* ── Hero ──────────────────────────────────────────────────────── */}
-            {/* The active year lives in the YearSwitcher bar directly above this
-                page (app/components/YearSwitcher.js, rendered from this route's
-                layout) - it is deliberately not restated here, in the title, or
-                in any card below. */}
+            {/* The year switcher now lives inside this hero, right under the
+                title/source text, rather than as its own bar floating above
+                every NEB page disconnected from the content it controls. */}
             <HeroSection variant="dark" eyebrow="National Energy Balance">
                 <div className="relative">
                     <RippleIcon className="hidden sm:block absolute -top-2 right-0 h-10 w-10 text-[var(--color-cream)]/50" />
@@ -118,9 +127,20 @@ export default function EnergyBalancePage() {
                 <p className="mt-4 max-w-2xl text-base text-[var(--color-cream)]/60 leading-relaxed">
                     South Africa&apos;s complete energy flow from primary supply through conversion to final consumption. All values in Petajoules (PJ).
                 </p>
-                <SourceLine source={meta.source} date={meta.date} dark className="mt-2" />
+                <EditableSourceLine
+                    source={meta.source}
+                    date={meta.date}
+                    dark
+                    canEdit={canEditTitle}
+                    onSave={saveSourceDate}
+                    className="mt-2"
+                />
 
-                <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="mt-6">
+                    <YearSwitcher dark />
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {summaryStats.map((s) => (
                         <div key={s.label} className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                             <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />

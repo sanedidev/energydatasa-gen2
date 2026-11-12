@@ -30,8 +30,8 @@ export default function Page() {
 
             <div>
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency</p>
-                <h1 className="text-2xl font-bold text-slate-900">Balancing Energy Supply and Demand</h1>
-                <p className="mt-2 text-sm text-slate-500 max-w-2xl">
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Balancing Energy Supply and Demand</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
                     Demand-side management, energy efficiency programmes, and peak-shaving strategies across South Africa&apos;s grid.
                 </p>
             </div>

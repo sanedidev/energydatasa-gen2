@@ -41,8 +41,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Peak Demand (MW)</h1>
-                <p className="mt-2 text-sm text-slate-500">Annual peaks, seasonal patterns, and system stress indicators.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Peak Demand (MW)</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Annual peaks, seasonal patterns, and system stress indicators.</p>
             </div>
 
             <EditableSections

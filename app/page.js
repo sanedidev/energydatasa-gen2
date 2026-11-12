@@ -107,18 +107,18 @@ export default function Home() {
                 <Hero />
                 <div className="mx-auto max-w-7xl px-4 md:px-6 pb-16 pt-16 space-y-6">
                     <div className="space-y-2">
-                        <div className="h-3 w-16 rounded-full bg-slate-100" />
+                        <div className="h-3 w-16 rounded-full bg-[var(--color-cream-2)]" />
                         <div className="h-8 w-64 rounded-none bg-[var(--color-cream-2)]" />
                     </div>
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {[1, 2, 3].map((i) => (
                             <div key={i} className="rounded-none bg-[var(--color-cream-2)] overflow-hidden">
-                                <div className="aspect-video bg-slate-100" />
+                                <div className="aspect-video bg-[var(--color-cream-2)]" />
                                 <div className="p-6 space-y-3">
-                                    <div className="h-5 w-3/4 rounded-full bg-slate-100" />
-                                    <div className="h-3 w-full rounded-full bg-slate-100" />
-                                    <div className="h-3 w-2/3 rounded-full bg-slate-100" />
-                                    <div className="h-3 w-16 rounded-full bg-slate-100 mt-4" />
+                                    <div className="h-5 w-3/4 rounded-full bg-[var(--color-cream-2)]" />
+                                    <div className="h-3 w-full rounded-full bg-[var(--color-cream-2)]" />
+                                    <div className="h-3 w-2/3 rounded-full bg-[var(--color-cream-2)]" />
+                                    <div className="h-3 w-16 rounded-full bg-[var(--color-cream-2)] mt-4" />
                                 </div>
                             </div>
                         ))}

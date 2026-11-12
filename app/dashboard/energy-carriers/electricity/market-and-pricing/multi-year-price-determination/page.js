@@ -41,8 +41,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Multi-Year Price Determination</h1>
-                <p className="mt-2 text-sm text-slate-500">NERSA MYPD framework, determination history, and cost component breakdowns.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Multi-Year Price Determination</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">NERSA MYPD framework, determination history, and cost component breakdowns.</p>
             </div>
 
             <EditableSections

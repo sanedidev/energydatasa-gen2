@@ -40,8 +40,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Main Transmission</h1>
-                <p className="mt-2 text-sm text-slate-500">High-level information about the main transmission network.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Main Transmission</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">High-level information about the main transmission network.</p>
             </div>
 
             <EditableSections

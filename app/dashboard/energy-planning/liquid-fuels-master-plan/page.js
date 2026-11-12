@@ -60,11 +60,11 @@ export default function Page() {
 
             {/* Breadcrumb */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm">
-                <Link href="/dashboard" className="text-slate-500 hover:text-slate-900 transition-colors">Datasets</Link>
+                <Link href="/dashboard" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Datasets</Link>
                 <span className="text-slate-300">/</span>
-                <Link href="/dashboard/energy-planning" className="text-slate-500 hover:text-slate-900 transition-colors">Energy Planning</Link>
+                <Link href="/dashboard/energy-planning" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Energy Planning</Link>
                 <span className="text-slate-300">/</span>
-                <span className="font-medium text-slate-900">Liquid Fuels Master Plan</span>
+                <span className="font-medium text-[var(--color-ink)]">Liquid Fuels Master Plan</span>
             </nav>
 
             <EditablePageHeader

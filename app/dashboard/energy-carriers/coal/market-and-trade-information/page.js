@@ -23,8 +23,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Market &amp; Trade Information</h1>
-                <p className="mt-2 text-sm text-slate-500">Coal import and export volumes, trade partners, and pricing data.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Market &amp; Trade Information</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Coal import and export volumes, trade partners, and pricing data.</p>
             </div>
 
             <EditableSections

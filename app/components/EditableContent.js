@@ -49,8 +49,8 @@ const EditableContent = forwardRef(function EditableContent({
     if (ec.loading) {
         return (
             <div className="space-y-2 animate-pulse">
-                <div className="h-3 w-3/4 rounded-full bg-slate-100" />
-                <div className="h-3 w-1/2 rounded-full bg-slate-100" />
+                <div className="h-3 w-3/4 rounded-full bg-[var(--color-cream-2)]" />
+                <div className="h-3 w-1/2 rounded-full bg-[var(--color-cream-2)]" />
             </div>
         );
     }

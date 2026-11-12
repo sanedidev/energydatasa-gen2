@@ -40,8 +40,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Hourly Profiles</h1>
-                <p className="mt-2 text-sm text-slate-500">Daily, weekday/weekend, and seasonal electricity demand load shapes.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Hourly Profiles</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Daily, weekday/weekend, and seasonal electricity demand load shapes.</p>
             </div>
 
             <EditableSections

@@ -92,7 +92,7 @@ export default function EditableDataTable({
                                             className={`sticky left-0 z-10 px-4 py-2.5 font-medium border-b ${
                                                 isTotalRow
                                                     ? "bg-[var(--color-cream-2)] text-[var(--color-ink)] border-t-2 border-t-[var(--color-accent)] border-b-[var(--color-hairline)]"
-                                                    : "bg-white group-hover:bg-[var(--color-cream-2)]/40 text-slate-800 border-b-[var(--color-hairline)] transition-colors"
+                                                    : "bg-white group-hover:bg-[var(--color-cream-2)]/40 text-[var(--color-ink)] border-b-[var(--color-hairline)] transition-colors"
                                             }`}
                                         >
                                             {row.label}
@@ -120,7 +120,7 @@ export default function EditableDataTable({
                                                             inputMode="decimal"
                                                             value={value ?? ""}
                                                             onChange={(e) => setCell(row.id, c.id, e.target.value)}
-                                                            className="w-full min-w-24 bg-transparent px-3 py-2.5 text-right font-mono text-slate-700 outline-none focus:bg-[var(--color-accent-soft)] rounded-sm"
+                                                            className="w-full min-w-24 bg-transparent px-3 py-2.5 text-right font-mono text-[var(--color-ink-soft)] outline-none focus:bg-[var(--color-accent-soft)] rounded-none"
                                                         />
                                                     ) : (
                                                         formatValue(value, { isTotalRow, isTotalColumn: false })

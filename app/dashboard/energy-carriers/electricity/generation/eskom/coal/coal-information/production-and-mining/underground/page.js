@@ -96,8 +96,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Production &amp; Mining — Underground</h1>
-                <p className="mt-2 text-sm text-slate-500">Underground mining data, coal quality, and production statistics.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Production &amp; Mining — Underground</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Underground mining data, coal quality, and production statistics.</p>
             </div>
 
             <EditableSections

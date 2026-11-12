@@ -30,8 +30,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Technology &amp; Innovation</h1>
-                <p className="mt-2 text-sm text-slate-500">CCS, clean-coal technologies, efficiency improvements and R&amp;D.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Technology &amp; Innovation</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">CCS, clean-coal technologies, efficiency improvements and R&amp;D.</p>
             </div>
 
             <EditableSections

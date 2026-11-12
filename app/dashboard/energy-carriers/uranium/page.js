@@ -59,8 +59,8 @@ export default function Page() {
 
             <div>
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Carriers</p>
-                <h1 className="text-2xl font-bold text-slate-900">Uranium</h1>
-                <p className="mt-2 text-sm text-slate-500">
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Uranium</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
                     Uranium resources, nuclear fuel cycle, mining context, and linkages to South Africa&apos;s nuclear power programme.
                 </p>
             </div>

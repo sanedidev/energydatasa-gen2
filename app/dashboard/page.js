@@ -59,13 +59,13 @@ export default function DashboardPage() {
                                 <div className="inline-flex h-11 w-11 items-center justify-center rounded-none bg-[var(--color-accent-soft)] text-[var(--color-ink)]">
                                     <s.Icon className="h-6 w-6" />
                                 </div>
-                                <h2 className="mt-4 text-base font-semibold text-slate-900 group-hover:text-[var(--color-accent)] transition-colors">
+                                <h2 className="mt-4 text-base font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors">
                                     {s.title}
                                 </h2>
-                                <p className="mt-1.5 text-sm text-slate-500 leading-relaxed">{s.desc}</p>
+                                <p className="mt-1.5 text-sm text-[var(--color-ink-soft)] leading-relaxed">{s.desc}</p>
                             </div>
                             <div className="flex items-center justify-between border-t border-[var(--color-hairline)] px-6 py-3">
-                                <span className="text-xs text-slate-400">{s.count}</span>
+                                <span className="text-xs text-[var(--color-ink-soft)]/70">{s.count}</span>
                                 <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
                                     Open
                                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">

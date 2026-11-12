@@ -36,8 +36,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Koeberg</h1>
-                <p className="mt-2 text-sm text-slate-500">High-level information about Koeberg nuclear power station.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Koeberg</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">High-level information about Koeberg nuclear power station.</p>
             </div>
 
             <EditableSections

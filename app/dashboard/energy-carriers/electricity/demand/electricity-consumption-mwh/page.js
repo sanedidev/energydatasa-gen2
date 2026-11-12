@@ -40,8 +40,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Electricity Consumption (MWh)</h1>
-                <p className="mt-2 text-sm text-slate-500">Annual totals, sector breakdown, and regional distribution of electricity consumption.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Electricity Consumption (MWh)</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Annual totals, sector breakdown, and regional distribution of electricity consumption.</p>
             </div>
 
             <EditableSections

@@ -31,8 +31,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Market &amp; Trade Information</h1>
-                <p className="mt-2 text-sm text-slate-500">Coal import/export data and trade context for Eskom-consumed coal.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Market &amp; Trade Information</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Coal import/export data and trade context for Eskom-consumed coal.</p>
             </div>
 
             <EditableSections

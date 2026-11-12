@@ -95,8 +95,8 @@ export default async function Page({ params }) {
 
             <div>
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Eskom Coal Station</p>
-                <h1 className="text-2xl font-bold text-slate-900">{name}</h1>
-                <p className="mt-1 text-sm text-slate-500">Coal-fired power station data and specifications.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">{name}</h1>
+                <p className="mt-1 text-sm text-[var(--color-ink-soft)]">Coal-fired power station data and specifications.</p>
             </div>
 
             <EditableSections

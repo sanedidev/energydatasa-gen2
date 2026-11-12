@@ -42,8 +42,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Technology &amp; Innovation</h1>
-                <p className="mt-2 text-sm text-slate-500">Refining technology, efficiency improvements, and emissions controls in the oil sector.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Technology &amp; Innovation</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Refining technology, efficiency improvements, and emissions controls in the oil sector.</p>
             </div>
 
             <EditableSections

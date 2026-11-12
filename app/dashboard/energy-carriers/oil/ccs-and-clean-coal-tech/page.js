@@ -42,8 +42,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">CCS &amp; Clean Technology</h1>
-                <p className="mt-2 text-sm text-slate-500">Carbon capture, clean fuel technologies, and feasibility in the oil sector.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">CCS &amp; Clean Technology</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Carbon capture, clean fuel technologies, and feasibility in the oil sector.</p>
             </div>
 
             <EditableSections

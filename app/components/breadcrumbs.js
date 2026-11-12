@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Breadcrumbs({ items }) {
     return (
-        <nav className="mb-6 text-sm text-slate-600">
+        <nav className="mb-6 text-sm text-[var(--color-ink-soft)]">
             <ol className="flex items-center gap-2 flex-wrap">
                 {items.map((item, index) => {
                     const isLast = index === items.length - 1;
@@ -12,17 +12,17 @@ export default function Breadcrumbs({ items }) {
                             {!isLast ? (
                                 <Link
                                     href={item.href}
-                                    className="hover:text-slate-900 transition-colors"
+                                    className="hover:text-[var(--color-ink)] transition-colors"
                                 >
                                     {item.label}
                                 </Link>
                             ) : (
-                                <span className="font-medium text-slate-900">
+                                <span className="font-medium text-[var(--color-ink)]">
                                     {item.label}
                                 </span>
                             )}
 
-                            {!isLast && <span className="text-slate-400">/</span>}
+                            {!isLast && <span className="text-[var(--color-ink-soft)]/70">/</span>}
                         </li>
                     );
                 })}

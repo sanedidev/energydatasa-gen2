@@ -223,7 +223,7 @@ export default function EnergySankey({ sections, height = 440 }) {
     }
     if (!computed) {
         return (
-            <div className="flex items-center justify-center text-sm text-slate-400" style={{ height }}>
+            <div className="flex items-center justify-center text-sm text-[var(--color-ink-soft)]" style={{ height }}>
                 No energy-flow data yet for this year.
             </div>
         );
@@ -299,7 +299,7 @@ function SankeyBody({ data, height }) {
                             className="inline-block h-2 w-2 shrink-0 rounded-full"
                             style={{ background: NODE_COLOR[item.id] }}
                         />
-                        <span className="text-xs font-medium text-slate-600">{item.label}</span>
+                        <span className="text-xs font-medium text-[var(--color-ink-soft)]">{item.label}</span>
                     </div>
                 ))}
             </div>

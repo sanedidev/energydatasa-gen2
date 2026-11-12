@@ -47,8 +47,8 @@ export default function Page() {
             ]} />
 
             <div>
-                <h1 className="text-2xl font-bold text-slate-900">Tariffs Per Sector Over Time</h1>
-                <p className="mt-2 text-sm text-slate-500">Historical electricity tariff data across residential, commercial, industrial, and agricultural sectors.</p>
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Tariffs Per Sector Over Time</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">Historical electricity tariff data across residential, commercial, industrial, and agricultural sectors.</p>
             </div>
 
             <EditableSections

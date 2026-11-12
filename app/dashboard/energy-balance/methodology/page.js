@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NEBBackLink from "@/app/components/ui/NEBBackLink";
 import EditablePageHeader from "@/app/components/EditablePageHeader";
 import EditableSections from "@/app/components/EditableSections";
 
@@ -116,7 +117,7 @@ export default function MethodologyPage() {
             <nav className="flex flex-wrap items-center gap-1.5 text-sm">
                 <Link href="/dashboard" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
                 <span className="text-slate-300">/</span>
-                <Link href="/dashboard/energy-balance" className="text-slate-500 hover:text-slate-900 transition-colors">National Energy Planning</Link>
+                <NEBBackLink href="/dashboard/energy-balance" className="text-slate-500 hover:text-slate-900 transition-colors">National Energy Planning</NEBBackLink>
                 <span className="text-slate-300">/</span>
                 <span className="font-medium text-slate-900">Methodology</span>
             </nav>

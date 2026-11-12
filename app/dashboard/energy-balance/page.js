@@ -141,7 +141,7 @@ export default function EnergyBalancePage() {
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 <Link
-                                    href="/dashboard/energy-balance/primary-supply"
+                                    href={`/dashboard/energy-balance/primary-supply?year=${activeYear}`}
                                     className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                 >
                                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
@@ -149,7 +149,7 @@ export default function EnergyBalancePage() {
                                     <span className="font-mono text-slate-500">{summaryStats[0].value}</span>
                                 </Link>
                                 <Link
-                                    href="/dashboard/energy-balance/conversion"
+                                    href={`/dashboard/energy-balance/conversion?year=${activeYear}`}
                                     className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                 >
                                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
@@ -168,7 +168,7 @@ export default function EnergyBalancePage() {
                                 {sectorTotals.map((s) => (
                                     <Link
                                         key={s.id}
-                                        href={`/dashboard/energy-balance/${s.id}`}
+                                        href={`/dashboard/energy-balance/${s.id}?year=${activeYear}`}
                                         className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
                                     >
                                         <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">{s.label}</span>
@@ -176,7 +176,7 @@ export default function EnergyBalancePage() {
                                     </Link>
                                 ))}
                                 <Link
-                                    href="/dashboard/energy-balance/methodology"
+                                    href={`/dashboard/energy-balance/methodology?year=${activeYear}`}
                                     className="group inline-flex items-center gap-1.5 rounded-xl border border-dashed border-slate-200 bg-white px-3 py-2 text-xs text-slate-400 transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-600"
                                 >
                                     Methodology &amp; Sources

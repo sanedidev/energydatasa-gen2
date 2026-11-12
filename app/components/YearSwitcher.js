@@ -19,10 +19,11 @@ export default function YearSwitcher() {
     const { user } = useAuth();
     const canCreate = canEdit("neb.years.create");
 
-    // Always sort newest-first at render time, independent of whatever
-    // order the context/API returned - a newly-created year must never
-    // land out of numeric order regardless of how/when it was added.
-    const availableYears = [...rawAvailableYears].sort((a, b) => Number(b.year) - Number(a.year));
+    // Always sort smallest-to-largest at render time, independent of
+    // whatever order the context/API returned - a newly-created or
+    // renamed year must never land out of numeric order regardless of
+    // how/when it was added.
+    const availableYears = [...rawAvailableYears].sort((a, b) => Number(a.year) - Number(b.year));
 
     const [creating, setCreating] = useState(false);
     const [yearInput, setYearInput] = useState("");

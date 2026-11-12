@@ -125,7 +125,7 @@ export default function SectorPage({ sectionId }) {
                 <nav className="flex items-center gap-1.5 text-xs text-[var(--color-cream)]/50 mb-4 flex-wrap">
                     <Link href="/dashboard" className="hover:text-[var(--color-cream)]/80 transition-colors">Dashboard</Link>
                     <span>/</span>
-                    <Link href="/dashboard/energy-balance" className="hover:text-[var(--color-cream)]/80 transition-colors">National Energy Planning</Link>
+                    <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="hover:text-[var(--color-cream)]/80 transition-colors">National Energy Planning</Link>
                 </nav>
 
                 {/* Sector quick-nav */}
@@ -139,7 +139,7 @@ export default function SectorPage({ sectionId }) {
                     ].map((s) => (
                         <Link
                             key={s.id}
-                            href={s.href}
+                            href={`${s.href}?year=${activeYear}`}
                             className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                                 s.id === sectionId
                                     ? "bg-[var(--color-accent)]/20 text-[var(--color-cream)] ring-1 ring-[var(--color-accent)]/40"
@@ -357,7 +357,7 @@ export default function SectorPage({ sectionId }) {
                         <li>• A dash (—) indicates zero, negligible, or not applicable for that fuel/row combination.</li>
                         <li><SourceLine source={meta.source} date={meta.date} className="inline" /></li>
                         <li>
-                            <Link href="/dashboard/energy-balance" className="underline hover:text-slate-700">
+                            <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="underline hover:text-slate-700">
                                 ← Back to National Energy Planning
                             </Link>
                         </li>

@@ -75,7 +75,7 @@ export function NEBDataProvider({ children }) {
                     if (Array.isArray(parsed)) {
                         setAvailableYears(
                             [{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }, ...parsed.filter((y) => y.year !== DEFAULT_YEAR)]
-                                .sort((a, b) => Number(b.year) - Number(a.year))
+                                .sort((a, b) => Number(a.year) - Number(b.year))
                         );
                     }
                 }
@@ -248,7 +248,7 @@ export function NEBDataProvider({ children }) {
 
         const entry = { year: key, label: label || `${key} NEB`, uploadedAt: null, uploadedBy: userEmail ?? null };
         const next  = [{ year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true }, ...availableYears.filter((y) => y.year !== DEFAULT_YEAR && y.year !== key), entry]
-            .sort((a, b) => Number(b.year) - Number(a.year));
+            .sort((a, b) => Number(a.year) - Number(b.year));
 
         await upsertPageContent({
             slug:         YEARS_INDEX_SLUG,
@@ -343,7 +343,7 @@ export function NEBDataProvider({ children }) {
             { year: DEFAULT_YEAR, label: `${DEFAULT_YEAR} NEB`, isBuiltIn: true },
             ...availableYears.filter((y) => y.year !== DEFAULT_YEAR && y.year !== from && y.year !== to),
             newEntry,
-        ].sort((a, b) => Number(b.year) - Number(a.year));
+        ].sort((a, b) => Number(a.year) - Number(b.year));
 
         await upsertPageContent({
             slug:         YEARS_INDEX_SLUG,

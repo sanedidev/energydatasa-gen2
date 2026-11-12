@@ -11,6 +11,7 @@ import CarrierMovePicker from "@/app/components/CarrierMovePicker";
 import DragHandle from "@/app/components/ui/DragHandle";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { upsertPageContent } from "@/app/lib/manageContent";
+import { BatteryIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 
 function parseCards(content) {
@@ -461,7 +462,10 @@ export default function CarrierIndexPage({
             <div className="flex items-start justify-between gap-4">
                 <div>
                     {label && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">{label}</p>}
-                    <h1 className="text-2xl font-bold text-[var(--color-ink)]">{title}</h1>
+                    <div className="flex items-center gap-2.5">
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)]">{title}</h1>
+                        <BatteryIcon className="hidden sm:block h-6 w-6 text-[var(--color-ink-soft)]/40" />
+                    </div>
                     {description && <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{description}</p>}
                 </div>
                 <div className="shrink-0 flex items-center gap-2">

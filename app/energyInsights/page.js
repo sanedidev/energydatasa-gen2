@@ -10,6 +10,7 @@ import MediaLibrary from "@/app/components/MediaLibrary";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import { LiveReadingIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const HIDDEN_SLUG = "energyinsights.hidden";
 const ENERGY_INSIGHTS_PAGE_KEYS = ["energyinsights.__index__", "insight.*"];
@@ -170,7 +171,10 @@ export default function EnergyInsightsIndex() {
             <div className="mb-10 flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Latest</p>
-                    <h1 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">Energy Insights &amp; Updates</h1>
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">Energy Insights &amp; Updates</h1>
+                        <LiveReadingIcon className="hidden sm:block h-6 w-12 text-[var(--color-ink-soft)]/40" />
+                    </div>
                     <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">In-depth analysis and updates on South Africa&apos;s energy landscape.</p>
                 </div>
                 {canManage && (

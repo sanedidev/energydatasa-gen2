@@ -7,6 +7,7 @@ import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent } from "@/app/lib/manageContent";
 import { usePermissions } from "@/app/context/permissions";
 import ConfirmDialog from "./ui/ConfirmDialog";
+import { RippleIcon } from "./ui/icons/AnimatedIcons";
 
 const MAP_SLUG = "maps.power-stations";
 
@@ -506,7 +507,10 @@ export default function Maps() {
                 <div className="mt-6 mb-6 flex flex-wrap items-end justify-between gap-4">
                     <div>
                         <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Power Stations</p>
-                        <h1 className="text-2xl font-bold text-[var(--color-ink)]">South Africa Power Station Map</h1>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-2xl font-bold text-[var(--color-ink)]">South Africa Power Station Map</h1>
+                            <RippleIcon className="hidden sm:block h-6 w-6 text-[var(--color-ink-soft)]/40" />
+                        </div>
                         <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                             {loadingData
                                 ? "Loading stations…"

@@ -11,6 +11,7 @@ import MediaLibrary from "@/app/components/MediaLibrary";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import HeroSection from "@/app/components/ui/HeroSection";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import { LeafIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const SLUG = "partners.__cards__";
 
@@ -428,6 +429,9 @@ export default function Partners() {
             </div>
 
             <HeroSection eyebrow="Ecosystem">
+                <div className="relative">
+                    <LeafIcon className="hidden sm:block absolute -top-2 right-0 h-9 w-9 text-[var(--color-ink-soft)]/50" />
+                </div>
                 <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
                     Our <span className="text-[var(--color-accent)]">Partners</span>
                 </h1>

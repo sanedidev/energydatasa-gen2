@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent } from "@/app/lib/manageContent";
 import DragHandleIcon from "@/app/components/ui/DragHandle";
 import { usePermissions } from "@/app/context/permissions";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import MediaLibrary from "@/app/components/MediaLibrary";
+import MediaFill from "@/app/components/ui/MediaFill";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import HeroSection from "@/app/components/ui/HeroSection";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
 import { LeafIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const SLUG = "partners.__cards__";
@@ -76,14 +75,6 @@ function parsePartners(raw) {
     return null;
 }
 
-// Static /icons/* logos (the seeded defaults) resolve synchronously; any
-// logo picked via the media library is a Storage key needing a signed URL.
-function useLogoUrl(logo) {
-    const isStatic = !!logo && logo.startsWith("/");
-    const resolved = useResolvedImageUrl(isStatic ? null : logo);
-    return isStatic ? logo : resolved;
-}
-
 // ── Drag handle ───────────────────────────────────────────────────────────────
 function DragHandle({ onMouseDown, onMouseUp }) {
     return (
@@ -100,7 +91,6 @@ function DragHandle({ onMouseDown, onMouseUp }) {
 
 // ── Edit / Add form modal ─────────────────────────────────────────────────────
 function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew, saving }) {
-    const logoUrl = useLogoUrl(form.logo);
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
@@ -115,8 +105,10 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
                         <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1.5">Logo</label>
                         <div className="flex items-center gap-3">
                             <div className="h-14 w-14 shrink-0 rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
-                                {logoUrl ? (
-                                    <Image src={logoUrl} alt="logo" width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
+                                {form.logo ? (
+                                    <div className="h-10 w-10">
+                                        <MediaFill value={form.logo} alt="logo" fit="contain" fallback={null} />
+                                    </div>
                                 ) : (
                                     <svg className="h-6 w-6 text-[var(--color-ink-soft)]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
@@ -180,7 +172,6 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
 
 // ── Partner card ───────────────────────────────────────────────────────────────
 function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDragStart, onDragOver, onDrop, onDragEnd, onDragHandleDown, onDragHandleUp, onChangeLogo, onEdit, onToggleHide, onDelete }) {
-    const logoUrl = useLogoUrl(p.logo);
     const isHidden = !!p.hidden;
 
     return (
@@ -251,8 +242,10 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
             >
                 <div className="flex items-start gap-4 p-6">
                     <div className="shrink-0 h-14 w-14 rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
-                        {logoUrl ? (
-                            <Image src={logoUrl} alt={`${p.name} logo`} width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
+                        {p.logo ? (
+                            <div className="h-10 w-10">
+                                <MediaFill value={p.logo} alt={`${p.name} logo`} fit="contain" fallback={null} />
+                            </div>
                         ) : (
                             <div className={`h-full w-full ${AVATAR_COLOR} text-white grid place-content-center text-sm font-bold`}>
                                 {initials(p.name)}

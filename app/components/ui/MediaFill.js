@@ -12,15 +12,18 @@ const DEFAULT_FALLBACK = (
 );
 
 // Drop-in replacement for the old `useResolvedImageUrl` + <Image> pairing
-// used for AudienceProfile.logo, InsightArticle.imageKey and ImageBlock.key.
-// All three are plain strings, so a chosen animated icon is stored as
-// "icon:<id>" in the very same field - this renders either case, filling
-// whatever box the caller already sizes (56px logo, cover-aspect card,
-// or a content block's width%/maxHeight), so the icon naturally scales
-// with whichever of those contexts it's used in.
-export default function MediaFill({ value, alt = "", fallback = DEFAULT_FALLBACK, className = "" }) {
+// used for AudienceProfile.logo, InsightArticle.imageKey, ImageBlock.key,
+// and partner logos. All are plain strings, so a chosen animated icon is
+// stored as "icon:<id>" in the very same field - this renders any of the
+// three cases a value can be (an animated icon ref, a static /public path
+// such as a seeded default partner logo, or a Storage key needing a
+// signed URL), filling whatever box the caller already sizes, so the same
+// icon or image naturally scales with whichever context it's used in.
+export default function MediaFill({ value, alt = "", fallback = DEFAULT_FALLBACK, className = "", fit = "cover" }) {
     const iconId = parseIconRef(value);
-    const src = useResolvedImageUrl(iconId ? null : value);
+    const isStaticPath = !iconId && typeof value === "string" && value.startsWith("/");
+    const resolved = useResolvedImageUrl(iconId || isStaticPath ? null : value);
+    const src = isStaticPath ? value : resolved;
 
     if (iconId) {
         const entry = getIconEntry(iconId);
@@ -34,5 +37,5 @@ export default function MediaFill({ value, alt = "", fallback = DEFAULT_FALLBACK
     }
 
     if (!src) return fallback;
-    return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />;
+    return <img src={src} alt={alt} className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"} ${className}`} />;
 }

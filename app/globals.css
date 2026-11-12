@@ -39,8 +39,12 @@ html {
   --color-ink:        #101418; /* near-black, cool-toned text */
   --color-ink-soft:   #5c6b6b; /* secondary/muted text */
 
-  --color-accent:        #0d8f84; /* teal - the one decorative accent: CTAs, dots, numerals */
-  --color-accent-hover:  #0b746b;
+  --color-accent:        #0b7a70; /* teal - the one decorative accent: CTAs, dots, numerals.
+                                      Darkened from an earlier #0d8f84 pass: that shade only hit
+                                      3.7:1 against the cream background and 4.0:1 on white - a
+                                      WCAG AA fail at the small sizes it's used at (eyebrows,
+                                      inline links, badges). This shade clears 4.5:1 on both. */
+  --color-accent-hover:  #085e56;
   --color-accent-soft:   #dcefec; /* tint for subtle accent backgrounds */
 
   --color-link:        #22425a; /* deep teal-navy - secondary emphasis, links */

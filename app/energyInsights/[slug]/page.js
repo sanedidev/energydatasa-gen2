@@ -106,12 +106,12 @@ export default function Page({ params }) {
     if (loading) {
         return (
             <div className="space-y-6 animate-pulse">
-                <div className="h-4 w-1/3 rounded-full bg-slate-100" />
+                <div className="h-4 w-1/3 rounded-full bg-[var(--color-cream-2)]" />
                 <div className="flex items-center gap-4">
-                    <div className="h-16 w-16 rounded-2xl bg-slate-100" />
+                    <div className="h-16 w-16 rounded-none bg-[var(--color-cream-2)]" />
                     <div className="space-y-2 flex-1">
-                        <div className="h-6 w-1/2 rounded-full bg-slate-100" />
-                        <div className="h-4 w-2/3 rounded-full bg-slate-100" />
+                        <div className="h-6 w-1/2 rounded-full bg-[var(--color-cream-2)]" />
+                        <div className="h-4 w-2/3 rounded-full bg-[var(--color-cream-2)]" />
                     </div>
                 </div>
             </div>
@@ -129,10 +129,10 @@ export default function Page({ params }) {
                     <button
                         type="button"
                         onClick={() => setEditMode((v) => !v)}
-                        className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
+                        className={`inline-flex items-center gap-1.5 rounded-none border px-3 py-1.5 text-xs font-medium transition-all ${
                             editMode
                                 ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+                                : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                         }`}
                     >
                         {editMode ? (
@@ -159,7 +159,7 @@ export default function Page({ params }) {
 
             {/* Edit mode banner */}
             {editMode && (
-                <div className="rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 px-4 py-2.5 text-xs text-[var(--color-accent)]">
+                <div className="rounded-none bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 px-4 py-2.5 text-xs text-[var(--color-accent)]">
                     Editing — changes are saved immediately when you click Save.
                 </div>
             )}
@@ -186,7 +186,7 @@ export default function Page({ params }) {
                         <button
                             type="button"
                             onClick={() => setMediaOpen(true)}
-                            className="group relative h-20 w-20 overflow-hidden rounded-2xl border-2 border-dashed border-[var(--color-accent)]/40 bg-slate-50 transition-all hover:border-[var(--color-accent)]/70"
+                            className="group relative h-20 w-20 overflow-hidden rounded-none border-2 border-dashed border-[var(--color-accent)]/40 bg-[var(--color-cream-2)] transition-all hover:border-[var(--color-accent)]/70"
                             title="Change image"
                         >
                             {editPreviewSrc ? (
@@ -199,13 +199,13 @@ export default function Page({ params }) {
                                     unoptimized
                                 />
                             ) : (
-                                <div className="flex h-full items-center justify-center text-slate-300">
+                                <div className="flex h-full items-center justify-center text-[var(--color-ink-soft)]/40">
                                     <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                                     </svg>
                                 </div>
                             )}
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl">
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-none">
                                 <span className="text-[10px] font-semibold text-white">Change</span>
                             </div>
                         </button>
@@ -215,27 +215,27 @@ export default function Page({ params }) {
                         <input
                             value={headerDraft.title}
                             onChange={(e) => setHeaderDraft((d) => ({ ...d, title: e.target.value }))}
-                            className="w-full rounded-xl border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-2xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
+                            className="w-full rounded-none border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-2xl font-bold text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                             placeholder="Article title"
                         />
                         <input
                             value={headerDraft.excerpt}
                             onChange={(e) => setHeaderDraft((d) => ({ ...d, excerpt: e.target.value }))}
-                            className="w-full rounded-xl border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
+                            className="w-full rounded-none border border-[var(--color-accent)]/30 bg-white px-3 py-1.5 text-sm text-[var(--color-ink-soft)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                             placeholder="Subtitle / description (optional)"
                         />
                         <div className="flex gap-2 pt-1">
                             <button
                                 onClick={saveHeader}
                                 disabled={savingHeader}
-                                className="rounded-xl bg-[var(--color-accent)] px-4 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
+                                className="rounded-none bg-[var(--color-accent)] px-4 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                             >
                                 {savingHeader ? "Saving…" : "Save"}
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setEditingHeader(false)}
-                                className="rounded-xl border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                                className="rounded-none border border-[var(--color-hairline)] bg-white px-4 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                             >
                                 Cancel
                             </button>
@@ -245,11 +245,11 @@ export default function Page({ params }) {
             ) : (
                 <div className="flex items-start gap-5">
                     {/* Cover image */}
-                    <div className={`shrink-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-slate-50 ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
+                    <div className={`shrink-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-[var(--color-cream-2)] ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
                         {currentSrc ? (
                             <Image src={currentSrc} alt={title} width={80} height={80} className="object-cover" unoptimized />
                         ) : (
-                            <div className="h-20 w-20 flex items-center justify-center text-slate-300">
+                            <div className="h-20 w-20 flex items-center justify-center text-[var(--color-ink-soft)]/40">
                                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                                 </svg>
@@ -258,8 +258,8 @@ export default function Page({ params }) {
                     </div>
                     <div>
                         <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Insights</p>
-                        <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-                        {excerpt && <p className="mt-1 text-sm text-slate-500 max-w-2xl">{excerpt}</p>}
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)]">{title}</h1>
+                        {excerpt && <p className="mt-1 text-sm text-[var(--color-ink-soft)] max-w-2xl">{excerpt}</p>}
                         {editMode && (
                             <button
                                 type="button"
@@ -267,7 +267,7 @@ export default function Page({ params }) {
                                     setHeaderDraft({ title, excerpt: excerpt ?? "", imageKey: article?.imageKey ?? "" });
                                     setEditingHeader(true);
                                 }}
-                                className="mt-2 inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-500 hover:bg-slate-50 transition-colors"
+                                className="mt-2 inline-flex items-center gap-1 rounded-none border border-[var(--color-hairline)] bg-white px-2.5 py-1 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors"
                             >
                                 <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />

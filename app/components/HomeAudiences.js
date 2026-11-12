@@ -9,7 +9,7 @@ function AudienceLogo({ logo, title }) {
     const src = useResolvedImageUrl(logo);
     if (!src) return null;
     return (
-        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-none bg-[var(--color-cream-2)]">
             <Image src={src} alt={title} width={48} height={48} className="h-full w-full object-cover" unoptimized />
         </div>
     );
@@ -24,11 +24,11 @@ export default function HomeAudiences({ audiences = [] }) {
             <div className="mx-auto max-w-7xl px-4 md:px-6 pt-12">
                 <div className="mb-10">
                     <Link href="/whoisitfor" className="hover:text-[var(--color-accent)] transition-colors">
-                        <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
+                        <h2 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">
                             Audiences
                         </h2>
                     </Link>
-                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-slate-500">
+                    <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
                         Energy Data SA is built for a wide range of users—whether you&apos;re
                         studying, planning, investing, or simply curious.
                     </p>
@@ -43,11 +43,11 @@ export default function HomeAudiences({ audiences = [] }) {
                         >
                             <AudienceLogo logo={a.logo} title={a.title} />
                             <div className="min-w-0 flex-1">
-                                <h3 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-[var(--color-accent)]">
+                                <h3 className="text-sm font-semibold text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)]">
                                     {a.title}
                                 </h3>
                                 {a.subtitle && (
-                                    <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                                    <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">
                                         {a.subtitle}
                                     </p>
                                 )}

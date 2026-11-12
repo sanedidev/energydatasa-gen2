@@ -165,22 +165,22 @@ export default function EnergyInsightsIndex() {
         <div>
             {/* Header */}
             <div className="mb-2">
-                <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">← Home</Link>
+                <Link href="/" className="text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">← Home</Link>
             </div>
             <div className="mb-10 flex items-start justify-between gap-4 flex-wrap">
                 <div>
                     <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Latest</p>
-                    <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Energy Insights &amp; Updates</h1>
-                    <p className="mt-2 text-sm text-slate-500 max-w-2xl">In-depth analysis and updates on South Africa&apos;s energy landscape.</p>
+                    <h1 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">Energy Insights &amp; Updates</h1>
+                    <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">In-depth analysis and updates on South Africa&apos;s energy landscape.</p>
                 </div>
                 {canManage && (
                     <button
                         type="button"
                         onClick={() => { setManaging((v) => !v); setConfirmTarget(null); setCreateErr(""); }}
-                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
+                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-none border px-4 py-2 text-sm font-medium transition-all ${
                             managing
                                 ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                                : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                         }`}
                     >
                         {managing ? (
@@ -212,22 +212,22 @@ export default function EnergyInsightsIndex() {
 
             {/* New article form */}
             {canManage && managing && (
-                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
-                    <p className="text-sm font-semibold text-slate-700">Create new article</p>
+                <form onSubmit={handleCreate} className="mb-10 rounded-none border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
+                    <p className="text-sm font-semibold text-[var(--color-ink-soft)]">Create new article</p>
                     <div className="flex gap-4 items-start">
                         {/* Cover image picker */}
                         <div className="shrink-0">
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Cover image</label>
+                            <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Cover image</label>
                             <button
                                 type="button"
                                 onClick={() => setCreateMediaOpen(true)}
-                                className="group relative h-20 w-20 overflow-hidden rounded-xl border-2 border-dashed border-[var(--color-accent)]/40 bg-white transition-all hover:border-[var(--color-accent)]/70"
+                                className="group relative h-20 w-20 overflow-hidden rounded-none border-2 border-dashed border-[var(--color-accent)]/40 bg-white transition-all hover:border-[var(--color-accent)]/70"
                                 title="Choose cover image"
                             >
                                 {newImageKey ? (
                                     <NewArticleCoverPreview imageKey={newImageKey} />
                                 ) : (
-                                    <div className="flex h-full flex-col items-center justify-center gap-1 text-slate-300">
+                                    <div className="flex h-full flex-col items-center justify-center gap-1 text-[var(--color-ink-soft)]/40">
                                         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                                         </svg>
@@ -241,43 +241,43 @@ export default function EnergyInsightsIndex() {
                                 )}
                             </button>
                             {newImageKey && (
-                                <button type="button" onClick={() => setNewImageKey("")} className="mt-1 text-[11px] text-slate-400 hover:text-red-500 transition-colors w-full text-center">Remove</button>
+                                <button type="button" onClick={() => setNewImageKey("")} className="mt-1 text-[11px] text-[var(--color-ink-soft)]/70 hover:text-red-500 transition-colors w-full text-center">Remove</button>
                             )}
                         </div>
 
                         {/* Text fields */}
                         <div className="flex-1 space-y-3">
                             <div>
-                                <label className="block text-xs font-medium text-slate-500 mb-1">Title <span className="text-red-400">*</span></label>
+                                <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Title <span className="text-red-400">*</span></label>
                                 <input
                                     type="text"
                                     value={newTitle}
                                     onChange={(e) => handleTitleChange(e.target.value)}
                                     placeholder="Article title…"
                                     required
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-500 mb-1">Slug <span className="text-red-400">*</span></label>
+                                <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Slug <span className="text-red-400">*</span></label>
                                 <input
                                     type="text"
                                     value={newSlug}
                                     onChange={(e) => { setNewSlug(e.target.value); setSlugEdited(true); }}
                                     placeholder="url-slug"
                                     required
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm font-mono text-[var(--color-ink-soft)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                                 />
-                                <p className="mt-1 text-xs text-slate-400">URL: /energyInsights/<strong>{newSlug || "slug"}</strong></p>
+                                <p className="mt-1 text-xs text-[var(--color-ink-soft)]/70">URL: /energyInsights/<strong>{newSlug || "slug"}</strong></p>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-500 mb-1">Excerpt <span className="text-slate-400">(optional)</span></label>
+                                <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Excerpt <span className="text-[var(--color-ink-soft)]/70">(optional)</span></label>
                                 <textarea
                                     value={newExcerpt}
                                     onChange={(e) => setNewExcerpt(e.target.value)}
                                     placeholder="Short description shown on the index page…"
                                     rows={2}
-                                    className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none"
                                 />
                             </div>
                         </div>
@@ -287,14 +287,14 @@ export default function EnergyInsightsIndex() {
                         <button
                             type="submit"
                             disabled={creating || !newTitle.trim() || !newSlug.trim()}
-                            className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
+                            className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                         >
                             {creating ? "Creating…" : "Create & open"}
                         </button>
                         <button
                             type="button"
                             onClick={() => { setManaging(false); setNewTitle(""); setNewSlug(""); setNewExcerpt(""); setNewImageKey(""); setSlugEdited(false); setCreateErr(""); }}
-                            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-all hover:bg-slate-50"
+                            className="rounded-none border border-[var(--color-hairline)] bg-white px-4 py-2 text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-cream-2)]"
                         >
                             Cancel
                         </button>
@@ -316,18 +316,18 @@ export default function EnergyInsightsIndex() {
             {loading ? (
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="rounded-2xl bg-slate-50 animate-pulse overflow-hidden">
-                            <div className="aspect-video bg-slate-100" />
+                        <div key={i} className="rounded-none bg-[var(--color-cream-2)] animate-pulse overflow-hidden">
+                            <div className="aspect-video bg-[var(--color-cream-2)]" />
                             <div className="p-6 space-y-3">
-                                <div className="h-4 w-3/4 rounded-full bg-slate-100" />
-                                <div className="h-3 w-full rounded-full bg-slate-100" />
-                                <div className="h-3 w-2/3 rounded-full bg-slate-100" />
+                                <div className="h-4 w-3/4 rounded-full bg-[var(--color-cream-2)]" />
+                                <div className="h-3 w-full rounded-full bg-[var(--color-cream-2)]" />
+                                <div className="h-3 w-2/3 rounded-full bg-[var(--color-cream-2)]" />
                             </div>
                         </div>
                     ))}
                 </div>
             ) : articles.length === 0 ? (
-                <p className="text-sm text-slate-400">No articles yet.</p>
+                <p className="text-sm text-[var(--color-ink-soft)]/70">No articles yet.</p>
             ) : (
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                     {articles
@@ -346,7 +346,7 @@ export default function EnergyInsightsIndex() {
                                             type="button"
                                             onClick={() => handleToggleHide(article.id)}
                                             title={isHidden ? "Show article" : "Hide article"}
-                                            className="inline-flex h-7 items-center gap-1 rounded-lg bg-white/90 px-2 text-[11px] font-medium text-slate-500 shadow hover:bg-slate-100 hover:text-slate-800 transition-all"
+                                            className="inline-flex h-7 items-center gap-1 rounded-none bg-white/90 px-2 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-all"
                                         >
                                             {isHidden ? "Show" : "Hide"}
                                         </button>
@@ -354,7 +354,7 @@ export default function EnergyInsightsIndex() {
                                             type="button"
                                             onClick={() => setConfirmTarget({ id: article.id, title: article.title })}
                                             title="Delete article"
-                                            className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/90 text-slate-400 shadow hover:bg-red-50 hover:text-red-500 transition-all"
+                                            className="inline-flex h-7 w-7 items-center justify-center rounded-none bg-white/90 text-[var(--color-ink-soft)]/70 hover:bg-red-50 hover:text-red-500 transition-all"
                                         >
                                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -370,12 +370,12 @@ export default function EnergyInsightsIndex() {
                                 )}
                                 <div className="flex flex-1 flex-col p-6">
                                     <Link href={`/energyInsights/${article.slug}`}>
-                                        <h2 className="text-base font-semibold leading-snug text-slate-900 transition-colors hover:text-[var(--color-accent)]">
+                                        <h2 className="text-base font-semibold leading-snug text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent)]">
                                             {article.title}
                                         </h2>
                                     </Link>
                                     {article.excerpt && (
-                                        <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">{article.excerpt}</p>
+                                        <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{article.excerpt}</p>
                                     )}
                                     <Link
                                         href={`/energyInsights/${article.slug}`}

@@ -31,7 +31,7 @@ export default function HomeEnergyInsights({ articles = [] }) {
                     Latest
                 </p>
                 <Link href="/energyInsights" className="hover:text-[var(--color-accent)] transition-colors">
-                    <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
+                    <h2 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">
                         Energy Insights &amp; Updates
                     </h2>
                 </Link>
@@ -49,13 +49,13 @@ export default function HomeEnergyInsights({ articles = [] }) {
 
                         <div className="flex flex-1 flex-col p-6">
                             <Link href={`/energyInsights/${article.slug}`}>
-                                <h3 className="text-base font-semibold leading-snug text-slate-900 transition-colors hover:text-[var(--color-accent)]">
+                                <h3 className="text-base font-semibold leading-snug text-[var(--color-ink)] transition-colors hover:text-[var(--color-accent)]">
                                     {article.title}
                                 </h3>
                             </Link>
 
                             {article.excerpt && (
-                                <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-500">
+                                <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                                     {article.excerpt}
                                 </p>
                             )}

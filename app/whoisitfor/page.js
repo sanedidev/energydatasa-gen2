@@ -9,6 +9,7 @@ import { upsertPageContent, createContentRecord, deleteContentRecord } from "@/a
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
 import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import { RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const HIDDEN_SLUG = "whoisitfor.hidden";
 const WHOISITFOR_PAGE_KEYS = ["whoisitfor.__index__", "audience.*"];
@@ -21,7 +22,7 @@ function AudienceLogo({ logo, title }) {
     const src = useResolvedImageUrl(logo);
     if (!src) {
         return (
-            <div className="h-14 w-14 shrink-0 rounded-xl bg-slate-100 flex items-center justify-center text-slate-300">
+            <div className="h-14 w-14 shrink-0 rounded-none bg-[var(--color-cream-2)] flex items-center justify-center text-[var(--color-ink-soft)]/40">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -29,7 +30,7 @@ function AudienceLogo({ logo, title }) {
         );
     }
     return (
-        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-slate-100">
+        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-none bg-[var(--color-cream-2)]">
             <Image src={src} alt={title} width={56} height={56} className="h-full w-full object-cover" unoptimized />
         </div>
     );
@@ -145,12 +146,15 @@ export default function WhoIsItForIndex() {
         <div>
             {/* Header */}
             <div className="mb-2">
-                <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">← Home</Link>
+                <Link href="/" className="text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">← Home</Link>
             </div>
             <div className="mb-10 flex items-start justify-between gap-4 flex-wrap">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">Audiences</h1>
-                    <p className="mt-2 text-sm text-slate-500 max-w-2xl">
+                    <div className="flex items-center gap-3">
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">Audiences</h1>
+                        <RippleIcon className="hidden sm:block h-6 w-6 text-[var(--color-ink-soft)]/50" />
+                    </div>
+                    <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
                         Energy Data SA is built for a wide range of users—whether you&apos;re studying, planning, investing, or simply curious.
                     </p>
                 </div>
@@ -158,10 +162,10 @@ export default function WhoIsItForIndex() {
                     <button
                         type="button"
                         onClick={() => { setManaging((v) => !v); setConfirmTarget(null); setCreateErr(""); }}
-                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-all ${
+                        className={`shrink-0 inline-flex items-center gap-1.5 rounded-none border px-4 py-2 text-sm font-medium transition-all ${
                             managing
                                 ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                                : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                         }`}
                     >
                         {managing ? (
@@ -185,40 +189,40 @@ export default function WhoIsItForIndex() {
 
             {/* New audience form */}
             {canManage && managing && (
-                <form onSubmit={handleCreate} className="mb-10 rounded-2xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
-                    <p className="text-sm font-semibold text-slate-700">Create new audience</p>
+                <form onSubmit={handleCreate} className="mb-10 rounded-none border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)]/40 p-6 space-y-4">
+                    <p className="text-sm font-semibold text-[var(--color-ink-soft)]">Create new audience</p>
                     <div className="space-y-3">
                         <div>
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Title <span className="text-red-400">*</span></label>
+                            <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Title <span className="text-red-400">*</span></label>
                             <input
                                 type="text"
                                 value={newTitle}
                                 onChange={(e) => handleTitleChange(e.target.value)}
                                 placeholder="e.g. Industry & Investors"
                                 required
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
+                                className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Slug <span className="text-red-400">*</span></label>
+                            <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Slug <span className="text-red-400">*</span></label>
                             <input
                                 type="text"
                                 value={newSlug}
                                 onChange={(e) => { setNewSlug(e.target.value); setSlugEdited(true); }}
                                 placeholder="url-slug"
                                 required
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
+                                className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm font-mono text-[var(--color-ink-soft)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
-                            <p className="mt-1 text-xs text-slate-400">URL: /whoisitfor/<strong>{newSlug || "slug"}</strong></p>
+                            <p className="mt-1 text-xs text-[var(--color-ink-soft)]/70">URL: /whoisitfor/<strong>{newSlug || "slug"}</strong></p>
                         </div>
                         <div>
-                            <label className="block text-xs font-medium text-slate-500 mb-1">Subtitle <span className="text-slate-400">(optional)</span></label>
+                            <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Subtitle <span className="text-[var(--color-ink-soft)]/70">(optional)</span></label>
                             <input
                                 type="text"
                                 value={newSubtitle}
                                 onChange={(e) => setNewSubtitle(e.target.value)}
                                 placeholder="Short description…"
-                                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
+                                className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70"
                             />
                         </div>
                     </div>
@@ -227,14 +231,14 @@ export default function WhoIsItForIndex() {
                         <button
                             type="submit"
                             disabled={creating || !newTitle.trim() || !newSlug.trim()}
-                            className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
+                            className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-50"
                         >
                             {creating ? "Creating…" : "Create & open"}
                         </button>
                         <button
                             type="button"
                             onClick={() => { setManaging(false); setNewTitle(""); setNewSlug(""); setNewSubtitle(""); setSlugEdited(false); setCreateErr(""); }}
-                            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-all hover:bg-slate-50"
+                            className="rounded-none border border-[var(--color-hairline)] bg-white px-4 py-2 text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-cream-2)]"
                         >
                             Cancel
                         </button>
@@ -256,11 +260,11 @@ export default function WhoIsItForIndex() {
             {loading ? (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="rounded-2xl bg-slate-50 animate-pulse p-6 h-28" />
+                        <div key={i} className="rounded-none bg-[var(--color-cream-2)] animate-pulse p-6 h-28" />
                     ))}
                 </div>
             ) : audiences.length === 0 ? (
-                <p className="text-sm text-slate-400">No audience profiles yet.</p>
+                <p className="text-sm text-[var(--color-ink-soft)]/70">No audience profiles yet.</p>
             ) : (
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {audiences
@@ -276,7 +280,7 @@ export default function WhoIsItForIndex() {
                                             type="button"
                                             onClick={() => handleToggleHide(a.id)}
                                             title={isHidden ? "Show audience" : "Hide audience"}
-                                            className="inline-flex h-7 items-center gap-1 rounded-lg bg-white/90 px-2 text-[11px] font-medium text-slate-500 shadow hover:bg-slate-100 hover:text-slate-800 transition-all"
+                                            className="inline-flex h-7 items-center gap-1 rounded-none bg-white/90 px-2 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-all"
                                         >
                                             {isHidden ? "Show" : "Hide"}
                                         </button>
@@ -284,7 +288,7 @@ export default function WhoIsItForIndex() {
                                             type="button"
                                             onClick={() => setConfirmTarget({ id: a.id, title: a.title })}
                                             title="Delete audience"
-                                            className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white/90 text-slate-400 shadow hover:bg-red-50 hover:text-red-500 transition-all"
+                                            className="inline-flex h-7 w-7 items-center justify-center rounded-none bg-white/90 text-[var(--color-ink-soft)]/70 hover:bg-red-50 hover:text-red-500 transition-all"
                                         >
                                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -299,11 +303,11 @@ export default function WhoIsItForIndex() {
                                 >
                                     <AudienceLogo logo={a.logo} title={a.title} />
                                     <div className="min-w-0 flex-1">
-                                        <h2 className="text-sm font-semibold text-slate-900 transition-colors group-hover:text-[var(--color-accent)]">
+                                        <h2 className="text-sm font-semibold text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-accent)]">
                                             {a.title}
                                         </h2>
                                         {a.subtitle && (
-                                            <p className="mt-1 text-xs leading-relaxed text-slate-500">{a.subtitle}</p>
+                                            <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">{a.subtitle}</p>
                                         )}
                                         <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
                                             Explore

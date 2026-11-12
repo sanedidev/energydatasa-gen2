@@ -23,7 +23,7 @@ function Hero() {
     return (
         <HeroSection eyebrow="South Africa's Open Energy Platform" padding="pt-14 pb-12">
             <h1 className="text-3xl lg:text-5xl font-bold leading-tight tracking-tight max-w-3xl">
-                Open Data and Analytics
+                Open Data and Analytics{" "}
                 <br className="hidden sm:block" />
                 for a{" "}
                 <span className="text-[var(--color-accent)]">sustainable energy</span>{" "}

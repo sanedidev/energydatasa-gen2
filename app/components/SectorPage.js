@@ -334,21 +334,19 @@ export default function SectorPage({ sectionId }) {
                             Editing shows real stored values, not the absolute values shown above — consumption is negative, production/embedded generation (e.g. rooftop solar) is positive.
                         </p>
                     )}
-                    <div className="overflow-x-auto">
-                        <EditableDataTable
-                            rows={grid.isEditing ? grid.draftRows : section.rows}
-                            commodities={cfg.fuels.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
-                            totalLabel="Total PJ"
-                            isEditing={grid.isEditing}
-                            setCell={grid.setCell}
-                            formatValue={(v) => (v != null ? Math.abs(Number(v)).toFixed(2) : "—")}
-                            cellClassName={(v, { isTotalRow, isTotalColumn }) => {
-                                if (isTotalColumn) return isTotalRow ? "text-emerald-400" : "text-slate-700";
-                                if (v == null) return isTotalRow ? "text-slate-600" : "text-slate-300";
-                                return isTotalRow ? "text-emerald-400" : "text-slate-700";
-                            }}
-                        />
-                    </div>
+                    <EditableDataTable
+                        rows={grid.isEditing ? grid.draftRows : section.rows}
+                        commodities={cfg.fuels.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
+                        totalLabel="Total PJ"
+                        isEditing={grid.isEditing}
+                        setCell={grid.setCell}
+                        formatValue={(v) => (v != null ? Math.abs(Number(v)).toFixed(2) : "—")}
+                        cellClassName={(v, { isTotalRow, isTotalColumn }) => {
+                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-slate-700";
+                            if (v == null) return isTotalRow ? "text-slate-500" : "text-slate-300";
+                            return isTotalRow ? "text-emerald-800" : "text-slate-700";
+                        }}
+                    />
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}

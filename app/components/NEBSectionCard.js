@@ -77,7 +77,7 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
             </div>
 
             {!collapsed && (
-                <div className="reveal-down overflow-x-auto border-t border-[var(--color-hairline)]">
+                <div className="reveal-down border-t border-[var(--color-hairline)]">
                     <EditableDataTable
                         rows={grid.isEditing ? grid.draftRows : section.rows}
                         commodities={visibleCommodities}

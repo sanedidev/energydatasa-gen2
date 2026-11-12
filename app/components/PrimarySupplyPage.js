@@ -291,22 +291,20 @@ export default function PrimarySupplyPage() {
                         </button>
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <EditableDataTable
-                            rows={grid.isEditing ? grid.draftRows : section.rows}
-                            commodities={SUPPLY_FUELS.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
-                            totalLabel="Total PJ"
-                            isEditing={grid.isEditing}
-                            setCell={grid.setCell}
-                            formatValue={(v) => (v != null ? Number(v).toFixed(2) : "—")}
-                            cellClassName={(v, { isTotalRow, isTotalColumn }) => {
-                                if (isTotalColumn) return isTotalRow ? "text-emerald-400" : "text-slate-700";
-                                if (v == null) return isTotalRow ? "text-slate-600" : "text-slate-300";
-                                if (isTotalRow) return "text-emerald-400";
-                                return Number(v) < 0 ? "text-red-500" : "text-slate-700";
-                            }}
-                        />
-                    </div>
+                    <EditableDataTable
+                        rows={grid.isEditing ? grid.draftRows : section.rows}
+                        commodities={SUPPLY_FUELS.map((id) => ({ id, label: COMMODITY_LABEL[id] ?? id }))}
+                        totalLabel="Total PJ"
+                        isEditing={grid.isEditing}
+                        setCell={grid.setCell}
+                        formatValue={(v) => (v != null ? Number(v).toFixed(2) : "—")}
+                        cellClassName={(v, { isTotalRow, isTotalColumn }) => {
+                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-slate-700";
+                            if (v == null) return isTotalRow ? "text-slate-500" : "text-slate-300";
+                            if (isTotalRow) return "text-emerald-800";
+                            return Number(v) < 0 ? "text-red-500" : "text-slate-700";
+                        }}
+                    />
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}

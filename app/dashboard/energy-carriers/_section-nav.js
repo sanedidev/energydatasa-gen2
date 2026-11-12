@@ -44,7 +44,7 @@ function Item({ node, depth = 0, dynChildMap }) {
                 ].join(" ")}
             >
                 {active && depth === 0 && (
-                    <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[var(--color-accent-soft)]0 shrink-0" />
+                    <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] shrink-0" />
                 )}
                 {node.label}
             </Link>

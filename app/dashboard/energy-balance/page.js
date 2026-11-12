@@ -77,7 +77,7 @@ export default function EnergyBalancePage() {
 
     // ── Summary stats ─────────────────────────────────────────────────────────
 
-    const { summaryStats, sectorTotals } = useMemo(() => {
+    const summaryStats = useMemo(() => {
         const byId = Object.fromEntries(sections.map((s) => [s.id, s]));
 
         const tpesVal = byId["primary-supply"]?.rows.find((r) => r.isTotal)?.values?.total ?? 0;
@@ -87,9 +87,6 @@ export default function EnergyBalancePage() {
 
         const fmt0 = (v) => Math.abs(v).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
-        const SECTOR_IDS = ["agriculture", "commerce", "industry", "residential", "transport"];
-        const SECTOR_LABELS = { agriculture: "Agriculture", commerce: "Commerce", industry: "Industry", residential: "Residential", transport: "Transport" };
-
         // Each tile's gauge is sized relative to the largest value in the
         // row, so it reflects where that stage sits in the real energy
         // balance (TPES is always the top of the funnel) rather than an
@@ -97,23 +94,12 @@ export default function EnergyBalancePage() {
         const rawVals = [tpesVal, elecVal, tfesVal, tfcVal].map((v) => Math.abs(v));
         const maxRaw  = Math.max(...rawVals, 1);
 
-        return {
-            summaryStats: [
-                { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal, pct: Math.abs(tpesVal) / maxRaw * 100 },
-                { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal, pct: Math.abs(elecVal) / maxRaw * 100 },
-                { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal, pct: Math.abs(tfesVal) / maxRaw * 100 },
-                { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal,  pct: Math.abs(tfcVal)  / maxRaw * 100 },
-            ],
-            sectorTotals: SECTOR_IDS.map((id) => {
-                const row = byId[id]?.rows.find((r) => r.isTotal);
-                const val = row?.values?.total ?? 0;
-                return {
-                    id,
-                    label: SECTOR_LABELS[id],
-                    value: `${val.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} PJ`,
-                };
-            }),
-        };
+        return [
+            { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal, pct: Math.abs(tpesVal) / maxRaw * 100 },
+            { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal, pct: Math.abs(elecVal) / maxRaw * 100 },
+            { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal, pct: Math.abs(tfesVal) / maxRaw * 100 },
+            { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal,  pct: Math.abs(tfcVal)  / maxRaw * 100 },
+        ];
     }, [sections]);
 
     // ── Render ────────────────────────────────────────────────────────────────
@@ -161,60 +147,37 @@ export default function EnergyBalancePage() {
             </HeroSection>
 
             {/* ── Sector strip ──────────────────────────────────────────────── */}
+            {/* Per-sector links used to live here too, duplicating the
+                clickable bar chart below - removed in favor of clicking
+                straight into a sector from its row in that chart. */}
             <div className="bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5">
-                    <div className="flex flex-col gap-5 sm:flex-row sm:gap-0 sm:divide-x sm:divide-[var(--color-hairline)]">
-
-                        {/* Supply & Conversion */}
-                        <div className="sm:pr-8">
-                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70">
-                                Supply &amp; Conversion
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                <Link
-                                    href={`/dashboard/energy-balance/primary-supply?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
-                                >
-                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
-                                    <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Primary Energy Supply</span>
-                                    <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[0].value}</span>
-                                </Link>
-                                <Link
-                                    href={`/dashboard/energy-balance/conversion?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
-                                >
-                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-ink-soft)]" />
-                                    <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Conversion &amp; Transformation</span>
-                                    <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[1].value}</span>
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Final Consumption by Sector */}
-                        <div className="flex-1 min-w-0 sm:pl-8">
-                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70">
-                                Final Consumption by Sector
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                {sectorTotals.map((s) => (
-                                    <Link
-                                        key={s.id}
-                                        href={`/dashboard/energy-balance/${s.id}?year=${activeYear}`}
-                                        className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
-                                    >
-                                        <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{s.label}</span>
-                                        <span className="font-mono text-red-500">{s.value}</span>
-                                    </Link>
-                                ))}
-                                <Link
-                                    href={`/dashboard/energy-balance/methodology?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-1.5 rounded-none border border-dashed border-[var(--color-hairline)] bg-white px-3 py-2 text-xs text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink-soft)]/40 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
-                                >
-                                    Methodology &amp; Sources
-                                </Link>
-                            </div>
-                        </div>
-
+                    <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70">
+                        Supply &amp; Conversion
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                        <Link
+                            href={`/dashboard/energy-balance/primary-supply?year=${activeYear}`}
+                            className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
+                        >
+                            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                            <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Primary Energy Supply</span>
+                            <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[0].value}</span>
+                        </Link>
+                        <Link
+                            href={`/dashboard/energy-balance/conversion?year=${activeYear}`}
+                            className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
+                        >
+                            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-ink-soft)]" />
+                            <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Conversion &amp; Transformation</span>
+                            <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[1].value}</span>
+                        </Link>
+                        <Link
+                            href={`/dashboard/energy-balance/methodology?year=${activeYear}`}
+                            className="group inline-flex items-center gap-1.5 rounded-none border border-dashed border-[var(--color-hairline)] bg-white px-3 py-2 text-xs text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink-soft)]/40 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
+                        >
+                            Methodology &amp; Sources
+                        </Link>
                     </div>
                 </div>
                 <FlowLine />
@@ -281,11 +244,11 @@ export default function EnergyBalancePage() {
                         <div>
                             <h2 className="text-base font-semibold text-[var(--color-ink)]">Final Consumption by Sector</h2>
                             <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">
-                                Energy delivered to each end-use sector, by fuel. Hover a segment for its PJ value.
+                                Energy delivered to each end-use sector, by fuel. Hover a segment for its PJ value, click a row for the sector page.
                             </p>
                         </div>
                     </div>
-                    <FinalConsumptionBars sections={sections} />
+                    <FinalConsumptionBars sections={sections} activeYear={activeYear} />
                 </div>
             </div>
 

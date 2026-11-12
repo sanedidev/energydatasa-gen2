@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { FUEL_COLOR, FUEL_LABEL, FUEL_ORDER, ELECTRICITY_COLOR, ELECTRICITY_LABEL } from "@/app/lib/energyColors";
 import { SECTOR_IDS, SECTOR_LABEL, sectorGroupBreakdown } from "@/app/lib/energyCommodities";
 
@@ -52,7 +53,7 @@ function buildRows(sections) {
     return rows.sort((a, b) => b.total - a.total);
 }
 
-export default function FinalConsumptionBars({ sections }) {
+export default function FinalConsumptionBars({ sections, activeYear }) {
     const rows = useMemo(() => buildRows(sections), [sections]);
     const [hover, setHover] = useState(null); // { sectorId, sectorLabel, seriesKey, value, x, y }
     const [hoveredRow, setHoveredRow] = useState(null);
@@ -90,29 +91,38 @@ export default function FinalConsumptionBars({ sections }) {
                     const isFocus = rowIndex === 0;
                     const barHeight = isFocus ? 14 : 7;
                     return (
-                        <div
+                        <Link
                             key={row.sectorId}
+                            href={`/dashboard/energy-balance/${row.sectorId}${activeYear ? `?year=${activeYear}` : ""}`}
                             onMouseEnter={() => setHoveredRow(row.sectorId)}
                             onMouseLeave={() => setHoveredRow((r) => (r === row.sectorId ? null : r))}
-                            className="px-2 -mx-2 transition-colors duration-150 border-b border-[var(--color-hairline)] last:border-b-0"
+                            className="group block px-2 -mx-2 transition-colors duration-150 border-b border-[var(--color-hairline)] last:border-b-0"
                             style={{
                                 background: isRowHovered ? "var(--color-cream-2)" : "transparent",
                                 paddingTop: isFocus ? 16 : 10,
                                 paddingBottom: isFocus ? 16 : 10,
                             }}
                         >
-                            <div className="mb-2 flex items-baseline justify-between">
+                            <div className="mb-2 flex items-baseline justify-between gap-3">
                                 <span
                                     className={
                                         isFocus
-                                            ? "text-base font-semibold text-[var(--color-ink)] [font-family:var(--font-display)]"
-                                            : "text-sm text-[var(--color-ink-soft)]"
+                                            ? "text-base font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors [font-family:var(--font-display)]"
+                                            : "text-sm text-[var(--color-ink-soft)] group-hover:text-[var(--color-accent)] transition-colors"
                                     }
                                 >
                                     {row.label}
                                 </span>
-                                <span className={isFocus ? "font-mono text-base font-semibold tabular-nums text-[var(--color-ink)]" : "font-mono text-sm tabular-nums text-[var(--color-ink-soft)]"}>
-                                    {fmt(row.total)} <span className="text-xs font-normal text-[var(--color-ink-soft)]/70">PJ</span>
+                                <span className="flex items-center gap-2 shrink-0">
+                                    <span className={isFocus ? "font-mono text-base font-semibold tabular-nums text-[var(--color-ink)]" : "font-mono text-sm tabular-nums text-[var(--color-ink-soft)]"}>
+                                        {fmt(row.total)} <span className="text-xs font-normal text-[var(--color-ink-soft)]/70">PJ</span>
+                                    </span>
+                                    <svg
+                                        className="h-3.5 w-3.5 text-[var(--color-accent)] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                    </svg>
                                 </span>
                             </div>
                             <div className="w-full bg-[var(--color-cream-2)]" style={{ height: barHeight }}>
@@ -139,9 +149,6 @@ export default function FinalConsumptionBars({ sections }) {
                                                     x: e.clientX, y: e.clientY,
                                                 })}
                                                 onMouseLeave={() => setHover((h) => (h?.sectorId === row.sectorId && h?.seriesKey === seg.key ? null : h))}
-                                                tabIndex={0}
-                                                role="img"
-                                                aria-label={`${row.label} — ${SERIES_LABEL[seg.key]}: ${fmt(seg.value)} petajoules`}
                                                 style={{
                                                     flexGrow: seg.value,
                                                     flexBasis: 0,
@@ -159,7 +166,7 @@ export default function FinalConsumptionBars({ sections }) {
                                     })}
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     );
                 })}
             </div>

@@ -44,7 +44,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
         return (
             <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-32 rounded-2xl bg-slate-50 animate-pulse" />
+                    <div key={i} className="h-32 rounded-none bg-[var(--color-cream-2)] animate-pulse" />
                 ))}
             </div>
         );
@@ -61,10 +61,10 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                     <button
                         type="button"
                         onClick={() => ps.setInternalEditMode((v) => !v)}
-                        className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
+                        className={`inline-flex items-center gap-1.5 rounded-none border px-3 py-1.5 text-xs font-medium transition-all ${
                             ps.internalEditMode
                                 ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                                : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
                         }`}
                     >
                         {ps.internalEditMode ? (
@@ -84,7 +84,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                         )}
                     </button>
                     {ps.internalEditMode && (
-                        <span className="text-xs text-slate-400">Drag handles to reorder · rename or delete sections · changes save immediately</span>
+                        <span className="text-xs text-[var(--color-ink-soft)]/70">Drag handles to reorder · rename or delete sections · changes save immediately</span>
                     )}
                 </div>
             )}
@@ -114,17 +114,17 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                     id="on-this-page"
                     className={`mb-4 rounded-[var(--radius-card)] border border-[var(--color-hairline)] p-5 transition-opacity ${
                         ps.tocVisible
-                            ? "bg-slate-50"
-                            : "bg-slate-50/50 opacity-40"
+                            ? "bg-[var(--color-cream-2)]"
+                            : "bg-[var(--color-cream-2)]/50 opacity-40"
                     }`}
                 >
                     <div className="flex items-center justify-between mb-3">
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">On this page</p>
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">On this page</p>
                         {ps.canEditThisPage && (
                             <button
                                 type="button"
                                 onClick={ps.toggleToc}
-                                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-800 transition-colors"
+                                className="inline-flex items-center gap-1 rounded-none border border-[var(--color-hairline)] bg-white px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors"
                             >
                                 {ps.tocVisible ? (
                                     <>
@@ -148,7 +148,7 @@ export default function EditableSections({ pageKey, defaultSections, placeholder
                     <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                         {list.filter((f) => !f.hidden || ps.canEditThisPage).map((f) => (
                             <a key={f.id} href={`#${f.id}`}
-                                className="rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-2 text-sm text-slate-600 hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all"
+                                className="rounded-none bg-white border border-[var(--color-hairline)] px-3 py-2 text-sm text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/40 transition-all"
                             >
                                 {f.label}
                             </a>

@@ -13,7 +13,7 @@ export function TBtn({ children, title, onClick }) {
             type="button"
             title={title}
             onMouseDown={(e) => { e.preventDefault(); onClick(); }}
-            className="inline-flex h-7 min-w-7 items-center justify-center rounded-md px-1.5 text-xs font-medium text-slate-600 hover:bg-slate-200 hover:text-slate-900 transition-colors"
+            className="inline-flex h-7 min-w-7 items-center justify-center rounded-none px-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors"
         >
             {children}
         </button>
@@ -21,7 +21,7 @@ export function TBtn({ children, title, onClick }) {
 }
 
 export function Sep() {
-    return <span className="mx-1 h-4 w-px shrink-0 bg-slate-300" />;
+    return <span className="mx-1 h-4 w-px shrink-0 bg-[var(--color-hairline)]" />;
 }
 
 export function DropZone({ dragging, isActive, onDragOver, onDrop }) {
@@ -47,12 +47,12 @@ export function DropZone({ dragging, isActive, onDragOver, onDrop }) {
 export function ConfirmModal({ message, onConfirm, onCancel }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4">
-            <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-6 max-w-sm w-full space-y-4">
-                <p className="text-sm font-semibold text-slate-900">{message}</p>
-                <p className="text-xs text-slate-500">This action cannot be undone.</p>
+            <div className="bg-white rounded-none border border-[var(--color-hairline)] p-6 max-w-sm w-full space-y-4">
+                <p className="text-sm font-semibold text-[var(--color-ink)]">{message}</p>
+                <p className="text-xs text-[var(--color-ink-soft)]">This action cannot be undone.</p>
                 <div className="flex gap-2 justify-end">
-                    <button type="button" onClick={onCancel} className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">Cancel</button>
-                    <button type="button" onClick={onConfirm} className="rounded-xl bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">Delete</button>
+                    <button type="button" onClick={onCancel} className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">Cancel</button>
+                    <button type="button" onClick={onConfirm} className="rounded-none bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">Delete</button>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@ export function ConfirmModal({ message, onConfirm, onCancel }) {
 function SwapBadge() {
     return (
         <div className="pointer-events-none absolute inset-x-0 -top-3 flex justify-center z-10">
-            <span className="rounded-full bg-orange-500 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm">↕ Swap positions</span>
+            <span className="rounded-full bg-orange-500 px-2.5 py-0.5 text-[10px] font-semibold text-white">↕ Swap positions</span>
         </div>
     );
 }
@@ -71,7 +71,7 @@ function SwapBadge() {
 function HiddenBadge() {
     return (
         <div className="pointer-events-none absolute inset-x-0 -top-3 flex justify-center z-10">
-            <span className="rounded-full bg-slate-400 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm">Hidden</span>
+            <span className="rounded-full bg-[var(--color-ink-soft)] px-2.5 py-0.5 text-[10px] font-semibold text-white">Hidden</span>
         </div>
     );
 }
@@ -84,8 +84,8 @@ function HideToggleBtn({ isHidden, onToggleHide }) {
             title={isHidden ? "Show block (visible to all users)" : "Hide block (invisible to non-admins)"}
             aria-label={label}
             onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onToggleHide(); }}
-            className={`inline-flex h-7 w-7 items-center justify-center rounded-md transition-colors ${
-                isHidden ? "text-amber-500 hover:bg-amber-50 hover:text-amber-600" : "text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+            className={`inline-flex h-7 w-7 items-center justify-center rounded-none transition-colors ${
+                isHidden ? "text-amber-500 hover:bg-amber-50 hover:text-amber-600" : "text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink-soft)]"
             }`}
         >
             {isHidden ? (
@@ -109,7 +109,7 @@ function DeleteBtn({ onDelete, title = "Delete block" }) {
             title={title}
             aria-label={title}
             onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onDelete(); }}
-            className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-none text-[var(--color-ink-soft)]/70 hover:bg-red-50 hover:text-red-500 transition-colors"
         >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -126,7 +126,7 @@ function DragHandleBtn({ setDraggable }) {
             aria-label="Drag to reorder"
             onMouseDown={() => setDraggable(true)}
             onMouseUp={() => setDraggable(false)}
-            className="flex cursor-grab active:cursor-grabbing items-center text-slate-300 hover:text-slate-500"
+            className="flex cursor-grab active:cursor-grabbing items-center text-[var(--color-ink-soft)]/40 hover:text-[var(--color-ink-soft)]"
         >
             <DragHandle />
         </div>
@@ -134,7 +134,7 @@ function DragHandleBtn({ setDraggable }) {
 }
 
 function draggableCardClass(isDragging, isSwapTarget, isHidden, extra = "") {
-    return `relative rounded-xl border bg-white transition-all select-none
+    return `relative rounded-none border bg-white transition-all select-none
         ${isDragging   ? "opacity-40 scale-[0.98]" : ""}
         ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-[var(--color-hairline)]"}
         ${isHidden     ? "opacity-50" : ""}
@@ -175,7 +175,7 @@ export function BlockEditor({
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragEnd={(e) => { setDraggable(false); onDragEnd(e); }}
-            className={`relative rounded-xl border bg-white transition-all
+            className={`relative rounded-none border bg-white transition-all
                 ${isDragging   ? "opacity-40 scale-[0.98]" : ""}
                 ${isSwapTarget ? "border-orange-400 ring-2 ring-orange-200" : "border-[var(--color-hairline)]"}
                 ${isHidden     ? "opacity-50" : ""}
@@ -184,12 +184,12 @@ export function BlockEditor({
             {isSwapTarget && <SwapBadge />}
             {isHidden && <HiddenBadge />}
 
-            <div className="flex flex-wrap items-center gap-0.5 border-b border-slate-100 bg-slate-50 px-2 py-1.5 rounded-t-xl">
+            <div className="flex flex-wrap items-center gap-0.5 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-2 py-1.5 rounded-none">
                 <div
                     title="Drag to reorder"
                     onMouseDown={() => setDraggable(true)}
                     onMouseUp={() => setDraggable(false)}
-                    className="mr-1 flex cursor-grab active:cursor-grabbing items-center text-slate-300 hover:text-slate-500"
+                    className="mr-1 flex cursor-grab active:cursor-grabbing items-center text-[var(--color-ink-soft)]/40 hover:text-[var(--color-ink-soft)]"
                 >
                     <DragHandle />
                 </div>
@@ -233,7 +233,7 @@ export function BlockEditor({
                     type="button"
                     title={total === 1 ? "Clear block" : "Delete block"}
                     onMouseDown={(e) => { e.preventDefault(); onDelete(); }}
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors"
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-none text-[var(--color-ink-soft)]/70 hover:bg-red-50 hover:text-red-500 transition-colors"
                 >
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
@@ -242,7 +242,7 @@ export function BlockEditor({
             <textarea
                 ref={registerTextarea}
                 draggable={false}
-                className="w-full rounded-b-xl bg-white p-3 font-mono text-sm text-slate-900 leading-relaxed focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:ring-inset transition-all resize-y select-text"
+                className="w-full rounded-none bg-white p-3 font-mono text-sm text-[var(--color-ink)] leading-relaxed focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:ring-inset transition-all resize-y select-text"
                 rows={6}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
@@ -288,12 +288,12 @@ export function ImageBlockEditor({
             {isSwapTarget && <SwapBadge />}
             {isHidden && <HiddenBadge />}
 
-            <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-2 py-1.5">
+            <div className="flex items-center gap-2 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-2 py-1.5">
                 <DragHandleBtn setDraggable={setDraggable} />
-                <svg className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="h-3.5 w-3.5 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                 </svg>
-                <span className="text-xs font-medium text-slate-500">Image</span>
+                <span className="text-xs font-medium text-[var(--color-ink-soft)]">Image</span>
                 <button type="button" onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onChangeImage(); }} className="text-xs text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] underline underline-offset-2">
                     Change
                 </button>
@@ -306,24 +306,24 @@ export function ImageBlockEditor({
             <div className="p-3">
                 <div className={`flex ${align === "right" ? "justify-end" : align === "center" ? "justify-center" : "justify-start"}`}>
                     {src
-                        ? <div className="relative rounded-lg overflow-hidden" style={{ width: `${width}%`, height: `${maxHeight}px` }}>
+                        ? <div className="relative rounded-none overflow-hidden" style={{ width: `${width}%`, height: `${maxHeight}px` }}>
                               <Image src={src} alt="Image block" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" unoptimized />
                           </div>
-                        : <div className="flex h-20 w-full items-center justify-center text-xs text-slate-400">Image unavailable</div>
+                        : <div className="flex h-20 w-full items-center justify-center text-xs text-[var(--color-ink-soft)]/70">Image unavailable</div>
                     }
                 </div>
             </div>
 
-            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-3 border-t border-slate-100 bg-slate-50/70 px-4 py-3">
-                <span className="text-[11px] font-medium text-slate-500">Width</span>
+            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-3 border-t border-[var(--color-hairline)] bg-[var(--color-cream-2)]/70 px-4 py-3">
+                <span className="text-[11px] font-medium text-[var(--color-ink-soft)]">Width</span>
                 <input type="range" min={10} max={100} step={5} value={width} onChange={(e) => onUpdate({ width: Number(e.target.value) })} className="w-full h-1.5 accent-[var(--color-accent)] cursor-pointer py-2" />
-                <span className="w-10 text-right text-[11px] font-mono text-slate-600">{width}%</span>
+                <span className="w-10 text-right text-[11px] font-mono text-[var(--color-ink-soft)]">{width}%</span>
 
-                <span className="text-[11px] font-medium text-slate-500">Height</span>
+                <span className="text-[11px] font-medium text-[var(--color-ink-soft)]">Height</span>
                 <input type="range" min={100} max={800} step={25} value={maxHeight} onChange={(e) => onUpdate({ maxHeight: Number(e.target.value) })} className="w-full h-1.5 accent-[var(--color-accent)] cursor-pointer py-2" />
-                <span className="w-10 text-right text-[11px] font-mono text-slate-600">{maxHeight}px</span>
+                <span className="w-10 text-right text-[11px] font-mono text-[var(--color-ink-soft)]">{maxHeight}px</span>
 
-                <span className="text-[11px] font-medium text-slate-500">Align</span>
+                <span className="text-[11px] font-medium text-[var(--color-ink-soft)]">Align</span>
                 <div className="flex items-center gap-1 col-span-2">
                     {ALIGN_OPTS.map((opt) => (
                         <button
@@ -331,7 +331,7 @@ export function ImageBlockEditor({
                             type="button"
                             title={opt.label}
                             onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); onUpdate({ align: opt.value }); }}
-                            className={`inline-flex h-6 w-6 items-center justify-center rounded transition-colors ${align === opt.value ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]" : "text-slate-400 hover:bg-slate-200 hover:text-slate-700"}`}
+                            className={`inline-flex h-6 w-6 items-center justify-center rounded-none transition-colors ${align === opt.value ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]" : "text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink-soft)]"}`}
                         >
                             {opt.icon}
                         </button>
@@ -363,12 +363,12 @@ export function TitleBlockEditor({
             {isSwapTarget && <SwapBadge />}
             {isHidden && <HiddenBadge />}
 
-            <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-2 py-1.5">
+            <div className="flex items-center gap-2 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-2 py-1.5">
                 <DragHandleBtn setDraggable={setDraggable} />
-                <svg className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="h-3.5 w-3.5 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                 </svg>
-                <span className="text-xs font-medium text-slate-500">Title block</span>
+                <span className="text-xs font-medium text-[var(--color-ink-soft)]">Title block</span>
                 <div className="ml-auto flex items-center gap-1">
                     <HideToggleBtn isHidden={isHidden} onToggleHide={onToggleHide} />
                     <DeleteBtn onDelete={onDelete} title="Delete title block" />
@@ -382,7 +382,7 @@ export function TitleBlockEditor({
                     value={block.title ?? ""}
                     onChange={(e) => onUpdate({ title: e.target.value })}
                     placeholder="Title"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xl font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
+                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-xl font-bold text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
                 />
                 <textarea
                     draggable={false}
@@ -390,7 +390,7 @@ export function TitleBlockEditor({
                     onChange={(e) => onUpdate({ subtitle: e.target.value })}
                     placeholder="Subtitle / description (optional)"
                     rows={2}
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none select-text"
+                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink-soft)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 resize-none select-text"
                 />
             </div>
         </div>
@@ -418,12 +418,12 @@ export function SectionBlockEditor({
             {isSwapTarget && <SwapBadge />}
             {isHidden && <HiddenBadge />}
 
-            <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-2 py-1.5">
+            <div className="flex items-center gap-2 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-2 py-1.5">
                 <DragHandleBtn setDraggable={setDraggable} />
-                <svg className="h-3.5 w-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="h-3.5 w-3.5 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
-                <span className="text-xs font-medium text-slate-500">Section block</span>
+                <span className="text-xs font-medium text-[var(--color-ink-soft)]">Section block</span>
                 <div className="ml-auto flex items-center gap-1">
                     <HideToggleBtn isHidden={isHidden} onToggleHide={onToggleHide} />
                     <DeleteBtn onDelete={onDelete} title="Delete section block" />
@@ -437,7 +437,7 @@ export function SectionBlockEditor({
                     value={block.label ?? ""}
                     onChange={(e) => onUpdate({ label: e.target.value })}
                     placeholder="Section heading"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
+                    className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm font-semibold text-[var(--color-ink-soft)] uppercase tracking-wide focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/70 select-text"
                 />
             </div>
         </div>

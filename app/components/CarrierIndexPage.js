@@ -54,22 +54,22 @@ function CardForm({ initial, onSave, onCancel, saveLabel = "Save", isFolder = fa
     return (
         <div className="rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-white p-4 space-y-3">
             <div className="space-y-1">
-                <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
-                <input className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.title} onChange={(e) => set("title", e.target.value)} placeholder="Card title" />
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Title</label>
+                <input className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.title} onChange={(e) => set("title", e.target.value)} placeholder="Card title" />
             </div>
             <div className="space-y-1">
-                <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Description</label>
-                <input className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.desc} onChange={(e) => set("desc", e.target.value)} placeholder="Short description…" />
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Description</label>
+                <input className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.desc} onChange={(e) => set("desc", e.target.value)} placeholder="Short description…" />
             </div>
             {!isFolder && (
                 <div className="space-y-1">
-                    <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Link (href)</label>
-                    <input className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-mono outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.href ?? ""} onChange={(e) => set("href", e.target.value)} placeholder="/dashboard/energy-carriers/…" />
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Link (href)</label>
+                    <input className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm font-mono outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40" value={draft.href ?? ""} onChange={(e) => set("href", e.target.value)} placeholder="/dashboard/energy-carriers/…" />
                 </div>
             )}
             <div className="flex gap-2 pt-1">
-                <button onClick={() => valid && onSave(draft)} disabled={!valid} className="rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">{saveLabel}</button>
-                <button onClick={onCancel} className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">Cancel</button>
+                <button onClick={() => valid && onSave(draft)} disabled={!valid} className="rounded-none bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">{saveLabel}</button>
+                <button onClick={onCancel} className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">Cancel</button>
             </div>
         </div>
     );
@@ -85,9 +85,9 @@ function DynamicItemForm({ type, pathname, onSave, onCancel, saving }) {
     return (
         <div className="rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-white p-4 space-y-3">
             <div className="space-y-1">
-                <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Title</label>
                 <input
-                    className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                    className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                     value={draft.title}
                     onChange={(e) => set("title", e.target.value)}
                     placeholder={type === "carrier" ? "Carrier name…" : "File title…"}
@@ -95,16 +95,16 @@ function DynamicItemForm({ type, pathname, onSave, onCancel, saving }) {
                 />
             </div>
             <div className="space-y-1">
-                <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Description</label>
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Description</label>
                 <input
-                    className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                    className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                     value={draft.desc}
                     onChange={(e) => set("desc", e.target.value)}
                     placeholder="Short description…"
                 />
             </div>
             {urlPreview && (
-                <p className="text-[11px] text-slate-400 font-mono bg-slate-50 rounded-lg px-3 py-1.5 truncate">
+                <p className="text-[11px] text-[var(--color-ink-soft)]/70 font-mono bg-[var(--color-cream-2)] rounded-none px-3 py-1.5 truncate">
                     {urlPreview}
                 </p>
             )}
@@ -112,11 +112,11 @@ function DynamicItemForm({ type, pathname, onSave, onCancel, saving }) {
                 <button
                     onClick={() => valid && !saving && onSave(draft)}
                     disabled={!valid || saving}
-                    className="rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40"
+                    className="rounded-none bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40"
                 >
                     {saveLabel}
                 </button>
-                <button onClick={onCancel} disabled={saving} className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-40">Cancel</button>
+                <button onClick={onCancel} disabled={saving} className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] disabled:opacity-40">Cancel</button>
             </div>
         </div>
     );
@@ -172,17 +172,17 @@ function GridToggle({ value, onChange }) {
         },
     ];
     return (
-        <div className="flex items-center gap-0.5 rounded-lg border border-slate-200 bg-white p-0.5">
+        <div className="flex items-center gap-0.5 rounded-none border border-[var(--color-hairline)] bg-white p-0.5">
             {opts.map(({ n, label, icon }) => (
                 <button
                     key={n}
                     type="button"
                     title={label}
                     onClick={() => onChange(n)}
-                    className={`rounded-md p-1.5 transition-colors ${
+                    className={`rounded-none p-1.5 transition-colors ${
                         value === n
-                            ? "bg-slate-900 text-white"
-                            : "text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                            ? "bg-[var(--color-ink)] text-white"
+                            : "text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink-soft)]"
                     }`}
                 >
                     {icon}
@@ -461,18 +461,18 @@ export default function CarrierIndexPage({
             <div className="flex items-start justify-between gap-4">
                 <div>
                     {label && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">{label}</p>}
-                    <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-                    {description && <p className="mt-2 text-sm text-slate-500">{description}</p>}
+                    <h1 className="text-2xl font-bold text-[var(--color-ink)]">{title}</h1>
+                    {description && <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{description}</p>}
                 </div>
                 <div className="shrink-0 flex items-center gap-2">
                     <GridToggle value={activeCols} onChange={handleColChange} />
                     {canManage && (
                         <button
                             onClick={toggleEdit}
-                            className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-all ${
+                            className={`inline-flex items-center gap-1.5 rounded-none border px-3 py-1.5 text-xs font-medium transition-all ${
                                 editMode
                                     ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                    : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                                    : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink-soft)]"
                             }`}
                         >
                             {editMode ? (
@@ -492,7 +492,7 @@ export default function CarrierIndexPage({
             </div>
 
             {editMode && (
-                <div className="rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/25 px-4 py-2.5 text-xs text-[var(--color-accent)] font-medium">
+                <div className="rounded-none bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/25 px-4 py-2.5 text-xs text-[var(--color-accent)] font-medium">
                     Editing — changes save immediately. Hidden cards are invisible to non-admins.
                     {saving && <span className="ml-2 opacity-60">Saving…</span>}
                 </div>
@@ -502,7 +502,7 @@ export default function CarrierIndexPage({
             {loading ? (
                 <div className={`grid gap-4 ${colClass} animate-pulse`}>
                     {[...Array(Math.max(visible.length || 3, 3))].map((_, i) => (
-                        <div key={i} className="h-28 rounded-2xl bg-slate-100" />
+                        <div key={i} className="h-28 rounded-none bg-[var(--color-cream-2)]" />
                     ))}
                 </div>
             ) : (
@@ -537,14 +537,14 @@ export default function CarrierIndexPage({
                                         <button
                                             type="button"
                                             onClick={() => !editMode && toggleFolder(card.id)}
-                                            className={`w-full flex items-center gap-3 p-5 text-left ${!editMode ? "cursor-pointer hover:bg-slate-50/60 transition-colors" : "cursor-default"} rounded-2xl`}
+                                            className={`w-full flex items-center gap-3 p-5 text-left ${!editMode ? "cursor-pointer hover:bg-[var(--color-cream-2)]/60 transition-colors" : "cursor-default"} rounded-none`}
                                         >
-                                            <span className={`shrink-0 ${isOpen || editMode ? "text-[var(--color-accent)]" : "text-slate-400"} transition-colors`}>
+                                            <span className={`shrink-0 ${isOpen || editMode ? "text-[var(--color-accent)]" : "text-[var(--color-ink-soft)]/70"} transition-colors`}>
                                                 <FolderIcon open={isOpen || editMode} />
                                             </span>
                                             <div className="flex-1 min-w-0">
-                                                <h2 className="text-sm font-semibold text-slate-900">{card.title}</h2>
-                                                {card.desc && <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{card.desc}</p>}
+                                                <h2 className="text-sm font-semibold text-[var(--color-ink)]">{card.title}</h2>
+                                                {card.desc && <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">{card.desc}</p>}
                                             </div>
                                             {!editMode && (
                                                 <span className="shrink-0 flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">
@@ -556,16 +556,16 @@ export default function CarrierIndexPage({
                                             )}
                                             {editMode && (
                                                 <div className="shrink-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                                                    <button onClick={() => setEditingIdx(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors">Edit</button>
-                                                    <button onClick={() => handleToggleHide(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors">{card.hidden ? "Show" : "Hide"}</button>
-                                                    <button onClick={() => setConfirmDeleteIdx(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
+                                                    <button onClick={() => setEditingIdx(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">Edit</button>
+                                                    <button onClick={() => handleToggleHide(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">{card.hidden ? "Show" : "Hide"}</button>
+                                                    <button onClick={() => setConfirmDeleteIdx(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
                                                 </div>
                                             )}
                                         </button>
 
                                         {/* Children — visible when expanded (view) or always in edit mode */}
                                         {(isOpen || editMode) && (
-                                            <div className="border-t border-slate-100 px-5 pb-5 pt-4">
+                                            <div className="border-t border-[var(--color-hairline)] px-5 pb-5 pt-4">
                                                 <div className={`grid gap-3 ${colClass}`}>
                                                     {visibleChildren.map((child, ci) => (
                                                         editingChild?.fi === idx && editingChild?.ci === ci ? (
@@ -579,31 +579,31 @@ export default function CarrierIndexPage({
                                                         ) : (
                                                             <div
                                                                 key={child.id ?? ci}
-                                                                className={`group relative flex flex-col rounded-xl bg-[var(--color-cream-2)] border border-[var(--color-hairline)] transition-all ${
+                                                                className={`group relative flex flex-col rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] transition-all ${
                                                                     child.hidden ? "opacity-40" : (!editMode ? "hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40" : "")
                                                                 }`}
                                                             >
                                                                 {!editMode && !child.hidden ? (
                                                                     <Link href={child.href} className="flex flex-col flex-1">
                                                                         <div className="flex-1 p-4">
-                                                                            <h3 className="text-xs font-semibold text-slate-900 group-hover:text-[var(--color-accent)] transition-colors">{child.title}</h3>
-                                                                            {child.desc && <p className="mt-1 text-[11px] leading-relaxed text-slate-500">{child.desc}</p>}
+                                                                            <h3 className="text-xs font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors">{child.title}</h3>
+                                                                            {child.desc && <p className="mt-1 text-[11px] leading-relaxed text-[var(--color-ink-soft)]">{child.desc}</p>}
                                                                         </div>
-                                                                        <div className="flex items-center justify-end border-t border-slate-100 px-4 py-2">
+                                                                        <div className="flex items-center justify-end border-t border-[var(--color-hairline)] px-4 py-2">
                                                                             <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--color-accent)]">Open <ArrowIcon /></span>
                                                                         </div>
                                                                     </Link>
                                                                 ) : (
                                                                     <div className="flex flex-col flex-1">
                                                                         <div className="flex-1 p-4">
-                                                                            <h3 className="text-xs font-semibold text-slate-900">{child.title}</h3>
-                                                                            {child.desc && <p className="mt-1 text-[11px] leading-relaxed text-slate-500">{child.desc}</p>}
+                                                                            <h3 className="text-xs font-semibold text-[var(--color-ink)]">{child.title}</h3>
+                                                                            {child.desc && <p className="mt-1 text-[11px] leading-relaxed text-[var(--color-ink-soft)]">{child.desc}</p>}
                                                                         </div>
                                                                         {editMode && (
-                                                                            <div className="flex items-center gap-1 border-t border-slate-100 px-3 py-1.5">
-                                                                                <button onClick={() => setEditingChild({ fi: idx, ci })} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors">Edit</button>
-                                                                                <button onClick={() => handleToggleChildHide(idx, ci)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors">{child.hidden ? "Show" : "Hide"}</button>
-                                                                                <button onClick={() => setConfirmDeleteChild({ fi: idx, ci })} className="ml-auto rounded-lg px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
+                                                                            <div className="flex items-center gap-1 border-t border-[var(--color-hairline)] px-3 py-1.5">
+                                                                                <button onClick={() => setEditingChild({ fi: idx, ci })} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">Edit</button>
+                                                                                <button onClick={() => handleToggleChildHide(idx, ci)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">{child.hidden ? "Show" : "Hide"}</button>
+                                                                                <button onClick={() => setConfirmDeleteChild({ fi: idx, ci })} className="ml-auto rounded-none px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
                                                                             </div>
                                                                         )}
                                                                     </div>
@@ -616,7 +616,7 @@ export default function CarrierIndexPage({
                                                     {editMode && addChildOpenIdx !== idx && (
                                                         <button
                                                             onClick={() => setAddChildOpenIdx(idx)}
-                                                            className="flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-[var(--color-accent)]/25 p-4 text-[var(--color-accent)] hover:border-[var(--color-accent)]/70 hover:bg-[var(--color-accent-soft)] transition-colors min-h-20"
+                                                            className="flex flex-col items-center justify-center gap-1.5 rounded-none border-2 border-dashed border-[var(--color-accent)]/25 p-4 text-[var(--color-accent)] hover:border-[var(--color-accent)]/70 hover:bg-[var(--color-accent-soft)] transition-colors min-h-20"
                                                         >
                                                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -659,7 +659,7 @@ export default function CarrierIndexPage({
                                         isInsertAfter  ? { boxShadow:  "4px 0 0 0 #16a34a" } :
                                         undefined
                                     }
-                                    className={`group relative flex flex-col rounded-2xl bg-white transition-all
+                                    className={`group relative flex flex-col rounded-none bg-white transition-all
                                         ${card.hidden ? "opacity-40" : (!editMode ? "hover:-translate-y-0.5" : "")}
                                         ${editMode && dragIdx === idx ? "opacity-40 scale-[0.98]" : ""}
                                         ${isSwapTarget ? "ring-2 ring-orange-400 border border-transparent" : "border border-[var(--color-hairline)]"}
@@ -671,7 +671,7 @@ export default function CarrierIndexPage({
                                             title="Drag to reorder"
                                             onMouseDown={() => setDraggableIdx(idx)}
                                             onMouseUp={() => setDraggableIdx(null)}
-                                            className="absolute top-2 right-2 z-10 cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500"
+                                            className="absolute top-2 right-2 z-10 cursor-grab active:cursor-grabbing text-[var(--color-ink-soft)]/40 hover:text-[var(--color-ink-soft)]"
                                         >
                                             <CardDragHandle />
                                         </div>
@@ -679,25 +679,25 @@ export default function CarrierIndexPage({
                                     {!editMode && !card.hidden ? (
                                         <Link href={card.href} className="flex flex-col flex-1">
                                             <div className="flex-1 p-5">
-                                                <h2 className="text-sm font-semibold text-slate-900 group-hover:text-[var(--color-accent)] transition-colors">{card.title}</h2>
-                                                {card.desc && <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{card.desc}</p>}
+                                                <h2 className="text-sm font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors">{card.title}</h2>
+                                                {card.desc && <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">{card.desc}</p>}
                                             </div>
-                                            <div className="flex items-center justify-end border-t border-slate-50 px-5 py-2.5">
+                                            <div className="flex items-center justify-end border-t border-[var(--color-hairline)] px-5 py-2.5">
                                                 <span className="inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)]">Open <ArrowIcon /></span>
                                             </div>
                                         </Link>
                                     ) : (
                                         <div className="flex flex-col flex-1">
                                             <div className="flex-1 p-5">
-                                                <h2 className="text-sm font-semibold text-slate-900">{card.title}</h2>
-                                                {card.desc && <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{card.desc}</p>}
+                                                <h2 className="text-sm font-semibold text-[var(--color-ink)]">{card.title}</h2>
+                                                {card.desc && <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">{card.desc}</p>}
                                             </div>
                                             {editMode && (
-                                                <div className="flex items-center gap-1 border-t border-slate-50 px-4 py-2">
-                                                    <button onClick={() => setEditingIdx(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors">Edit</button>
-                                                    <button onClick={() => handleToggleHide(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors">{card.hidden ? "Show" : "Hide"}</button>
-                                                    <button onClick={() => setMovingIdx(idx)} className="rounded-lg px-2 py-1 text-[11px] font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors">Move</button>
-                                                    <button onClick={() => setConfirmDeleteIdx(idx)} className="ml-auto rounded-lg px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
+                                                <div className="flex items-center gap-1 border-t border-[var(--color-hairline)] px-4 py-2">
+                                                    <button onClick={() => setEditingIdx(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">Edit</button>
+                                                    <button onClick={() => handleToggleHide(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">{card.hidden ? "Show" : "Hide"}</button>
+                                                    <button onClick={() => setMovingIdx(idx)} className="rounded-none px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">Move</button>
+                                                    <button onClick={() => setConfirmDeleteIdx(idx)} className="ml-auto rounded-none px-2 py-1 text-[11px] font-medium text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
                                                 </div>
                                             )}
                                         </div>
@@ -712,7 +712,7 @@ export default function CarrierIndexPage({
                                 <button
                                     onClick={() => setAddType("carrier")}
                                     disabled={creatingNode}
-                                    className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 p-6 text-slate-400 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
+                                    className="flex flex-col items-center justify-center gap-2 rounded-none border-2 border-dashed border-[var(--color-hairline)] p-6 text-[var(--color-ink-soft)]/70 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
@@ -722,7 +722,7 @@ export default function CarrierIndexPage({
                                 <button
                                     onClick={() => setAddType("file")}
                                     disabled={creatingNode}
-                                    className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 p-6 text-slate-400 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
+                                    className="flex flex-col items-center justify-center gap-2 rounded-none border-2 border-dashed border-[var(--color-hairline)] p-6 text-[var(--color-ink-soft)]/70 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -732,7 +732,7 @@ export default function CarrierIndexPage({
                                 <button
                                     onClick={() => setAddType("link")}
                                     disabled={creatingNode}
-                                    className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-200 p-6 text-slate-400 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
+                                    className="flex flex-col items-center justify-center gap-2 rounded-none border-2 border-dashed border-[var(--color-hairline)] p-6 text-[var(--color-ink-soft)]/70 hover:border-[var(--color-accent)]/40 hover:text-[var(--color-accent)] transition-colors min-h-28 disabled:opacity-40"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />

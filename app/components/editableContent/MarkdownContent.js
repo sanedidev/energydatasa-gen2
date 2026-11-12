@@ -7,7 +7,7 @@ function parseInline(text) {
     while ((m = re.exec(text)) !== null) {
         if (m.index > last) parts.push(text.slice(last, m.index));
         if (m[1] !== undefined)
-            parts.push(<strong key={m.index} className="font-semibold text-slate-800">{m[1]}</strong>);
+            parts.push(<strong key={m.index} className="font-semibold text-[var(--color-ink)]">{m[1]}</strong>);
         else
             parts.push(<em key={m.index} className="italic">{m[2]}</em>);
         last = m.index + m[0].length;
@@ -28,15 +28,15 @@ export default function MarkdownContent({ text }) {
         if (!line.trim()) { i++; continue; }
 
         if (line.startsWith("# ")) {
-            nodes.push(<h1 key={i} className="mt-4 mb-1 text-xl font-bold text-slate-900">{parseInline(line.slice(2))}</h1>);
+            nodes.push(<h1 key={i} className="mt-4 mb-1 text-xl font-bold text-[var(--color-ink)]">{parseInline(line.slice(2))}</h1>);
             i++; continue;
         }
         if (line.startsWith("## ")) {
-            nodes.push(<h2 key={i} className="mt-3 mb-1 text-base font-semibold text-slate-900">{parseInline(line.slice(3))}</h2>);
+            nodes.push(<h2 key={i} className="mt-3 mb-1 text-base font-semibold text-[var(--color-ink)]">{parseInline(line.slice(3))}</h2>);
             i++; continue;
         }
         if (line.startsWith("### ")) {
-            nodes.push(<h3 key={i} className="mt-2 mb-0.5 text-sm font-semibold text-slate-800">{parseInline(line.slice(4))}</h3>);
+            nodes.push(<h3 key={i} className="mt-2 mb-0.5 text-sm font-semibold text-[var(--color-ink)]">{parseInline(line.slice(4))}</h3>);
             i++; continue;
         }
         if (/^[-*] /.test(line)) {
@@ -45,7 +45,7 @@ export default function MarkdownContent({ text }) {
                 items.push(<li key={i}>{parseInline(lines[i].slice(2))}</li>);
                 i++;
             }
-            nodes.push(<ul key={`ul${i}`} className="list-disc pl-5 space-y-0.5 text-sm text-slate-600">{items}</ul>);
+            nodes.push(<ul key={`ul${i}`} className="list-disc pl-5 space-y-0.5 text-sm text-[var(--color-ink-soft)]">{items}</ul>);
             continue;
         }
         if (/^\d+\. /.test(line)) {
@@ -54,10 +54,10 @@ export default function MarkdownContent({ text }) {
                 items.push(<li key={i}>{parseInline(lines[i].replace(/^\d+\. /, ""))}</li>);
                 i++;
             }
-            nodes.push(<ol key={`ol${i}`} className="list-decimal pl-5 space-y-0.5 text-sm text-slate-600">{items}</ol>);
+            nodes.push(<ol key={`ol${i}`} className="list-decimal pl-5 space-y-0.5 text-sm text-[var(--color-ink-soft)]">{items}</ol>);
             continue;
         }
-        nodes.push(<p key={i} className="text-sm text-slate-600 leading-relaxed">{parseInline(line)}</p>);
+        nodes.push(<p key={i} className="text-sm text-[var(--color-ink-soft)] leading-relaxed">{parseInline(line)}</p>);
         i++;
     }
 

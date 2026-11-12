@@ -12,8 +12,8 @@ export default function EditToolbar({
 }) {
     return (
         <>
-            <p className="mt-2 text-[11px] text-slate-400">
-                Supports <strong>**bold**</strong>, <em>*italic*</em>, <code className="rounded bg-slate-100 px-1"># H1</code> / <code className="rounded bg-slate-100 px-1">## H2</code> / <code className="rounded bg-slate-100 px-1">### H3</code>, and <code className="rounded bg-slate-100 px-1">- bullet</code> / <code className="rounded bg-slate-100 px-1">1. numbered</code> lists.
+            <p className="mt-2 text-[11px] text-[var(--color-ink-soft)]/70">
+                Supports <strong>**bold**</strong>, <em>*italic*</em>, <code className="rounded-none bg-[var(--color-cream-2)] px-1"># H1</code> / <code className="rounded-none bg-[var(--color-cream-2)] px-1">## H2</code> / <code className="rounded-none bg-[var(--color-cream-2)] px-1">### H3</code>, and <code className="rounded-none bg-[var(--color-cream-2)] px-1">- bullet</code> / <code className="rounded-none bg-[var(--color-cream-2)] px-1">1. numbered</code> lists.
             </p>
 
             {error && <p className="text-xs text-red-500">{error}</p>}
@@ -22,14 +22,14 @@ export default function EditToolbar({
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-60"
+                    className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[var(--color-accent-hover)] disabled:opacity-60"
                 >
                     {saving ? "Saving…" : "Save"}
                 </button>
                 <button
                     onClick={handleCancel}
                     disabled={saving}
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:bg-slate-50 disabled:opacity-50"
+                    className="rounded-none border border-[var(--color-hairline)] bg-white px-4 py-2 text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-cream-2)] disabled:opacity-50"
                 >
                     Cancel
                 </button>
@@ -49,10 +49,10 @@ export default function EditToolbar({
                         aria-expanded={showBlockPicker}
                         onClick={() => setShowBlockPicker((v) => !v)}
                         disabled={saving}
-                        className={`inline-flex items-center gap-1.5 rounded-xl border border-dashed px-4 py-2 text-sm font-medium transition-all disabled:opacity-50 ${
+                        className={`inline-flex items-center gap-1.5 rounded-none border border-dashed px-4 py-2 text-sm font-medium transition-all disabled:opacity-50 ${
                             showBlockPicker
                                 ? "border-[var(--color-accent)]/70 bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                                : "border-slate-300 bg-white text-slate-500 hover:border-[var(--color-accent)]/70 hover:text-[var(--color-accent)]"
+                                : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]/70 hover:text-[var(--color-accent)]"
                         }`}
                     >
                         <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -65,32 +65,32 @@ export default function EditToolbar({
                     </button>
 
                     {showBlockPicker && (
-                        <div role="menu" aria-label="Add block" className="absolute bottom-full right-0 mb-2 z-20 w-52 rounded-xl border border-slate-200 bg-white shadow-lg ring-1 ring-slate-100 overflow-hidden">
+                        <div role="menu" aria-label="Add block" className="absolute bottom-full right-0 mb-2 z-20 w-52 rounded-none border border-[var(--color-hairline)] bg-white overflow-hidden">
                             <button
                                 role="menuitem"
                                 type="button"
                                 onMouseDown={(e) => { e.preventDefault(); addBlock(); setShowBlockPicker(false); }}
-                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors"
                             >
-                                <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 12h18M3 17h18" /></svg>
+                                <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 7h18M3 12h18M3 17h18" /></svg>
                                 Add text block
                             </button>
                             <button
                                 role="menuitem"
                                 type="button"
                                 onMouseDown={(e) => { e.preventDefault(); addTitleBlock(); setShowBlockPicker(false); }}
-                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100"
+                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors border-t border-[var(--color-hairline)]"
                             >
-                                <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
+                                <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
                                 Add title block
                             </button>
                             <button
                                 role="menuitem"
                                 type="button"
                                 onMouseDown={(e) => { e.preventDefault(); addSectionBlock(); setShowBlockPicker(false); }}
-                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100"
+                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors border-t border-[var(--color-hairline)]"
                             >
-                                <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                                <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
                                 Add section block
                             </button>
                             <button
@@ -103,9 +103,9 @@ export default function EditToolbar({
                                     else                    { openAddImage(); }
                                     setShowBlockPicker(false);
                                 }}
-                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors border-t border-slate-100"
+                                className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors border-t border-[var(--color-hairline)]"
                             >
-                                <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" /></svg>
+                                <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" /></svg>
                                 {blocks.some(isImageBlock) ? "Change image" : "Add image"}
                             </button>
                         </div>

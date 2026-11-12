@@ -20,44 +20,36 @@ html {
   color-scheme: light;
 }
 
-/* ---- Design tokens: "Clean Data" palette ----
-   Cool off-white + teal, chosen over the first (terracotta/cream) pass
-   because that one read as an arbitrary borrowed brand color with no tie
-   to the subject. Teal/cool-neutral reads as analytics/clean-energy-data
-   instead. Token *names* are kept stable from the first pass on purpose -
-   only the values changed - so this edit alone re-colors every phase
-   already built without touching any other file.
-   Reserved status colors (red/emerald/amber, used for NEB value signs and
-   upload success/error/warning panels) are intentionally NOT redefined here
-   - they keep using Tailwind's own red/emerald/amber scales untouched. This
-   block only ever introduces new tokens, never remaps an existing Tailwind
-   color name, so nothing semantic can be swept up by the decorative-color
-   cleanup this redesign is doing elsewhere. */
+/* ---- Design tokens: "Japanese minimal" palette ----
+   Moved from the cool "Clean Data" off-white to a warm paper tone, with
+   sharp (unrounded) edges and a serif display face - hairline rules,
+   generous whitespace, precision over friendliness. The owner explicitly
+   asked to KEEP the teal accent through this change, so accent/accent-
+   hover/accent-soft/link are untouched - only the neutrals, radius and
+   display font moved. Token *names* stay stable (same reason as the first
+   repaint): this edit alone re-skins every page already built.
+   Reserved status colors (red/emerald/amber) remain untouched, as before. */
 @theme {
-  --color-cream:      #f3f6f6; /* page background - cool off-white, not warm/cream */
-  --color-cream-2:    #e9eeee; /* slightly deeper cool neutral for alternating bands/footer */
-  --color-ink:        #101418; /* near-black, cool-toned text */
-  --color-ink-soft:   #5c6b6b; /* secondary/muted text */
+  --color-cream:      #f3f0e9; /* page background - warm paper, not cool off-white */
+  --color-cream-2:    #ece6d9; /* slightly deeper paper for alternating bands/footer */
+  --color-ink:        #17140f; /* near-black, warm-toned text */
+  --color-ink-soft:   #827c71; /* secondary/muted text */
 
-  --color-accent:        #0b7a70; /* teal - the one decorative accent: CTAs, dots, numerals.
-                                      Darkened from an earlier #0d8f84 pass: that shade only hit
-                                      3.7:1 against the cream background and 4.0:1 on white - a
-                                      WCAG AA fail at the small sizes it's used at (eyebrows,
-                                      inline links, badges). This shade clears 4.5:1 on both. */
+  --color-accent:        #0b7a70; /* teal - kept exactly as-is, by explicit request */
   --color-accent-hover:  #085e56;
-  --color-accent-soft:   #dcefec; /* tint for subtle accent backgrounds */
+  --color-accent-soft:   #dcefec;
 
   --color-link:        #22425a; /* deep teal-navy - secondary emphasis, links */
   --color-link-hover:  #1a3345;
 
-  --color-hairline:       #dde6e5; /* 1px rules on the cool neutral background */
-  --color-hairline-dark:  rgba(243,246,246,0.14); /* 1px rules on a dark section */
+  --color-hairline:       #e2dccd; /* 1px rules on the warm paper background */
+  --color-hairline-dark:  rgba(243,240,233,0.14); /* 1px rules on a dark section */
 
-  --radius-card: 0.625rem;
+  --radius-card: 0px; /* sharp edges - precision over the old friendly-rounded language */
 
-  /* Geist Sans carries headlines for now; --font-display is a drop-in point
-     for a second display typeface later without touching any call site. */
-  --font-display: var(--font-geist-sans);
+  /* Shippori Mincho carries display type (headlines, numerals, labels);
+     Geist Sans stays for body/UI text via --font-sans. */
+  --font-display: var(--font-shippori-mincho), serif;
 }
 
 @theme inline {
@@ -71,6 +63,16 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+/* Every real heading picks up the display face automatically - the one
+   change that gets Shippori Mincho onto nearly every page title/section
+   heading sitewide without editing each page. Specific display-style
+   elements that aren't semantic headings (numbered labels, big stat
+   figures) are set explicitly where they're defined, in the shared
+   primitives (SectionLabel, HeroSection, Card) those cascade from. */
+h1, h2, h3 {
+  font-family: var(--font-display);
 }
 
 .no-scrollbar {

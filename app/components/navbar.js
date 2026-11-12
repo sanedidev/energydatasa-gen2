@@ -58,7 +58,7 @@ export default function Navbar() {
                                     key={l.href}
                                     href={l.href}
                                     className={[
-                                        "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
+                                        "px-3 py-1.5 text-sm font-medium rounded-none transition-colors",
                                         isActive(l.href)
                                             ? "text-[var(--color-accent)]"
                                             : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
@@ -79,7 +79,7 @@ export default function Navbar() {
                                     key={l.href}
                                     href={l.href}
                                     className={[
-                                        "px-3 py-1.5 text-sm rounded-lg transition-colors",
+                                        "px-3 py-1.5 text-sm rounded-none transition-colors",
                                         isActive(l.href)
                                             ? "text-[var(--color-ink)] font-medium bg-[var(--color-cream-2)]"
                                             : "text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]",
@@ -98,7 +98,7 @@ export default function Navbar() {
                             <Link
                                 href="/profile"
                                 className={[
-                                    "px-3 py-1.5 text-sm rounded-lg transition-colors",
+                                    "px-3 py-1.5 text-sm rounded-none transition-colors",
                                     isActive("/profile")
                                         ? "text-[var(--color-ink)] font-medium bg-[var(--color-cream-2)]"
                                         : "text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]",
@@ -108,7 +108,7 @@ export default function Navbar() {
                             </Link>
                             <button
                                 onClick={doSignOut}
-                                className="ml-1 rounded-lg border border-[var(--color-hairline)] px-3 py-1.5 text-sm text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
+                                className="ml-1 rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
                             >
                                 Sign out
                             </button>
@@ -124,7 +124,7 @@ export default function Navbar() {
                                 key={l.href}
                                 href={l.href}
                                 className={[
-                                    "px-3 py-1.5 text-sm font-medium rounded-lg transition-colors",
+                                    "px-3 py-1.5 text-sm font-medium rounded-none transition-colors",
                                     isActive(l.href)
                                         ? "text-[var(--color-accent)]"
                                         : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
@@ -135,7 +135,7 @@ export default function Navbar() {
                         ))}
                         <Link
                             href="/login"
-                            className="ml-2 rounded-lg bg-[var(--color-ink)] px-4 py-1.5 text-sm font-medium text-[var(--color-cream)] transition-colors hover:bg-[var(--color-ink-soft)]"
+                            className="ml-2 rounded-none bg-[var(--color-ink)] px-4 py-1.5 text-sm font-medium text-[var(--color-cream)] transition-colors hover:bg-[var(--color-ink-soft)]"
                         >
                             Login
                         </Link>
@@ -144,7 +144,7 @@ export default function Navbar() {
 
                 {/* Mobile menu button */}
                 <button
-                    className="md:hidden ml-auto rounded-lg p-2 text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
+                    className="md:hidden ml-auto rounded-none p-2 text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
                     aria-label="Toggle menu"
                     aria-expanded={open}
                     onClick={() => setOpen((v) => !v)}
@@ -171,7 +171,7 @@ export default function Navbar() {
                                     href={l.href}
                                     onClick={() => setOpen(false)}
                                     className={[
-                                        "block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                                        "block rounded-none px-3 py-2.5 text-sm font-medium transition-colors",
                                         isActive(l.href)
                                             ? "text-[var(--color-accent)] bg-[var(--color-cream-2)]"
                                             : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-cream-2)]",
@@ -185,7 +185,7 @@ export default function Navbar() {
                             <li className="pt-1">
                                 <button
                                     onClick={doSignOut}
-                                    className="w-full rounded-lg border border-[var(--color-hairline)] px-3 py-2.5 text-left text-sm text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)]"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-2.5 text-left text-sm text-[var(--color-ink-soft)] transition-colors hover:bg-[var(--color-cream-2)]"
                                 >
                                     Sign out
                                 </button>

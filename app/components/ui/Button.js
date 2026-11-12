@@ -12,7 +12,7 @@ function ArrowIcon({ className = "h-4 w-4" }) {
 export function ButtonPrimary({ as: Tag = "button", className = "", children, ...rest }) {
     return (
         <Tag
-            className={`inline-flex items-center gap-2 rounded-lg bg-[var(--color-ink)] px-5 py-2.5 text-sm font-medium text-[var(--color-cream)] transition-colors hover:bg-[var(--color-ink-soft)] ${className}`}
+            className={`inline-flex items-center gap-2 rounded-none bg-[var(--color-ink)] px-5 py-2.5 text-sm font-medium text-[var(--color-cream)] transition-colors hover:bg-[var(--color-ink-soft)] ${className}`}
             {...rest}
         >
             {children}

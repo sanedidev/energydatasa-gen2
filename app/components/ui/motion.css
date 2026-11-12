@@ -43,9 +43,43 @@
   animation: revealDown 0.25s ease-out;
 }
 
+/* AnimatedIcons.js - a small family of new line icons, each pairing a
+   different subject with a different mechanism so they don't read as one
+   icon reskinned five times. */
+@keyframes sunBreathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+.motion-sun-breathe {
+  animation: sunBreathe 5s ease-in-out infinite;
+  transform-origin: 24px 24px;
+}
+
+@keyframes batteryCharge { 0%, 100% { width: 3px; } 50% { width: 30px; } }
+.motion-battery-charge {
+  animation: batteryCharge 6s ease-in-out infinite;
+}
+
+@keyframes leafSway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.motion-leaf-sway {
+  animation: leafSway 4.5s ease-in-out infinite;
+}
+
+@keyframes ripple {
+  0%   { r: 3; opacity: 0.9; }
+  100% { r: 11; opacity: 0; }
+}
+.motion-ripple {
+  animation: ripple 2.6s ease-out infinite;
+  transform-origin: center;
+}
+.motion-ripple-delay {
+  animation-delay: 1.3s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [class*="motion-"], .flow-line, .reveal-down {
     animation: none !important;
   }
   .flow-line { background-position: 50% 50%; }
+  .motion-sun-breathe { opacity: 0.8; }
+  .motion-battery-charge { width: 18px; }
+  .motion-ripple { r: 7; opacity: 0.5; }
 }

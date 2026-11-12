@@ -8,6 +8,7 @@ import { ButtonPrimary } from "./components/ui/Button";
 import HomeEnergyInsights from "./components/HomeEnergyInsights";
 import HomeAudiences from "./components/HomeAudiences";
 import { useAuth } from "./context/auth";
+import { LiveReadingIcon } from "./components/ui/icons/AnimatedIcons";
 
 const topics = [
     { label: "Total Electricity Generated",     href: "/topics/total-electricity-generated" },
@@ -22,6 +23,9 @@ function Hero() {
     const { user } = useAuth();
     return (
         <HeroSection eyebrow="South Africa's Open Energy Platform" padding="pt-14 pb-12">
+            <div className="relative">
+                <LiveReadingIcon className="hidden sm:block absolute top-0 right-0 h-10 w-20 text-[var(--color-ink-soft)]/60" />
+            </div>
             <h1 className="text-3xl lg:text-5xl font-bold leading-tight tracking-tight max-w-3xl">
                 Open Data and Analytics{" "}
                 <br className="hidden sm:block" />
@@ -47,7 +51,7 @@ function Hero() {
                     <Link
                         key={topic.href}
                         href={topic.href}
-                        className="group flex items-center justify-center rounded-xl border border-[var(--color-hairline)] bg-white px-4 py-4 text-center text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] hover:border-transparent"
+                        className="group flex items-center justify-center rounded-none border border-[var(--color-hairline)] bg-white px-4 py-4 text-center text-sm font-medium text-[var(--color-ink-soft)] transition-all hover:bg-[var(--color-ink)] hover:text-[var(--color-cream)] hover:border-transparent"
                     >
                         {topic.label}
                     </Link>

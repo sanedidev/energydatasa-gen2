@@ -15,13 +15,17 @@ import { SKIP_IDS, commodityGroup, SECTOR_IDS, sectorGroupBreakdown } from "@/ap
 // FinalConsumptionBars. power_gen/conv_losses/td_losses/final_demand are
 // deliberately neutral "process" nodes, not identity colors, same treatment
 // the dataviz skill gives reserved status colors and recessive grid ink.
+// Process nodes read as warm ink-toned neutrals rather than the old cool
+// slate-blue set, matching the paper/ink palette used everywhere else -
+// still two visibly distinct "weights" (power_gen/final_demand darker,
+// conv_losses/td_losses lighter), same relationship as before, re-toned.
 const NODE_COLOR = {
     ...FUEL_COLOR,
-    power_gen:    "#334155",
+    power_gen:    "#1f1b14",
     electricity:  ELECTRICITY_COLOR,
-    conv_losses:  "#94a3b8",
-    td_losses:    "#cbd5e1",
-    final_demand: "#475569",
+    conv_losses:  "#b8b09c",
+    td_losses:    "#d6cfbd",
+    final_demand: "#4f483a",
 };
 
 const NODE_LABEL = {
@@ -131,12 +135,11 @@ const LEGEND = [
 ];
 
 const TOOLTIP_STYLE = {
-    background: "#0f172a",
-    color: "#f1f5f9",
+    background: "var(--color-ink)",
+    color: "var(--color-cream)",
     fontSize: 12,
-    borderRadius: 8,
+    borderRadius: 0,
     padding: "8px 12px",
-    boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
     display: "flex",
     flexDirection: "column",
     gap: 2,
@@ -146,7 +149,7 @@ function NodeTooltip({ node }) {
     return (
         <div style={TOOLTIP_STYLE}>
             <span style={{ fontWeight: 600 }}>{NODE_LABEL[node.id] ?? node.id}</span>
-            <span style={{ color: "#94a3b8" }}>{Math.round(node.value).toLocaleString("en-ZA")} PJ</span>
+            <span style={{ color: "var(--color-cream)", opacity: 0.6 }}>{Math.round(node.value).toLocaleString("en-ZA")} PJ</span>
         </div>
     );
 }
@@ -159,7 +162,7 @@ function LinkTooltip({ link }) {
                 {" → "}
                 {NODE_LABEL[link.target.id] ?? link.target.id}
             </span>
-            <span style={{ color: "#94a3b8" }}>{Math.round(link.value).toLocaleString("en-ZA")} PJ</span>
+            <span style={{ color: "var(--color-cream)", opacity: 0.6 }}>{Math.round(link.value).toLocaleString("en-ZA")} PJ</span>
         </div>
     );
 }
@@ -195,7 +198,7 @@ function AnimatedFlowLayer({ links, currentLink, isCurrentLink, isInteractive })
                         key={`flow-${link.index}`}
                         d={d}
                         fill="none"
-                        stroke={NODE_COLOR[link.source.id] ?? "#94a3b8"}
+                        stroke={NODE_COLOR[link.source.id] ?? "#b8b09c"}
                         strokeWidth={1.5}
                         strokeOpacity={dimmed ? 0 : 0.55}
                         strokeDasharray="1,9"
@@ -249,36 +252,30 @@ function SankeyBody({ data, height }) {
                     .sankeyFlowDash { animation: none; }
                 }
             `}</style>
-            <div
-                style={{
-                    height,
-                    background: "radial-gradient(120% 140% at 0% 0%, rgba(37,99,235,0.035), transparent 55%)",
-                }}
-            >
+            <div style={{ height }}>
                 <ResponsiveSankey
                     data={data}
                     margin={{ top: 8, right: 140, bottom: 8, left: 140 }}
                     align="justify"
                     sort="input"
                     layers={["links", AnimatedFlowLayer, "nodes", "labels", "legends"]}
-                    colors={(node) => NODE_COLOR[node.id] ?? "#94a3b8"}
+                    colors={(node) => NODE_COLOR[node.id] ?? "#b8b09c"}
                     nodeOpacity={1}
                     nodeHoverOpacity={1}
                     nodeHoverOthersOpacity={0.15}
-                    nodeThickness={18}
+                    nodeThickness={14}
                     nodeInnerPadding={4}
-                    nodeSpacing={28}
+                    nodeSpacing={32}
                     nodeBorderWidth={0}
-                    nodeBorderRadius={6}
-                    linkOpacity={0.35}
-                    linkHoverOpacity={0.78}
+                    nodeBorderRadius={0}
+                    linkOpacity={0.3}
+                    linkHoverOpacity={0.75}
                     linkHoverOthersOpacity={0.06}
-                    enableLinkGradient
                     label={(node) => (SUPPRESS_LABEL.has(node.id) ? "" : NODE_LABEL[node.id] ?? node.id)}
                     labelPosition="outside"
                     labelOrientation="horizontal"
                     labelPadding={12}
-                    labelTextColor="#475569"
+                    labelTextColor="#827c71"
                     nodeTooltip={NodeTooltip}
                     linkTooltip={LinkTooltip}
                     theme={{
@@ -288,18 +285,14 @@ function SankeyBody({ data, height }) {
                 />
             </div>
 
-            <div className="flex flex-wrap gap-2 px-6 pb-5 pt-1">
+            <div className="mx-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-hairline)] pb-5 pt-4">
                 {LEGEND.map((item) => (
-                    <div
-                        key={item.id}
-                        className="flex items-center gap-1.5 rounded-full px-2.5 py-1"
-                        style={{ background: `${NODE_COLOR[item.id]}14` }}
-                    >
+                    <div key={item.id} className="flex items-center gap-1.5">
                         <span
-                            className="inline-block h-2 w-2 shrink-0 rounded-full"
+                            className="inline-block h-2 w-2 shrink-0"
                             style={{ background: NODE_COLOR[item.id] }}
                         />
-                        <span className="text-xs font-medium text-[var(--color-ink-soft)]">{item.label}</span>
+                        <span className="text-xs text-[var(--color-ink-soft)]">{item.label}</span>
                     </div>
                 ))}
             </div>

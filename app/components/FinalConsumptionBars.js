@@ -121,7 +121,7 @@ export default function FinalConsumptionBars({ sections }) {
                                     style={{
                                         height: barHeight,
                                         width: `${pct}%`,
-                                        gap: 2,
+                                        gap: 3,
                                         minWidth: pct > 0 ? 2 : 0,
                                         transition: "width 900ms cubic-bezier(0.16, 1, 0.3, 1)",
                                         transitionDelay: `${rowIndex * 70}ms`,

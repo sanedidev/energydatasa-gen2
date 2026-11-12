@@ -235,15 +235,15 @@ export default function ConversionPage() {
                         From gross generation to net electricity available for final consumption
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-center">
-                        <div className="rounded-none bg-indigo-50 border border-indigo-100 p-4 text-center">
-                            <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-1">Power Stations</div>
-                            <div className="text-2xl font-bold text-indigo-700 tabular-nums">+{powerStationTotal.toFixed(0)}</div>
-                            <div className="text-xs text-indigo-500 mt-0.5">PJ</div>
+                        <div className="rounded-none bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/15 p-4 text-center">
+                            <div className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wide mb-1">Power Stations</div>
+                            <div className="text-2xl font-bold text-[var(--color-accent)] tabular-nums">+{powerStationTotal.toFixed(0)}</div>
+                            <div className="text-xs text-[var(--color-accent)]/70 mt-0.5">PJ</div>
                         </div>
-                        <div className="rounded-none bg-violet-50 border border-violet-100 p-4 text-center">
-                            <div className="text-xs font-semibold text-violet-600 uppercase tracking-wide mb-1">CHP Plants</div>
-                            <div className="text-2xl font-bold text-violet-700 tabular-nums">+{chpTotal.toFixed(0)}</div>
-                            <div className="text-xs text-violet-500 mt-0.5">PJ</div>
+                        <div className="rounded-none bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/15 p-4 text-center">
+                            <div className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wide mb-1">CHP Plants</div>
+                            <div className="text-2xl font-bold text-[var(--color-accent)] tabular-nums">+{chpTotal.toFixed(0)}</div>
+                            <div className="text-xs text-[var(--color-accent)]/70 mt-0.5">PJ</div>
                         </div>
                         <div className="rounded-none bg-amber-50 border border-amber-100 p-4 text-center">
                             <div className="text-xs font-semibold text-amber-600 uppercase tracking-wide mb-1">Imports / Exports</div>

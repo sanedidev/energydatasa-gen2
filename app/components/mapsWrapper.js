@@ -9,7 +9,7 @@ const Maps = dynamic(() => import("./maps"), {
     loading: () => (
         <main className="min-h-screen bg-[var(--color-cream)]">
             <section className="mx-auto max-w-7xl px-6 py-10">
-                <div className="mt-14 h-155 animate-pulse rounded-[var(--radius-card)] bg-slate-100" />
+                <div className="mt-14 h-155 animate-pulse rounded-[var(--radius-card)] bg-[var(--color-cream-2)]" />
             </section>
         </main>
     ),

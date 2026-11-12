@@ -260,7 +260,7 @@ async function loadDynamicGroups() {
 // ── Spinner ───────────────────────────────────────────────────────────────────
 function Spinner({ className = "h-5 w-5" }) {
     return (
-        <svg className={`animate-spin text-slate-400 ${className}`} fill="none" viewBox="0 0 24 24">
+        <svg className={`animate-spin text-[var(--color-ink-soft)]/70 ${className}`} fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
         </svg>
@@ -283,20 +283,20 @@ function PermissionGroup({ group, pages, editablePages, onChange, defaultCollaps
     }
 
     return (
-        <div className="rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-slate-200">
+        <div className="rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-[var(--color-hairline)]">
                 <button
                     type="button"
                     onClick={() => setCollapsed((v) => !v)}
                     className="flex items-center gap-2 text-left flex-1 min-w-0"
                 >
                     <svg
-                        className={`h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform ${collapsed ? "-rotate-90" : ""}`}
+                        className={`h-3.5 w-3.5 shrink-0 text-[var(--color-ink-soft)]/70 transition-transform ${collapsed ? "-rotate-90" : ""}`}
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
-                    <p className="text-xs font-semibold text-slate-700 truncate">{group}</p>
+                    <p className="text-xs font-semibold text-[var(--color-ink)] truncate">{group}</p>
                     {checkedCount > 0 && (
                         <span className="shrink-0 text-[10px] font-medium bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-1.5 py-0.5 rounded-full">
                             {checkedCount}/{pages.length}
@@ -305,7 +305,7 @@ function PermissionGroup({ group, pages, editablePages, onChange, defaultCollaps
                 </button>
                 <button
                     onClick={toggleAll}
-                    className="shrink-0 ml-3 text-[11px] text-slate-500 hover:text-slate-900 underline underline-offset-2"
+                    className="shrink-0 ml-3 text-[11px] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] underline underline-offset-2"
                 >
                     {allChecked ? "Deselect all" : "Select all"}
                 </button>
@@ -323,12 +323,12 @@ function PermissionGroup({ group, pages, editablePages, onChange, defaultCollaps
                                 }}
                                 className="h-4 w-4 rounded accent-[var(--color-accent)]"
                             />
-                            <span className="text-sm text-slate-700 flex-1">{p.label}</span>
+                            <span className="text-sm text-[var(--color-ink)] flex-1">{p.label}</span>
                             {p.isIndex && (
-                                <span className="text-[10px] font-mono bg-blue-100 text-blue-600 px-1.5 rounded">index</span>
+                                <span className="text-[10px] font-mono bg-[var(--color-cream-2)] text-[var(--color-ink-soft)] px-1.5 rounded-none">index</span>
                             )}
                             {p.key.endsWith(".*") && (
-                                <span className="text-[10px] font-mono bg-purple-100 text-purple-600 px-1.5 rounded">wildcard</span>
+                                <span className="text-[10px] font-mono bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-1.5 rounded-none">wildcard</span>
                             )}
                         </label>
                     ))}
@@ -440,18 +440,18 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
 
     return (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm pt-10 px-4 pb-10 overflow-y-auto">
-            <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl border border-[var(--color-hairline)]">
+            <div className="w-full max-w-2xl rounded-none bg-white border border-[var(--color-hairline)]">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-                    <p className="font-semibold text-slate-900">{record.email}</p>
-                    <button onClick={onClose} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-hairline)]">
+                    <p className="font-semibold text-[var(--color-ink)]">{record.email}</p>
+                    <button onClick={onClose} className="text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink)] text-lg leading-none">✕</button>
                 </div>
 
                 {dynLoading ? (
                     <div className="p-8 flex justify-center"><Spinner className="h-6 w-6" /></div>
                 ) : (
                     <div className="p-6 space-y-5">
-                        <p className="text-xs text-slate-500 rounded-lg bg-slate-50 border border-slate-200 px-3 py-2">
+                        <p className="text-xs text-[var(--color-ink-soft)] rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] px-3 py-2">
                             Admin access (the <span className="font-mono">Admins</span> Cognito group) can&apos;t be
                             granted here — that&apos;s deliberate. It has to be set directly in AWS Cognito, so it
                             can never be self-granted through a data write. This only controls which specific pages
@@ -459,11 +459,11 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
                         </p>
 
                         {viewerIsAdmin && (
-                            <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
+                            <div className="rounded-none border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] p-4">
                                 <label className="flex items-center justify-between cursor-pointer">
                                     <div>
-                                        <p className="text-sm font-semibold text-purple-900">Moderator access</p>
-                                        <p className="text-xs text-purple-600 mt-0.5">
+                                        <p className="text-sm font-semibold text-[var(--color-ink)]">Moderator access</p>
+                                        <p className="text-xs text-[var(--color-accent)] mt-0.5">
                                             Can grant/edit/revoke page permissions for other non-admin, non-moderator
                                             editors — but can never touch an admin, another moderator, or their own
                                             permissions, and can never grant Moderator or Admin to anyone.
@@ -471,7 +471,7 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
                                     </div>
                                     <div className="relative ml-4 shrink-0">
                                         <input type="checkbox" className="sr-only peer" checked={isModerator} onChange={handleToggleModerator} />
-                                        <div className="w-10 h-6 bg-slate-200 rounded-full peer peer-checked:bg-purple-600 transition-colors" />
+                                        <div className="w-10 h-6 bg-[var(--color-hairline)] rounded-full peer peer-checked:bg-[var(--color-accent)] transition-colors" />
                                         <div className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-all peer-checked:translate-x-4" />
                                     </div>
                                 </label>
@@ -480,15 +480,15 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
                         )}
 
                         <div className="flex items-center justify-between">
-                            <p className="text-sm font-medium text-slate-700">Page-level permissions</p>
+                            <p className="text-sm font-medium text-[var(--color-ink)]">Page-level permissions</p>
                             <div className="flex gap-2">
                                 <button onClick={() => update(allKeys)}
-                                    className="text-xs text-slate-500 hover:text-slate-900 underline underline-offset-2">
+                                    className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] underline underline-offset-2">
                                     Grant all
                                 </button>
-                                <span className="text-slate-300">·</span>
+                                <span className="text-[var(--color-ink-soft)]/50">·</span>
                                 <button onClick={() => update([])}
-                                    className="text-xs text-slate-500 hover:text-slate-900 underline underline-offset-2">
+                                    className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] underline underline-offset-2">
                                     Revoke all
                                 </button>
                             </div>
@@ -509,7 +509,7 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
                 )}
 
                 {saved && (
-                    <div className="mx-6 mt-0 mb-2 rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-2.5 flex items-center gap-2">
+                    <div className="mx-6 mt-0 mb-2 rounded-none bg-emerald-50 border border-emerald-200 px-4 py-2.5 flex items-center gap-2">
                         <svg className="h-4 w-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
@@ -518,33 +518,33 @@ function UserEditor({ record, viewerIsAdmin, viewerEditablePages = [], onClose, 
                 )}
 
                 {confirmRemove && (
-                    <div className="mx-6 mb-2 rounded-xl border border-red-200 bg-red-50 p-4 space-y-3">
+                    <div className="mx-6 mb-2 rounded-none border border-red-200 bg-red-50 p-4 space-y-3">
                         <p className="text-sm font-semibold text-red-700">Remove {record.email} from the permissions list?</p>
                         <p className="text-xs text-red-500">Their Cognito account will not be deleted — only their page-editing permissions record will be removed.</p>
                         <div className="flex gap-2">
                             <button onClick={handleDelete} disabled={saving}
-                                className="rounded-xl bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-50">
+                                className="rounded-none bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-50">
                                 Yes, remove
                             </button>
                             <button onClick={() => setConfirmRemove(false)}
-                                className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">
+                                className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                                 Cancel
                             </button>
                         </div>
                     </div>
                 )}
 
-                <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--color-hairline)]">
                     <button onClick={() => setConfirmRemove(true)} disabled={saving || confirmRemove}
                         className="text-sm text-red-500 hover:text-red-700 disabled:opacity-50">
                         Remove user
                     </button>
                     <div className="flex gap-2">
-                        <button onClick={onClose} className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                        <button onClick={onClose} className="rounded-none border border-[var(--color-hairline)] px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                             Cancel
                         </button>
                         <button onClick={handleSave} disabled={!dirty || saving}
-                            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-40">
+                            className="rounded-none bg-[var(--color-ink)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-ink-soft)] disabled:opacity-40">
                             {saving ? "Saving…" : "Save permissions"}
                         </button>
                     </div>
@@ -578,13 +578,13 @@ function ResetPasswordModal({ email, onClose, onSubmit }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-[var(--color-hairline)] p-6 space-y-4">
+            <div className="w-full max-w-sm rounded-none bg-white border border-[var(--color-hairline)] p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                    <p className="font-semibold text-slate-900">Set password for {email}</p>
-                    <button onClick={onClose} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+                    <p className="font-semibold text-[var(--color-ink)]">Set password for {email}</p>
+                    <button onClick={onClose} className="text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink)] text-lg leading-none">✕</button>
                 </div>
                 {success ? (
-                    <div className="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700">
+                    <div className="rounded-none bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700">
                         Password updated. Share it with {email} through a secure channel.
                     </div>
                 ) : (
@@ -596,15 +596,15 @@ function ResetPasswordModal({ email, onClose, onSubmit }) {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             placeholder="New password (min. 8 characters)"
-                            className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
+                            className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30"
                         />
                         <div className="flex gap-2">
                             <button type="submit" disabled={busy}
-                                className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-50">
+                                className="rounded-none bg-[var(--color-ink)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-ink-soft)] disabled:opacity-50">
                                 {busy ? "Saving…" : "Set password"}
                             </button>
                             <button type="button" onClick={onClose}
-                                className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                                className="rounded-none border border-[var(--color-hairline)] px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                                 Cancel
                             </button>
                         </div>
@@ -875,10 +875,10 @@ export default function Profile() {
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
                         <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-accent)]">Profile</p>
-                        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">{user.email}</h1>
-                        <p className="mt-1 text-sm text-slate-500">{isAdmin ? "Admin" : viewerIsModerator ? "Moderator" : "Signed in"}</p>
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)] md:text-3xl">{user.email}</h1>
+                        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{isAdmin ? "Admin" : viewerIsModerator ? "Moderator" : "Signed in"}</p>
                     </div>
-                    <button onClick={signOut} className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                    <button onClick={signOut} className="rounded-none border border-[var(--color-hairline)] px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                         Sign out
                     </button>
                 </div>
@@ -886,14 +886,14 @@ export default function Profile() {
                 {permsLoading ? (
                     <div className="flex justify-center py-12"><Spinner className="h-6 w-6" /></div>
                 ) : !canManageUsers ? (
-                    <section className="rounded-xl border border-slate-200 bg-white p-6">
-                        <h2 className="font-semibold text-slate-900 mb-4">My Edit Permissions</h2>
+                    <section className="rounded-none border border-[var(--color-hairline)] bg-white p-6">
+                        <h2 className="font-semibold text-[var(--color-ink)] mb-4">My Edit Permissions</h2>
                         {!permissions?.editablePages?.length ? (
-                            <p className="text-sm text-slate-500">You have not been granted edit access to any pages yet. Contact your administrator.</p>
+                            <p className="text-sm text-[var(--color-ink-soft)]">You have not been granted edit access to any pages yet. Contact your administrator.</p>
                         ) : (
                             <div className="flex flex-wrap gap-2">
                                 {permissions.editablePages.map((k) => (
-                                    <span key={k} className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-mono text-slate-700" title={k}>
+                                    <span key={k} className="rounded-md bg-[var(--color-cream-2)] px-2.5 py-1 text-xs font-mono text-[var(--color-ink)]" title={k}>
                                         {labelMap[k] ?? k}
                                     </span>
                                 ))}
@@ -905,18 +905,18 @@ export default function Profile() {
                         {/* Unified user management */}
                         <section className="space-y-3">
                             <div>
-                                <h2 className="text-lg font-bold text-slate-900">User Management</h2>
-                                <p className="text-sm text-slate-500 mt-0.5">
+                                <h2 className="text-lg font-bold text-[var(--color-ink)]">User Management</h2>
+                                <p className="text-sm text-[var(--color-ink-soft)] mt-0.5">
                                     {isAdmin
                                         ? "Manage who can access and edit your site. Click a user to view their permissions."
                                         : "Grant and manage page-editing permissions for other editors. Click a user to view their permissions."}
                                 </p>
                             </div>
 
-                            <div className="rounded-xl border border-slate-200 overflow-hidden">
-                                <div className="px-5 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                            <div className="rounded-none border border-[var(--color-hairline)] overflow-hidden">
+                                <div className="px-5 py-3 bg-[var(--color-cream-2)] border-b border-[var(--color-hairline)] flex items-center justify-between">
                                     <div className="flex items-center gap-3">
-                                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Users</p>
+                                        <p className="text-xs font-semibold text-[var(--color-ink-soft)] uppercase tracking-wider">Users</p>
                                         {isAdmin && (
                                             <span className="inline-flex items-center gap-1 text-xs text-emerald-600 font-medium">
                                                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Cognito connected
@@ -926,7 +926,7 @@ export default function Profile() {
                                     {isAdmin && (
                                         <button onClick={loadCognitoUsers} disabled={cognitoLoading}
                                             title="Refresh user list"
-                                            className="inline-flex items-center justify-center h-7 w-7 rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-100 disabled:opacity-40 transition-colors">
+                                            className="inline-flex items-center justify-center h-7 w-7 rounded-none border border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] disabled:opacity-40 transition-colors">
                                             <svg className={`h-3.5 w-3.5 ${cognitoLoading ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                             </svg>
@@ -939,9 +939,9 @@ export default function Profile() {
                                 {(cognitoLoading || grantsLoading) && rows.length === 0 ? (
                                     <div className="p-8 flex justify-center"><Spinner /></div>
                                 ) : rows.length === 0 ? (
-                                    <div className="p-6 text-sm text-slate-400">No users found.</div>
+                                    <div className="p-6 text-sm text-[var(--color-ink-soft)]/70">No users found.</div>
                                 ) : (
-                                    <div className="divide-y divide-slate-100">
+                                    <div className="divide-y divide-[var(--color-hairline)]">
                                         {rows.map((row) => {
                                             const { email, cognito: u, grant } = row;
                                             const isSelf = email === user.email;
@@ -957,26 +957,26 @@ export default function Profile() {
                                                     <div className="flex items-center justify-between gap-3 flex-wrap">
                                                         <button onClick={() => openQuickView(email)}
                                                             className="flex items-center gap-3 min-w-0 text-left hover:opacity-80 transition-opacity">
-                                                            <div className={`h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${quickViewEmail === email ? "bg-slate-700 text-white" : "bg-slate-200 text-slate-600"}`}>
+                                                            <div className={`h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${quickViewEmail === email ? "bg-[var(--color-ink-soft)] text-white" : "bg-[var(--color-hairline)] text-[var(--color-ink-soft)]"}`}>
                                                                 {email[0]?.toUpperCase() ?? "?"}
                                                             </div>
                                                             <div className="min-w-0">
                                                                 <div className="flex items-center gap-2 flex-wrap">
-                                                                    <p className="text-sm font-medium text-slate-900 truncate underline underline-offset-2 decoration-slate-300">{email}</p>
+                                                                    <p className="text-sm font-medium text-[var(--color-ink)] truncate underline underline-offset-2 decoration-[var(--color-hairline)]">{email}</p>
                                                                     {u?.isAdmin && (
-                                                                        <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5 shrink-0">Admin</span>
+                                                                        <span className="text-[10px] font-semibold text-[var(--color-cream)] bg-[var(--color-ink)] rounded-none px-1.5 py-0.5 shrink-0">Admin</span>
                                                                     )}
                                                                     {rowIsModerator && (
-                                                                        <span className="text-[10px] font-semibold text-purple-600 bg-purple-50 border border-purple-200 rounded px-1.5 py-0.5 shrink-0">Moderator</span>
+                                                                        <span className="text-[10px] font-semibold text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 rounded-none px-1.5 py-0.5 shrink-0">Moderator</span>
                                                                     )}
                                                                     {isSelf && (
-                                                                        <span className="text-[10px] font-medium bg-slate-100 text-slate-500 rounded-full px-1.5 py-0.5 shrink-0">You</span>
+                                                                        <span className="text-[10px] font-medium bg-[var(--color-cream-2)] text-[var(--color-ink-soft)] rounded-full px-1.5 py-0.5 shrink-0">You</span>
                                                                     )}
                                                                     {isAdmin && !u && (
                                                                         <span className="text-[10px] font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 shrink-0">No account found</span>
                                                                     )}
                                                                 </div>
-                                                                <p className="text-xs text-slate-400 mt-0.5">
+                                                                <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">
                                                                     {u ? (
                                                                         <>
                                                                             {u.status}{u.enabled === false ? " · Disabled" : ""}
@@ -984,9 +984,9 @@ export default function Profile() {
                                                                         </>
                                                                     ) : isAdmin ? "Permissions record only" : null}
                                                                     {u?.isAdmin ? (
-                                                                        <span className="ml-2 text-blue-500">· Full edit access</span>
+                                                                        <span className="ml-2 text-[var(--color-ink-soft)]">· Full edit access</span>
                                                                     ) : hasGrant ? (
-                                                                        <span className="ml-2 text-slate-500">
+                                                                        <span className="ml-2 text-[var(--color-ink-soft)]">
                                                                             · {pageCount === 0 ? "No page access" : `${pageCount} page${pageCount !== 1 ? "s" : ""}`}
                                                                         </span>
                                                                     ) : null}
@@ -998,13 +998,13 @@ export default function Profile() {
                                                             {!hasGrant && canManageRow && (
                                                                 <button onClick={() => handleAddPermissions(email)}
                                                                     disabled={addingPermsFor === email}
-                                                                    className={`text-xs font-medium border rounded-lg px-3 py-1.5 transition-colors ${justAddedEmail === email ? "text-emerald-700 border-emerald-300 bg-emerald-50" : "text-[var(--color-accent)] border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"} disabled:opacity-60`}>
+                                                                    className={`text-xs font-medium border rounded-none px-3 py-1.5 transition-colors ${justAddedEmail === email ? "text-emerald-700 border-emerald-300 bg-emerald-50" : "text-[var(--color-accent)] border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"} disabled:opacity-60`}>
                                                                     {addingPermsFor === email ? "Adding…" : justAddedEmail === email ? "Added ✓" : "+ Permissions"}
                                                                 </button>
                                                             )}
                                                             {hasGrant && canManageRow && (
                                                                 <button onClick={() => setEditingId(grant.id)}
-                                                                    className="text-xs font-medium border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-100 transition-colors">
+                                                                    className="text-xs font-medium border border-[var(--color-hairline)] rounded-none px-3 py-1.5 text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors">
                                                                     Manage
                                                                 </button>
                                                             )}
@@ -1013,7 +1013,7 @@ export default function Profile() {
                                                                     onClick={() => setResetPasswordFor(email)}
                                                                     disabled={isSelf}
                                                                     title={isSelf ? "Reset your own password via sign-in instead" : "Set a new password"}
-                                                                    className="text-xs font-medium border border-slate-200 rounded-lg px-3 py-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30 transition-colors">
+                                                                    className="text-xs font-medium border border-[var(--color-hairline)] rounded-none px-3 py-1.5 text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] disabled:opacity-30 transition-colors">
                                                                     Reset password
                                                                 </button>
                                                             )}
@@ -1022,7 +1022,7 @@ export default function Profile() {
                                                                     onClick={() => setConfirmDeleteEmail(email)}
                                                                     disabled={isSelf || deletingEmail === email}
                                                                     title={isSelf ? "You can't delete your own account here" : "Delete account"}
-                                                                    className="text-xs text-red-500 border border-red-200 rounded-lg px-3 py-1.5 hover:bg-red-50 disabled:opacity-30 transition-colors">
+                                                                    className="text-xs text-red-500 border border-red-200 rounded-none px-3 py-1.5 hover:bg-red-50 disabled:opacity-30 transition-colors">
                                                                     {deletingEmail === email ? "Deleting…" : "Delete"}
                                                                 </button>
                                                             )}
@@ -1030,17 +1030,17 @@ export default function Profile() {
                                                     </div>
 
                                                     {quickViewEmail === email && (
-                                                        <div className="mt-2.5 ml-11 rounded-lg bg-slate-50 border border-slate-200 px-4 py-3">
+                                                        <div className="mt-2.5 ml-11 rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] px-4 py-3">
                                                             {u?.isAdmin ? (
-                                                                <p className="text-xs text-blue-600 font-medium">Full access to all pages — Admins group</p>
+                                                                <p className="text-xs text-[var(--color-ink)] font-medium">Full access to all pages — Admins group</p>
                                                             ) : !hasGrant ? (
-                                                                <p className="text-xs text-slate-400">No permissions record — click &quot;+ Permissions&quot; to grant page access.</p>
+                                                                <p className="text-xs text-[var(--color-ink-soft)]/70">No permissions record — click &quot;+ Permissions&quot; to grant page access.</p>
                                                             ) : pageCount === 0 ? (
-                                                                <p className="text-xs text-slate-400">No page access granted</p>
+                                                                <p className="text-xs text-[var(--color-ink-soft)]/70">No page access granted</p>
                                                             ) : (
                                                                 <div className="flex flex-wrap gap-1.5">
                                                                     {grant.editablePages.map((k) => (
-                                                                        <span key={k} className="text-[11px] bg-white border border-slate-200 text-slate-600 rounded px-2 py-0.5 font-mono" title={k}>
+                                                                        <span key={k} className="text-[11px] bg-white border border-[var(--color-hairline)] text-[var(--color-ink-soft)] rounded px-2 py-0.5 font-mono" title={k}>
                                                                             {labelMap[k] ?? k}
                                                                         </span>
                                                                     ))}
@@ -1056,18 +1056,18 @@ export default function Profile() {
 
                                 {/* Invite form (Admin) / Grant-by-email form (Moderator) */}
                                 {isAdmin ? (
-                                    <div className="px-5 py-4 bg-slate-50 border-t border-slate-200">
-                                        <p className="text-xs font-semibold text-slate-500 mb-2">Invite new user</p>
+                                    <div className="px-5 py-4 bg-[var(--color-cream-2)] border-t border-[var(--color-hairline)]">
+                                        <p className="text-xs font-semibold text-[var(--color-ink-soft)] mb-2">Invite new user</p>
                                         <form onSubmit={handleInvite} className="flex gap-2">
                                             <input
                                                 type="email"
                                                 placeholder="email@example.com"
                                                 value={inviteEmail}
                                                 onChange={(e) => setInviteEmail(e.target.value)}
-                                                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                                className="flex-1 rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                             />
                                             <button type="submit" disabled={inviteBusy}
-                                                className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">
+                                                className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">
                                                 {inviteBusy ? "Inviting…" : "Invite"}
                                             </button>
                                         </form>
@@ -1079,22 +1079,22 @@ export default function Profile() {
                                         )}
                                         {inviteError && <p className="mt-2 text-xs font-medium text-red-600">{inviteError}</p>}
                                         {!inviteSuccess && !inviteError && (
-                                            <p className="mt-1.5 text-[11px] text-slate-400">User will receive a temporary password via email from Cognito.</p>
+                                            <p className="mt-1.5 text-[11px] text-[var(--color-ink-soft)]/70">User will receive a temporary password via email from Cognito.</p>
                                         )}
                                     </div>
                                 ) : (
-                                    <div className="px-5 py-4 bg-slate-50 border-t border-slate-200">
-                                        <p className="text-xs font-semibold text-slate-500 mb-2">Grant permissions to a user</p>
+                                    <div className="px-5 py-4 bg-[var(--color-cream-2)] border-t border-[var(--color-hairline)]">
+                                        <p className="text-xs font-semibold text-[var(--color-ink-soft)] mb-2">Grant permissions to a user</p>
                                         <form onSubmit={handleGrantByEmail} className="flex gap-2">
                                             <input
                                                 type="email"
                                                 placeholder="email@example.com"
                                                 value={grantEmail}
                                                 onChange={(e) => setGrantEmail(e.target.value)}
-                                                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                                className="flex-1 rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                             />
                                             <button type="submit" disabled={grantBusy}
-                                                className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">
+                                                className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40">
                                                 {grantBusy ? "Adding…" : "Add"}
                                             </button>
                                         </form>
@@ -1106,7 +1106,7 @@ export default function Profile() {
                                         )}
                                         {grantError && <p className="mt-2 text-xs font-medium text-red-600">{grantError}</p>}
                                         {!grantSuccess && !grantError && (
-                                            <p className="mt-1.5 text-[11px] text-slate-400">The user must already have an account — this only grants page-editing access, it doesn&apos;t create a login.</p>
+                                            <p className="mt-1.5 text-[11px] text-[var(--color-ink-soft)]/70">The user must already have an account — this only grants page-editing access, it doesn&apos;t create a login.</p>
                                         )}
                                     </div>
                                 )}
@@ -1132,31 +1132,31 @@ export default function Profile() {
                         )}
 
                         {/* Edit history */}
-                        <section className="rounded-xl border border-slate-200 overflow-hidden">
+                        <section className="rounded-none border border-[var(--color-hairline)] overflow-hidden">
                             <div
                                 onClick={() => {
                                     setHistoryOpen((v) => !v);
                                     if (!historyOpen && historyEntries.length === 0) loadHistoryEntries();
                                 }}
-                                className="w-full flex items-center justify-between px-5 py-3.5 bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer select-none"
+                                className="w-full flex items-center justify-between px-5 py-3.5 bg-[var(--color-cream-2)] hover:bg-[var(--color-cream-2)] transition-colors cursor-pointer select-none"
                             >
                                 <div className="flex items-center gap-2">
-                                    <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                                    <svg className="h-4 w-4 text-[var(--color-ink-soft)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span className="text-sm font-semibold text-slate-700">Edit History</span>
+                                    <span className="text-sm font-semibold text-[var(--color-ink)]">Edit History</span>
                                     {historyEntries.length > 0 && (
-                                        <span className="text-[11px] bg-slate-200 text-slate-600 rounded-full px-2 py-0.5 font-medium">{historyEntries.length}</span>
+                                        <span className="text-[11px] bg-[var(--color-hairline)] text-[var(--color-ink-soft)] rounded-full px-2 py-0.5 font-medium">{historyEntries.length}</span>
                                     )}
                                 </div>
                                 <div className="flex items-center gap-2">
                                     {historyOpen && (
                                         <button onClick={(e) => { e.stopPropagation(); loadHistoryEntries(); }}
-                                            className="text-[11px] text-slate-500 hover:text-slate-800 border border-slate-200 rounded px-2 py-0.5 bg-white">
+                                            className="text-[11px] text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] rounded px-2 py-0.5 bg-white">
                                             Refresh
                                         </button>
                                     )}
-                                    <svg className={`h-4 w-4 text-slate-400 transition-transform ${historyOpen ? "" : "-rotate-90"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <svg className={`h-4 w-4 text-[var(--color-ink-soft)]/70 transition-transform ${historyOpen ? "" : "-rotate-90"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </div>
@@ -1164,20 +1164,20 @@ export default function Profile() {
 
                             {historyOpen && (
                                 <div>
-                                    <div className="px-5 py-2.5 border-b border-slate-100 bg-white">
+                                    <div className="px-5 py-2.5 border-b border-[var(--color-hairline)] bg-white">
                                         <input
                                             type="text"
                                             placeholder="Filter by email or page…"
                                             value={historyFilter}
                                             onChange={(e) => setHistoryFilter(e.target.value)}
-                                            className="w-full rounded-lg border border-slate-200 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                                            className="w-full rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                                         />
                                     </div>
 
                                     {historyLoading ? (
                                         <div className="p-8 flex justify-center"><Spinner /></div>
                                     ) : historyEntries.length === 0 ? (
-                                        <p className="p-6 text-sm text-slate-400">No edit history yet. Changes you make will appear here.</p>
+                                        <p className="p-6 text-sm text-[var(--color-ink-soft)]/70">No edit history yet. Changes you make will appear here.</p>
                                     ) : (() => {
                                         const filtered = historyFilter.trim()
                                             ? historyEntries.filter((e) =>
@@ -1187,31 +1187,31 @@ export default function Profile() {
                                             )
                                             : historyEntries;
 
-                                        if (filtered.length === 0) return <p className="p-6 text-sm text-slate-400">No results match your filter.</p>;
+                                        if (filtered.length === 0) return <p className="p-6 text-sm text-[var(--color-ink-soft)]/70">No results match your filter.</p>;
 
                                         return (
-                                            <div className="divide-y divide-slate-100 max-h-[600px] overflow-y-auto">
+                                            <div className="divide-y divide-[var(--color-hairline)] max-h-[600px] overflow-y-auto">
                                                 {filtered.map((entry) => (
                                                     <div key={entry.id} className="px-5 py-3.5">
                                                         <div className="flex items-start justify-between gap-3">
                                                             <div className="flex items-start gap-3 min-w-0">
-                                                                <div className="h-7 w-7 shrink-0 rounded-full bg-slate-200 flex items-center justify-center text-[11px] font-bold text-slate-600 mt-0.5">
+                                                                <div className="h-7 w-7 shrink-0 rounded-full bg-[var(--color-hairline)] flex items-center justify-center text-[11px] font-bold text-[var(--color-ink-soft)] mt-0.5">
                                                                     {(entry.email?.[0] ?? "?").toUpperCase()}
                                                                 </div>
                                                                 <div className="min-w-0">
                                                                     <div className="flex items-center gap-1.5 flex-wrap">
-                                                                        <span className="text-xs font-semibold text-slate-800">{entry.email ?? "Unknown"}</span>
+                                                                        <span className="text-xs font-semibold text-[var(--color-ink)]">{entry.email ?? "Unknown"}</span>
                                                                         <span className={`text-[10px] font-medium rounded px-1.5 py-0.5 ${entry.action === "create" ? "bg-emerald-100 text-emerald-700" : entry.action === "delete" ? "bg-red-100 text-red-700" : "bg-blue-100 text-blue-700"}`}>
                                                                             {entry.action}
                                                                         </span>
                                                                         {entry.model && (
-                                                                            <span className="text-[10px] font-medium rounded px-1.5 py-0.5 bg-slate-100 text-slate-500">
+                                                                            <span className="text-[10px] font-medium rounded px-1.5 py-0.5 bg-[var(--color-cream-2)] text-[var(--color-ink-soft)]">
                                                                                 {entry.model}
                                                                             </span>
                                                                         )}
                                                                     </div>
-                                                                    <p className="text-xs text-slate-600 mt-0.5 truncate font-medium">{entry.label || labelFromSlug(entry.slug)}</p>
-                                                                    <p className="text-[11px] text-slate-400 mt-0.5">
+                                                                    <p className="text-xs text-[var(--color-ink-soft)] mt-0.5 truncate font-medium">{entry.label || labelFromSlug(entry.slug)}</p>
+                                                                    <p className="text-[11px] text-[var(--color-ink-soft)]/70 mt-0.5">
                                                                         {new Date(entry.timestamp).toLocaleString()}
                                                                     </p>
                                                                 </div>
@@ -1220,7 +1220,7 @@ export default function Profile() {
                                                             <div className="flex items-center gap-1.5 shrink-0">
                                                                 <button
                                                                     onClick={() => setHistoryExpanded(historyExpanded === entry.id ? null : entry.id)}
-                                                                    className="text-[11px] border border-slate-200 rounded px-2 py-1 text-slate-500 hover:bg-slate-50 transition-colors"
+                                                                    className="text-[11px] border border-[var(--color-hairline)] rounded px-2 py-1 text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors"
                                                                 >
                                                                     {historyExpanded === entry.id ? "Hide" : "View"}
                                                                 </button>
@@ -1251,21 +1251,21 @@ export default function Profile() {
                                                             return (
                                                                 <div className="mt-3 ml-10">
                                                                     {!entry.revertable && entry.before !== null && (
-                                                                        <p className="mb-2 text-[11px] text-slate-400">
+                                                                        <p className="mb-2 text-[11px] text-[var(--color-ink-soft)]/70">
                                                                             Revert isn&apos;t offered for this entry — it touches more than a single content field, so it can&apos;t be safely restored through this tool.
                                                                         </p>
                                                                     )}
                                                                     {unchanged ? (
-                                                                        <p className="text-[11px] text-slate-400 italic">No textual difference.</p>
+                                                                        <p className="text-[11px] text-[var(--color-ink-soft)]/70 italic">No textual difference.</p>
                                                                     ) : (
-                                                                        <pre className="text-[11px] rounded-lg border border-slate-200 p-3 overflow-x-auto whitespace-pre-wrap max-h-64 overflow-y-auto leading-relaxed font-mono">
+                                                                        <pre className="text-[11px] rounded-none border border-[var(--color-hairline)] p-3 overflow-x-auto whitespace-pre-wrap max-h-64 overflow-y-auto leading-relaxed font-mono">
                                                                             {diff.map((l, i) => (
                                                                                 <div
                                                                                     key={i}
                                                                                     className={
                                                                                         l.type === "add" ? "bg-green-50 text-green-700" :
                                                                                         l.type === "remove" ? "bg-red-50 text-red-700" :
-                                                                                        "text-slate-500"
+                                                                                        "text-[var(--color-ink-soft)]"
                                                                                     }
                                                                                 >
                                                                                     {l.type === "add" ? "+ " : l.type === "remove" ? "− " : "  "}{l.text}
@@ -1290,7 +1290,7 @@ export default function Profile() {
                                 title="Revert this change?"
                                 message={`"${confirmRevertEntry.label || labelFromSlug(confirmRevertEntry.slug)}" will be restored to its state before this ${confirmRevertEntry.action === "delete" ? "deletion" : "change"} by ${confirmRevertEntry.email ?? "an unknown user"} on ${new Date(confirmRevertEntry.timestamp).toLocaleString()}. This overwrites whatever is there right now, even if someone has edited it again since.`}
                                 confirmLabel="Yes, revert"
-                                confirmClass="flex-1 rounded-xl bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 transition-all"
+                                confirmClass="flex-1 rounded-none bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 transition-all"
                                 onConfirm={() => handleRevert(confirmRevertEntry)}
                                 onCancel={() => setConfirmRevertEntry(null)}
                             />

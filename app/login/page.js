@@ -139,7 +139,7 @@ export default function Login() {
         <main className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-[var(--color-cream-2)] px-4">
             <div className="w-full max-w-sm">
                 <div className="mb-8 text-center">
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-2xl font-bold text-[var(--color-ink)]">
                         {needsNewPassword
                             ? "Set your password"
                             : forgotStep === "request"
@@ -148,7 +148,7 @@ export default function Login() {
                             ? "Check your email"
                             : "Sign in"}
                     </h1>
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                         {needsNewPassword
                             ? "Your account requires a new password before you can continue."
                             : forgotStep === "request"
@@ -160,136 +160,136 @@ export default function Login() {
                 </div>
 
                 {needsNewPassword ? (
-                    <form onSubmit={onSetNewPassword} className="rounded-2xl bg-white p-8 border border-[var(--color-hairline)]">
+                    <form onSubmit={onSetNewPassword} className="rounded-none bg-white p-8 border border-[var(--color-hairline)]">
                         <div className="space-y-5">
                             {error && (
-                                <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
+                                <div className="rounded-none bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
                             )}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">New password</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">New password</label>
                                 <input
                                     type="password"
                                     required
                                     value={newPw}
                                     onChange={(e) => setNewPw(e.target.value)}
                                     placeholder="Min. 8 characters"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">Confirm new password</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">Confirm new password</label>
                                 <input
                                     type="password"
                                     required
                                     value={confirmPw}
                                     onChange={(e) => setConfirmPw(e.target.value)}
                                     placeholder="Repeat password"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-slate-300 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
+                                className={`w-full rounded-none px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-[var(--color-ink-soft)]/40 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
                             >
                                 {submitting ? "Setting password…" : "Set password & sign in"}
                             </button>
                         </div>
                     </form>
                 ) : forgotStep === "request" ? (
-                    <form onSubmit={onForgotRequest} className="rounded-2xl bg-white p-8 border border-[var(--color-hairline)]">
+                    <form onSubmit={onForgotRequest} className="rounded-none bg-white p-8 border border-[var(--color-hairline)]">
                         <div className="space-y-5">
                             {error && (
-                                <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
+                                <div className="rounded-none bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
                             )}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">Email</label>
                                 <input
                                     type="email"
                                     required
                                     value={forgotEmail}
                                     onChange={(e) => setForgotEmail(e.target.value)}
                                     placeholder="you@example.com"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none placeholder:text-[var(--color-ink-soft)]/50 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-slate-300 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
+                                className={`w-full rounded-none px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-[var(--color-ink-soft)]/40 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
                             >
                                 {submitting ? "Sending…" : "Send reset code"}
                             </button>
-                            <p className="text-center text-sm text-slate-500">
+                            <p className="text-center text-sm text-[var(--color-ink-soft)]">
                                 <button type="button" onClick={backToSignIn} className="font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]">Back to sign in</button>
                             </p>
                         </div>
                     </form>
                 ) : forgotStep === "confirm" ? (
-                    <form onSubmit={onForgotConfirm} className="rounded-2xl bg-white p-8 border border-[var(--color-hairline)]">
+                    <form onSubmit={onForgotConfirm} className="rounded-none bg-white p-8 border border-[var(--color-hairline)]">
                         <div className="space-y-5">
                             {error && (
-                                <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
+                                <div className="rounded-none bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
                             )}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">Verification code</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">Verification code</label>
                                 <input
                                     type="text"
                                     required
                                     value={forgotCode}
                                     onChange={(e) => setForgotCode(e.target.value)}
                                     placeholder="6-digit code"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none placeholder:text-[var(--color-ink-soft)]/50 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
-                                <p className="mt-1.5 text-xs text-slate-400">
+                                <p className="mt-1.5 text-xs text-[var(--color-ink-soft)]/70">
                                     Don&apos;t see it? Check your spam or junk folder — the code can sometimes land there.
                                 </p>
                             </div>
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">New password</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">New password</label>
                                 <input
                                     type="password"
                                     required
                                     value={forgotNewPw}
                                     onChange={(e) => setForgotNewPw(e.target.value)}
                                     placeholder="Min. 8 characters"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-slate-700">Confirm new password</label>
+                                <label className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">Confirm new password</label>
                                 <input
                                     type="password"
                                     required
                                     value={forgotConfirmPw}
                                     onChange={(e) => setForgotConfirmPw(e.target.value)}
                                     placeholder="Repeat password"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-slate-300 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
+                                className={`w-full rounded-none px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-[var(--color-ink-soft)]/40 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
                             >
                                 {submitting ? "Resetting…" : "Reset password"}
                             </button>
-                            <p className="text-center text-sm text-slate-500">
+                            <p className="text-center text-sm text-[var(--color-ink-soft)]">
                                 <button type="button" onClick={backToSignIn} className="font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]">Back to sign in</button>
                             </p>
                         </div>
                     </form>
                 ) : (
-                    <form onSubmit={onSubmit} className="rounded-2xl bg-white p-8 border border-[var(--color-hairline)]">
+                    <form onSubmit={onSubmit} className="rounded-none bg-white p-8 border border-[var(--color-hairline)]">
                         <div className="space-y-5">
                             {error && (
-                                <div className="rounded-lg bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
+                                <div className="rounded-none bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-700">{error}</div>
                             )}
                             {forgotNotice && (
-                                <div className="rounded-lg bg-emerald-50 border border-emerald-100 px-4 py-3 text-sm text-emerald-700">{forgotNotice}</div>
+                                <div className="rounded-none bg-emerald-50 border border-emerald-100 px-4 py-3 text-sm text-emerald-700">{forgotNotice}</div>
                             )}
                             <div>
-                                <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
+                                <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--color-ink)]">Email</label>
                                 <input
                                     id="email"
                                     type="email"
@@ -297,12 +297,12 @@ export default function Login() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="you@example.com"
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none placeholder:text-[var(--color-ink-soft)]/50 focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <div>
                                 <div className="mb-1.5 flex items-center justify-between">
-                                    <label htmlFor="password" className="block text-sm font-medium text-slate-700">Password</label>
+                                    <label htmlFor="password" className="block text-sm font-medium text-[var(--color-ink)]">Password</label>
                                     <button type="button" onClick={openForgotPassword} className="text-xs font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)]">
                                         Forgot password?
                                     </button>
@@ -313,13 +313,13 @@ export default function Login() {
                                     required
                                     value={pw}
                                     onChange={(e) => setPw(e.target.value)}
-                                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
+                                    className="w-full rounded-none border border-[var(--color-hairline)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]/60 focus:ring-2 focus:ring-[var(--color-accent)]/20 transition-colors"
                                 />
                             </div>
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-slate-300 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
+                                className={`w-full rounded-none px-4 py-2.5 text-sm font-semibold text-white transition-colors ${submitting ? "bg-[var(--color-ink-soft)]/40 cursor-not-allowed" : "bg-[var(--color-ink)] hover:bg-[var(--color-ink-soft)]"}`}
                             >
                                 {submitting ? "Signing in…" : "Sign in"}
                             </button>

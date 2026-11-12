@@ -168,25 +168,25 @@ function emptyStation() {
 function StationRow({ station, idx, onEdit, onToggleHide, onDelete }) {
     const ts = TYPE_STYLE[station.type] ?? TYPE_STYLE["Coal"];
     return (
-        <tr className={`border-b border-slate-100 text-xs ${station.hidden ? "opacity-40" : ""}`}>
-            <td className="py-2 px-3 font-medium text-slate-800 max-w-48 truncate">{station.name}</td>
+        <tr className={`border-b border-[var(--color-hairline)] text-xs ${station.hidden ? "opacity-40" : ""}`}>
+            <td className="py-2 px-3 font-medium text-[var(--color-ink)] max-w-48 truncate">{station.name}</td>
             <td className="py-2 px-3">
                 <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold border ${ts.pill}`}>
                     <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: ts.fill }} />
                     {station.type}
                 </span>
             </td>
-            <td className="py-2 px-3 text-slate-500">{station.province}</td>
-            <td className="py-2 px-3 text-slate-600 text-right tabular-nums">{Number(station.capacity_mw).toLocaleString()}</td>
-            <td className="py-2 px-3 text-slate-500 max-w-40 truncate">{station.operator}</td>
-            <td className="py-2 px-3 text-slate-500 tabular-nums">{station.commissioned}</td>
+            <td className="py-2 px-3 text-[var(--color-ink-soft)]">{station.province}</td>
+            <td className="py-2 px-3 text-[var(--color-ink-soft)] text-right tabular-nums">{Number(station.capacity_mw).toLocaleString()}</td>
+            <td className="py-2 px-3 text-[var(--color-ink-soft)] max-w-40 truncate">{station.operator}</td>
+            <td className="py-2 px-3 text-[var(--color-ink-soft)] tabular-nums">{station.commissioned}</td>
             <td className="py-2 px-3">
-                {station.hidden && <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-400">Hidden</span>}
+                {station.hidden && <span className="rounded-full bg-[var(--color-cream-2)] px-2 py-0.5 text-[10px] font-medium text-[var(--color-ink-soft)]/70">Hidden</span>}
             </td>
             <td className="py-2 px-3">
                 <div className="flex items-center gap-1">
-                    <button onClick={() => onEdit(idx)} className="rounded px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors">Edit</button>
-                    <button onClick={() => onToggleHide(idx)} className="rounded px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors">{station.hidden ? "Show" : "Hide"}</button>
+                    <button onClick={() => onEdit(idx)} className="rounded px-2 py-1 text-[11px] text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">Edit</button>
+                    <button onClick={() => onToggleHide(idx)} className="rounded px-2 py-1 text-[11px] text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors">{station.hidden ? "Show" : "Hide"}</button>
                     <button onClick={() => onDelete(idx)} className="rounded px-2 py-1 text-[11px] text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors">Delete</button>
                 </div>
             </td>
@@ -199,26 +199,26 @@ function EditRow({ draft, onChange, onSave, onCancel }) {
     const valid = draft.name.trim() && draft.lat !== "" && draft.lng !== "" && draft.capacity_mw !== "";
     return (
         <tr className="border-b border-[var(--color-accent)]/20 bg-[var(--color-accent-soft)]/40 text-xs">
-            <td className="py-1 px-2"><input className="w-full rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.name} onChange={f("name")} placeholder="Name *" /></td>
+            <td className="py-1 px-2"><input className="w-full rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.name} onChange={f("name")} placeholder="Name *" /></td>
             <td className="py-1 px-2">
-                <select className="w-full rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.type} onChange={f("type")}>
+                <select className="w-full rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.type} onChange={f("type")}>
                     {ENERGY_TYPES.map(t => <option key={t}>{t}</option>)}
                 </select>
             </td>
-            <td className="py-1 px-2"><input className="w-full rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.province} onChange={f("province")} placeholder="Province" /></td>
-            <td className="py-1 px-2"><input type="number" className="w-20 rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.capacity_mw} onChange={f("capacity_mw")} placeholder="MW *" /></td>
-            <td className="py-1 px-2"><input className="w-full rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.operator} onChange={f("operator")} placeholder="Operator" /></td>
-            <td className="py-1 px-2"><input type="number" className="w-20 rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.commissioned} onChange={f("commissioned")} placeholder="Year" /></td>
-            <td className="py-1 px-2 text-[10px] text-slate-400">
+            <td className="py-1 px-2"><input className="w-full rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.province} onChange={f("province")} placeholder="Province" /></td>
+            <td className="py-1 px-2"><input type="number" className="w-20 rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.capacity_mw} onChange={f("capacity_mw")} placeholder="MW *" /></td>
+            <td className="py-1 px-2"><input className="w-full rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.operator} onChange={f("operator")} placeholder="Operator" /></td>
+            <td className="py-1 px-2"><input type="number" className="w-20 rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.commissioned} onChange={f("commissioned")} placeholder="Year" /></td>
+            <td className="py-1 px-2 text-[10px] text-[var(--color-ink-soft)]/70">
                 <div className="flex flex-col gap-0.5">
-                    <input type="number" step="0.0001" className="w-20 rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.lat} onChange={f("lat")} placeholder="Lat *" />
-                    <input type="number" step="0.0001" className="w-20 rounded border border-slate-200 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.lng} onChange={f("lng")} placeholder="Lng *" />
+                    <input type="number" step="0.0001" className="w-20 rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.lat} onChange={f("lat")} placeholder="Lat *" />
+                    <input type="number" step="0.0001" className="w-20 rounded border border-[var(--color-hairline)] px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)]/40" value={draft.lng} onChange={f("lng")} placeholder="Lng *" />
                 </div>
             </td>
             <td className="py-1 px-2">
                 <div className="flex items-center gap-1">
                     <button onClick={onSave} disabled={!valid} className="rounded px-2 py-1 text-[11px] bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors">Save</button>
-                    <button onClick={onCancel} className="rounded px-2 py-1 text-[11px] text-slate-500 hover:bg-slate-100 transition-colors">Cancel</button>
+                    <button onClick={onCancel} className="rounded px-2 py-1 text-[11px] text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors">Cancel</button>
                 </div>
             </td>
         </tr>
@@ -506,8 +506,8 @@ export default function Maps() {
                 <div className="mt-6 mb-6 flex flex-wrap items-end justify-between gap-4">
                     <div>
                         <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Power Stations</p>
-                        <h1 className="text-2xl font-bold text-slate-900">South Africa Power Station Map</h1>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <h1 className="text-2xl font-bold text-[var(--color-ink)]">South Africa Power Station Map</h1>
+                        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                             {loadingData
                                 ? "Loading stations…"
                                 : `${visibleStations.length} stations · ${totalGW} GW total installed capacity. Click any station or map marker to zoom in.`
@@ -523,9 +523,9 @@ export default function Maps() {
                                     const count = visibleStations.filter(s => s.type === t).length;
                                     if (!count) return null;
                                     return (
-                                        <span key={t} className="inline-flex items-center gap-1 rounded-full border border-[var(--color-hairline)] bg-white px-2.5 py-0.5 text-xs font-medium text-slate-700">
+                                        <span key={t} className="inline-flex items-center gap-1 rounded-full border border-[var(--color-hairline)] bg-white px-2.5 py-0.5 text-xs font-medium text-[var(--color-ink)]">
                                             <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ backgroundColor: TYPE_STYLE[t].fill }} />
-                                            {t} <span className="text-slate-400">{count}</span>
+                                            {t} <span className="text-[var(--color-ink-soft)]/70">{count}</span>
                                         </span>
                                     );
                                 })}
@@ -536,10 +536,10 @@ export default function Maps() {
                         {canManage && !loadingData && (
                             <button
                                 onClick={toggleEditMode}
-                                className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-medium transition-all ${
+                                className={`inline-flex items-center gap-1.5 rounded-none border px-3 py-2 text-xs font-medium transition-all ${
                                     editMode
                                         ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                        : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                                        : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
                                 }`}
                             >
                                 {editMode ? (
@@ -554,7 +554,7 @@ export default function Maps() {
 
                 {/* Edit mode banner */}
                 {editMode && (
-                    <div className="mb-4 rounded-xl bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 px-4 py-2.5 text-xs text-[var(--color-accent)] font-medium">
+                    <div className="mb-4 rounded-none bg-[var(--color-accent-soft)] border border-[var(--color-accent)]/30 px-4 py-2.5 text-xs text-[var(--color-accent)] font-medium">
                         Editing mode — hidden stations appear faded in the list. Changes save to the database immediately.
                         {saving && <span className="ml-2 opacity-60">Saving…</span>}
                     </div>
@@ -568,20 +568,20 @@ export default function Maps() {
                             placeholder="Search name or operator…"
                             value={search}
                             onChange={e => { setSearch(e.target.value); setSelected(null); }}
-                            className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm w-52 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                            className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm w-52 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         />
                         <select
                             value={province}
                             onChange={e => { setProvince(e.target.value); setSelected(null); }}
-                            className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                            className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         >
                             <option value="All">All Provinces</option>
                             {ALL_PROVINCES.map(p => <option key={p}>{p}</option>)}
                         </select>
-                        <div className="inline-flex rounded-lg border border-slate-200 overflow-hidden">
+                        <div className="inline-flex rounded-none border border-[var(--color-hairline)] overflow-hidden">
                             <button
                                 onClick={() => { setTypeFilter("All"); setSelected(null); }}
-                                className={`px-3 py-1.5 text-xs font-medium transition-colors ${typeFilter === "All" ? "bg-[var(--color-ink)] text-white" : "bg-white text-slate-600 hover:bg-slate-50"}`}
+                                className={`px-3 py-1.5 text-xs font-medium transition-colors ${typeFilter === "All" ? "bg-[var(--color-ink)] text-white" : "bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"}`}
                             >
                                 All types
                             </button>
@@ -589,15 +589,15 @@ export default function Maps() {
                                 <button
                                     key={t}
                                     onClick={() => { setTypeFilter(t); setSelected(null); }}
-                                    className={`px-3 py-1.5 text-xs font-medium border-l border-slate-200 transition-colors ${typeFilter === t ? "bg-[var(--color-ink)] text-white" : "bg-white text-slate-600 hover:bg-slate-50"}`}
+                                    className={`px-3 py-1.5 text-xs font-medium border-l border-[var(--color-hairline)] transition-colors ${typeFilter === t ? "bg-[var(--color-ink)] text-white" : "bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"}`}
                                 >
                                     {t}
                                 </button>
                             ))}
                         </div>
-                        <span className="text-xs text-slate-400">{sidebarList.length} station{sidebarList.length !== 1 ? "s" : ""}</span>
+                        <span className="text-xs text-[var(--color-ink-soft)]/70">{sidebarList.length} station{sidebarList.length !== 1 ? "s" : ""}</span>
                         {selected && (
-                            <button onClick={() => setSelected(null)} className="text-xs text-slate-500 hover:text-slate-900 underline underline-offset-2">
+                            <button onClick={() => setSelected(null)} className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] underline underline-offset-2">
                                 Clear selection
                             </button>
                         )}
@@ -612,11 +612,11 @@ export default function Maps() {
                         {loadingData ? (
                             <div className="space-y-2">
                                 {[...Array(6)].map((_, i) => (
-                                    <div key={i} className="h-16 animate-pulse rounded-xl bg-slate-100" />
+                                    <div key={i} className="h-16 animate-pulse rounded-none bg-[var(--color-cream-2)]" />
                                 ))}
                             </div>
                         ) : sidebarList.length === 0 ? (
-                            <p className="text-sm text-slate-400 text-center py-8">No stations match the current filters.</p>
+                            <p className="text-sm text-[var(--color-ink-soft)]/70 text-center py-8">No stations match the current filters.</p>
                         ) : (
                             sidebarList.map((s) => {
                                 const ts = TYPE_STYLE[s.type] ?? TYPE_STYLE["Coal"];
@@ -625,22 +625,22 @@ export default function Maps() {
                                     <button
                                         key={s.name}
                                         onClick={() => setSelected(s.name === selected ? null : s.name)}
-                                        className={`w-full text-left rounded-xl border p-3.5 transition-all ${
+                                        className={`w-full text-left rounded-none border p-3.5 transition-all ${
                                             s.hidden
-                                                ? "opacity-40 border-slate-100 bg-white"
+                                                ? "opacity-40 border-[var(--color-hairline)] bg-white"
                                                 : isSelected
                                                     ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-                                                    : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
+                                                    : "border-[var(--color-hairline)] bg-white hover:border-[var(--color-ink-soft)]/30"
                                         }`}
                                     >
                                         <div className="flex items-start justify-between gap-2 mb-1">
-                                            <p className="text-sm font-semibold text-slate-900 leading-snug">{s.name}</p>
+                                            <p className="text-sm font-semibold text-[var(--color-ink)] leading-snug">{s.name}</p>
                                             <span className={`shrink-0 text-[10px] font-semibold rounded-full px-2 py-0.5 border ${ts.pill}`}>{s.type}</span>
                                         </div>
-                                        <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-slate-500">
+                                        <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-[var(--color-ink-soft)]">
                                             <span>{s.province}</span>
-                                            <span className="font-semibold text-slate-700">{Number(s.capacity_mw).toLocaleString()} MW</span>
-                                            <span className="text-slate-400">{s.commissioned}</span>
+                                            <span className="font-semibold text-[var(--color-ink)]">{Number(s.capacity_mw).toLocaleString()} MW</span>
+                                            <span className="text-[var(--color-ink-soft)]/70">{s.commissioned}</span>
                                         </div>
                                     </button>
                                 );
@@ -655,12 +655,12 @@ export default function Maps() {
                             <div ref={containerRef} className="h-full w-full" />
 
                             {/* Legend */}
-                            <div className="absolute bottom-4 left-4 rounded-xl bg-white/90 px-3 py-2.5 backdrop-blur-md border border-[var(--color-hairline)] shadow-sm">
-                                <p className="text-[9px] font-semibold uppercase tracking-widest text-slate-400 mb-2">Type</p>
+                            <div className="absolute bottom-4 left-4 rounded-none bg-white/90 px-3 py-2.5 backdrop-blur-md border border-[var(--color-hairline)]">
+                                <p className="text-[9px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70 mb-2">Type</p>
                                 {ENERGY_TYPES.map(t => (
                                     <div key={t} className="flex items-center gap-2 mb-1 last:mb-0">
                                         <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: TYPE_STYLE[t].fill }} />
-                                        <span className="text-[11px] text-slate-600">{t}</span>
+                                        <span className="text-[11px] text-[var(--color-ink-soft)]">{t}</span>
                                     </div>
                                 ))}
                             </div>
@@ -671,40 +671,40 @@ export default function Maps() {
                             <div className="rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-white p-5">
                                 <div className="flex items-start justify-between gap-4 mb-4">
                                     <div>
-                                        <h2 className="font-bold text-slate-900 text-lg leading-snug">{selectedStation.name}</h2>
-                                        <p className="text-sm text-slate-500">{selectedStation.province} · Commissioned {selectedStation.commissioned}</p>
+                                        <h2 className="font-bold text-[var(--color-ink)] text-lg leading-snug">{selectedStation.name}</h2>
+                                        <p className="text-sm text-[var(--color-ink-soft)]">{selectedStation.province} · Commissioned {selectedStation.commissioned}</p>
                                     </div>
                                     <span className={`shrink-0 text-xs font-semibold rounded-full px-2.5 py-1 border ${TYPE_STYLE[selectedStation.type]?.pill ?? ""}`}>
                                         {selectedStation.type}
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-                                    <div className="rounded-lg bg-slate-50 border border-[var(--color-hairline)] p-3">
-                                        <p className="text-xs text-slate-500">Capacity</p>
-                                        <p className="font-bold text-slate-900">{Number(selectedStation.capacity_mw).toLocaleString()} MW</p>
+                                    <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] p-3">
+                                        <p className="text-xs text-[var(--color-ink-soft)]">Capacity</p>
+                                        <p className="font-bold text-[var(--color-ink)]">{Number(selectedStation.capacity_mw).toLocaleString()} MW</p>
                                     </div>
-                                    <div className="rounded-lg bg-slate-50 border border-[var(--color-hairline)] p-3 col-span-2">
-                                        <p className="text-xs text-slate-500">Operator</p>
-                                        <p className="font-semibold text-slate-900 text-sm leading-snug">{selectedStation.operator}</p>
+                                    <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] p-3 col-span-2">
+                                        <p className="text-xs text-[var(--color-ink-soft)]">Operator</p>
+                                        <p className="font-semibold text-[var(--color-ink)] text-sm leading-snug">{selectedStation.operator}</p>
                                     </div>
-                                    <div className="rounded-lg bg-slate-50 border border-[var(--color-hairline)] p-3">
-                                        <p className="text-xs text-slate-500">Coordinates</p>
-                                        <p className="font-mono text-xs font-semibold text-slate-700">{selectedStation.lat.toFixed(3)}, {selectedStation.lng.toFixed(3)}</p>
+                                    <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] p-3">
+                                        <p className="text-xs text-[var(--color-ink-soft)]">Coordinates</p>
+                                        <p className="font-mono text-xs font-semibold text-[var(--color-ink)]">{selectedStation.lat.toFixed(3)}, {selectedStation.lng.toFixed(3)}</p>
                                     </div>
                                 </div>
                                 {selectedStation.notes && (
-                                    <p className="text-sm text-slate-600 leading-relaxed">{selectedStation.notes}</p>
+                                    <p className="text-sm text-[var(--color-ink-soft)] leading-relaxed">{selectedStation.notes}</p>
                                 )}
                             </div>
                         ) : (
-                            <div className="rounded-xl border border-dashed border-[var(--color-hairline)] p-8 text-center text-slate-400 text-sm">
+                            <div className="rounded-none border border-dashed border-[var(--color-hairline)] p-8 text-center text-[var(--color-ink-soft)]/70 text-sm">
                                 Click a station card or a map marker to see details
                             </div>
                         )}
                     </div>
                 </div>
 
-                <p className="mt-5 text-xs text-slate-400">
+                <p className="mt-5 text-xs text-[var(--color-ink-soft)]/70">
                     Data sourced from Eskom, NERSA, and REIPPP project registers. Dot size reflects installed capacity.
                 </p>
 
@@ -712,8 +712,8 @@ export default function Maps() {
                 {canManage && editMode && stations && (
                     <div className="mt-10 space-y-4">
                         <div className="flex items-center justify-between gap-4 flex-wrap">
-                            <h2 className="text-base font-semibold text-slate-900">
-                                Station data <span className="text-sm font-normal text-slate-400">({stations.length} total, {stations.filter(s => s.hidden).length} hidden)</span>
+                            <h2 className="text-base font-semibold text-[var(--color-ink)]">
+                                Station data <span className="text-sm font-normal text-[var(--color-ink-soft)]/70">({stations.length} total, {stations.filter(s => s.hidden).length} hidden)</span>
                             </h2>
                             <div className="flex items-center gap-2">
                                 <input
@@ -721,12 +721,12 @@ export default function Maps() {
                                     value={tableSearch}
                                     onChange={e => setTableSearch(e.target.value)}
                                     placeholder="Search name, type, province…"
-                                    className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 w-56"
+                                    className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 w-56"
                                 />
                                 {!addOpen && (
                                     <button
                                         onClick={() => { setAddOpen(true); setEditingIdx(null); }}
-                                        className="inline-flex items-center gap-1 rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] transition-colors"
+                                        className="inline-flex items-center gap-1 rounded-none bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] transition-colors"
                                     >
                                         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                                         Add station
@@ -737,7 +737,7 @@ export default function Maps() {
 
                         <div className="overflow-x-auto rounded-[var(--radius-card)] border border-[var(--color-hairline)]">
                             <table className="min-w-full text-left">
-                                <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                                <thead className="bg-[var(--color-cream-2)] text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">
                                     <tr>
                                         <th className="py-2.5 px-3">Name</th>
                                         <th className="py-2.5 px-3">Type</th>
@@ -749,7 +749,7 @@ export default function Maps() {
                                         <th className="py-2.5 px-3">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-slate-50">
+                                <tbody className="bg-white divide-y divide-[var(--color-hairline)]">
                                     {addOpen && (
                                         <EditRow
                                             draft={newStation}

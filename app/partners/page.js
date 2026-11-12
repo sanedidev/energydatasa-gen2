@@ -53,7 +53,7 @@ export const DEFAULT_PARTNERS = [
     },
 ];
 
-const AVATAR_COLOR = "from-slate-600 to-slate-800";
+const AVATAR_COLOR = "bg-[var(--color-ink)]";
 
 function initials(name) {
     const parts = name.split(/\s+/).filter(Boolean);
@@ -90,7 +90,7 @@ function DragHandle({ onMouseDown, onMouseUp }) {
             title="Drag to reorder"
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}
-            className="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 transition-colors p-1"
+            className="cursor-grab active:cursor-grabbing text-[var(--color-ink-soft)]/50 hover:text-[var(--color-ink-soft)] transition-colors p-1"
         >
             <DragHandleIcon />
         </div>
@@ -103,27 +103,27 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
-            <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-xl border border-[var(--color-hairline)] my-8">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-                    <p className="font-semibold text-slate-900">{isNew ? "Add partner" : "Edit partner"}</p>
-                    <button onClick={onCancel} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+            <div className="relative w-full max-w-lg rounded-none bg-white border border-[var(--color-hairline)] my-8">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-hairline)]">
+                    <p className="font-semibold text-[var(--color-ink)]">{isNew ? "Add partner" : "Edit partner"}</p>
+                    <button onClick={onCancel} className="text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink)] text-lg leading-none">✕</button>
                 </div>
                 <div className="px-6 py-5 space-y-4">
                     {/* Logo */}
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1.5">Logo</label>
+                        <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1.5">Logo</label>
                         <div className="flex items-center gap-3">
-                            <div className="h-14 w-14 shrink-0 rounded-xl bg-slate-50 border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
+                            <div className="h-14 w-14 shrink-0 rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
                                 {logoUrl ? (
                                     <Image src={logoUrl} alt="logo" width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
                                 ) : (
-                                    <svg className="h-6 w-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                                    <svg className="h-6 w-6 text-[var(--color-ink-soft)]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                                     </svg>
                                 )}
                             </div>
                             <button type="button" onClick={onPickLogo}
-                                className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors">
+                                className="rounded-none border border-[var(--color-hairline)] bg-white px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors">
                                 {form.logo ? "Change logo" : "Choose from media library"}
                             </button>
                         </div>
@@ -131,44 +131,44 @@ function PartnerFormModal({ form, onChange, onSave, onCancel, onPickLogo, isNew,
 
                     {/* Name */}
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Name <span className="text-red-400">*</span></label>
+                        <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Name <span className="text-red-400">*</span></label>
                         <input type="text" value={form.name} onChange={(e) => onChange("name", e.target.value)}
                             placeholder="e.g. Eskom Holdings SOC Ltd"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
+                            className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Type */}
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Type / Category</label>
+                        <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Type / Category</label>
                         <input type="text" value={form.type} onChange={(e) => onChange("type", e.target.value)}
                             placeholder="e.g. Clean Energy, Utility, Institution…"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
+                            className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Website */}
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Website URL</label>
+                        <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Website URL</label>
                         <input type="url" value={form.site} onChange={(e) => onChange("site", e.target.value)}
                             placeholder="https://example.org"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
+                            className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60" />
                     </div>
 
                     {/* Blurb */}
                     <div>
-                        <label className="block text-xs font-medium text-slate-500 mb-1">Description</label>
+                        <label className="block text-xs font-medium text-[var(--color-ink-soft)] mb-1">Description</label>
                         <textarea value={form.blurb} onChange={(e) => onChange("blurb", e.target.value)}
                             rows={3}
                             placeholder="Short description of the partner…"
-                            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60 resize-y" />
+                            className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)]/60 resize-y" />
                     </div>
                 </div>
-                <div className="flex gap-2 px-6 py-4 border-t border-slate-100">
+                <div className="flex gap-2 px-6 py-4 border-t border-[var(--color-hairline)]">
                     <button type="button" onClick={onSave} disabled={!form.name.trim() || saving}
-                        className="rounded-xl bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-all">
+                        className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-all">
                         {saving ? "Saving…" : isNew ? "Add partner" : "Save changes"}
                     </button>
                     <button type="button" onClick={onCancel} disabled={saving}
-                        className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 disabled:opacity-50 transition-all">
+                        className="rounded-none border border-[var(--color-hairline)] bg-white px-4 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] disabled:opacity-50 transition-all">
                         Cancel
                     </button>
                 </div>
@@ -192,16 +192,16 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
             className={`group relative flex flex-col rounded-[var(--radius-card)] bg-white transition-all
                 ${isHidden ? "opacity-40" : ""}
                 ${isDragging  ? "opacity-50 scale-[0.98]" : ""}
-                ${isDragOver  ? "ring-2 ring-orange-400 border border-transparent" : "border border-[var(--color-hairline)]"}
-                ${managing    ? "ring-2 ring-dashed ring-slate-300" : "hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"}
+                ${isDragOver  ? "ring-2 ring-[var(--color-accent)] border border-transparent" : "border border-[var(--color-hairline)]"}
+                ${managing    ? "ring-2 ring-dashed ring-[var(--color-hairline)]" : "hover:-translate-y-0.5 hover:border-[var(--color-accent)]/40"}
             `}
         >
             {managing && (
-                <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 bg-slate-50 rounded-t-2xl">
+                <div className="flex items-center justify-between px-3 py-2 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)] rounded-none">
                     <DragHandle onMouseDown={onDragHandleDown} onMouseUp={onDragHandleUp} />
                     <div className="flex items-center gap-1">
                         <button type="button" onClick={onChangeLogo} title="Change logo"
-                            className="inline-flex h-7 items-center gap-1 rounded-lg px-2 text-[11px] font-medium text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all">
+                            className="inline-flex h-7 items-center gap-1 rounded-none px-2 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-hairline)] hover:text-[var(--color-ink)] transition-all">
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                             </svg>
@@ -209,7 +209,7 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                         </button>
 
                         <button type="button" onClick={onEdit} title="Edit partner"
-                            className="inline-flex h-7 items-center gap-1 rounded-lg px-2 text-[11px] font-medium text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all">
+                            className="inline-flex h-7 items-center gap-1 rounded-none px-2 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-hairline)] hover:text-[var(--color-ink)] transition-all">
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                             </svg>
@@ -217,7 +217,7 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                         </button>
 
                         <button type="button" onClick={onToggleHide} title={isHidden ? "Show partner" : "Hide partner"}
-                            className="inline-flex h-7 items-center gap-1 rounded-lg px-2 text-[11px] font-medium text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-all">
+                            className="inline-flex h-7 items-center gap-1 rounded-none px-2 text-[11px] font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-hairline)] hover:text-[var(--color-ink)] transition-all">
                             {isHidden ? (
                                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -232,7 +232,7 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                         </button>
 
                         <button type="button" onClick={onDelete} title="Delete partner"
-                            className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all">
+                            className="inline-flex h-7 w-7 items-center justify-center rounded-none text-[var(--color-ink-soft)]/70 hover:bg-red-50 hover:text-red-500 transition-all">
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -249,11 +249,11 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
                 className={`flex flex-col flex-1 ${managing ? "pointer-events-none" : ""}`}
             >
                 <div className="flex items-start gap-4 p-6">
-                    <div className="shrink-0 h-14 w-14 rounded-xl bg-slate-50 border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
+                    <div className="shrink-0 h-14 w-14 rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] flex items-center justify-center overflow-hidden">
                         {logoUrl ? (
                             <Image src={logoUrl} alt={`${p.name} logo`} width={40} height={40} className="object-contain" unoptimized={!logoUrl.startsWith("/")} />
                         ) : (
-                            <div className={`h-full w-full bg-linear-to-br ${AVATAR_COLOR} text-white grid place-content-center text-sm font-bold`}>
+                            <div className={`h-full w-full ${AVATAR_COLOR} text-white grid place-content-center text-sm font-bold`}>
                                 {initials(p.name)}
                             </div>
                         )}
@@ -261,24 +261,24 @@ function PartnerCard({ p, i, managing, isDragging, isDragOver, draggable, onDrag
 
                     <div className="min-w-0 flex-1">
                         {p.type && (
-                            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset bg-slate-50 text-slate-600 ring-slate-100">
+                            <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset bg-[var(--color-cream-2)] text-[var(--color-ink-soft)] ring-[var(--color-hairline)]">
                                 {p.type}
                             </span>
                         )}
-                        <h3 className={`mt-1.5 text-sm font-semibold text-slate-900 leading-snug ${!managing ? "group-hover:text-[var(--color-accent)] transition-colors" : ""}`}>
+                        <h3 className={`mt-1.5 text-sm font-semibold text-[var(--color-ink)] leading-snug ${!managing ? "group-hover:text-[var(--color-accent)] transition-colors" : ""}`}>
                             {p.name}
                         </h3>
                     </div>
 
                     {!managing && p.site && (
-                        <svg className="shrink-0 h-4 w-4 text-slate-300 group-hover:text-[var(--color-accent)] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                        <svg className="shrink-0 h-4 w-4 text-[var(--color-ink-soft)]/50 group-hover:text-[var(--color-accent)] transition-colors mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                         </svg>
                     )}
                 </div>
 
                 {p.blurb && (
-                    <p className="px-6 pb-6 text-sm leading-relaxed text-slate-500">{p.blurb}</p>
+                    <p className="px-6 pb-6 text-sm leading-relaxed text-[var(--color-ink-soft)]">{p.blurb}</p>
                 )}
             </a>
         </div>
@@ -435,7 +435,7 @@ export default function Partners() {
                     Energy Data SA is built in collaboration with government departments, utilities,
                     academic institutions, and organisations committed to open energy data in South Africa.
                 </p>
-                <div className="mt-8 inline-flex items-center gap-2 rounded-xl border border-[var(--color-hairline)] bg-white px-5 py-3">
+                <div className="mt-8 inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-white px-5 py-3">
                     <span className="text-2xl font-bold text-[var(--color-ink)]">{visible.filter((p) => !p.hidden).length}</span>
                     <span className="text-sm text-[var(--color-ink-soft)] uppercase tracking-wider">Partners</span>
                 </div>
@@ -447,10 +447,10 @@ export default function Partners() {
                         <button
                             type="button"
                             onClick={() => setManaging((v) => !v)}
-                            className={`inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium shadow-sm transition-all ${
+                            className={`inline-flex items-center gap-1.5 rounded-none border px-4 py-2 text-sm font-medium transition-all ${
                                 managing
                                     ? "border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-                                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                                    : "border-[var(--color-hairline)] bg-white text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                             }`}
                         >
                             {managing ? (
@@ -474,7 +474,7 @@ export default function Partners() {
                             <button
                                 type="button"
                                 onClick={openAdd}
-                                className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition-all"
+                                className="inline-flex items-center gap-1.5 rounded-none border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-medium text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition-all"
                             >
                                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -483,18 +483,18 @@ export default function Partners() {
                             </button>
                         )}
 
-                        {saving && <span className="text-xs text-slate-400">Saving…</span>}
+                        {saving && <span className="text-xs text-[var(--color-ink-soft)]/70">Saving…</span>}
                     </div>
                 )}
 
                 {loading ? (
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="rounded-2xl bg-slate-50 animate-pulse h-40" />
+                            <div key={i} className="rounded-none bg-[var(--color-cream-2)] animate-pulse h-40" />
                         ))}
                     </div>
                 ) : visible.length === 0 ? (
-                    <p className="text-sm text-slate-400">No partners yet.</p>
+                    <p className="text-sm text-[var(--color-ink-soft)]/70">No partners yet.</p>
                 ) : (
                     <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
                         {visible.map((p, i) => (

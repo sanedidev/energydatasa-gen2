@@ -14,10 +14,15 @@ function PencilIcon({ className }) {
 }
 
 export default function YearSwitcher() {
-    const { availableYears, activeYear, setActiveYear, loadingYears, createYear, renameYear } = useNEBData();
+    const { availableYears: rawAvailableYears, activeYear, setActiveYear, loadingYears, createYear, renameYear } = useNEBData();
     const { canEdit } = usePermissions();
     const { user } = useAuth();
     const canCreate = canEdit("neb.years.create");
+
+    // Always sort newest-first at render time, independent of whatever
+    // order the context/API returned - a newly-created year must never
+    // land out of numeric order regardless of how/when it was added.
+    const availableYears = [...rawAvailableYears].sort((a, b) => Number(b.year) - Number(a.year));
 
     const [creating, setCreating] = useState(false);
     const [yearInput, setYearInput] = useState("");
@@ -81,7 +86,7 @@ export default function YearSwitcher() {
     if (loadingYears) return null;
 
     return (
-        <div className="border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)]">
+        <div className="sticky top-14 z-40 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)]/95 backdrop-blur-sm">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-2.5 flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-medium text-slate-400">Year</span>
                 {availableYears.map((y) =>

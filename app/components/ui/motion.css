@@ -32,8 +32,19 @@
   animation: flowDrift 7s ease-in-out infinite;
 }
 
+/* A short, one-time reveal for content that mounts on expand/toggle (an
+   accordion section, a newly-opened panel) - not an ambient/infinite
+   effect, so it's cheap, but still respects reduced-motion below. */
+@keyframes revealDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal-down {
+  animation: revealDown 0.25s ease-out;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  [class*="motion-"], .flow-line {
+  [class*="motion-"], .flow-line, .reveal-down {
     animation: none !important;
   }
   .flow-line { background-position: 50% 50%; }

@@ -10,6 +10,9 @@ import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
+import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+
+const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
 
 const COMMODITY_LABEL = COMMODITY_ID_MAP;
 
@@ -111,27 +114,28 @@ export default function ConversionPage() {
                 </p>
 
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-[var(--color-accent)]">
-                            {netElectricity.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                    <div className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+                        <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
+                            <AnimatedNumber value={netElectricity} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Net Electricity Generated</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-yellow-400">
-                            {powerStationTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        <div className="text-xl font-bold text-yellow-400 tabular-nums">
+                            <AnimatedNumber value={powerStationTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Power Station Gross Output</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-red-400">
-                            {tdLosses.toFixed(0)} PJ <span className="text-base font-normal">({tdLossPct}%)</span>
+                        <div className="text-xl font-bold text-red-400 tabular-nums">
+                            <AnimatedNumber value={tdLosses} format={fmtPJ} /> <span className="text-base font-normal">({tdLossPct}%)</span>
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">T&amp;D Losses</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-amber-400">
-                            {(crudeOutputTotal + ctlOutput).toFixed(0)} PJ
+                        <div className="text-xl font-bold text-amber-400 tabular-nums">
+                            <AnimatedNumber value={crudeOutputTotal + ctlOutput} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Refinery Liquid Output</div>
                     </div>

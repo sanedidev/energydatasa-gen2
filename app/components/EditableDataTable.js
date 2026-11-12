@@ -23,31 +23,43 @@ export default function EditableDataTable({
     labelColWidth = "min-w-48",
 }) {
     return (
-        <table className="min-w-full text-xs">
+        <table className="min-w-full text-xs border-separate border-spacing-0">
             <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                    <th className={`sticky left-0 z-10 bg-slate-50 px-4 py-2.5 text-left font-semibold text-slate-600 ${labelColWidth}`}>
+                <tr>
+                    <th className={`sticky left-0 z-10 bg-white px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)] border-b border-[var(--color-hairline)] ${labelColWidth}`}>
                         Row
                     </th>
-                    <th className="px-3 py-2.5 text-right font-semibold text-slate-600 min-w-20 border-r border-slate-200">
+                    <th className="px-3 py-3 text-right text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)] min-w-20 bg-[var(--color-cream-2)]/60 border-b border-[var(--color-hairline)]">
                         {totalLabel}
                     </th>
                     {commodities.map((c) => (
-                        <th key={c.id} className="px-3 py-2.5 text-right font-medium text-slate-500 min-w-24 whitespace-nowrap">
+                        <th key={c.id} className="px-3 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--color-ink-soft)]/70 min-w-24 whitespace-nowrap border-b border-[var(--color-hairline)]">
                             {c.label}
                         </th>
                     ))}
                 </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody>
                 {rows.map((row) => {
                     const isTotalRow = !!row.isTotal;
                     return (
-                        <tr key={row.id} className={isTotalRow ? "bg-slate-900 font-semibold" : "hover:bg-slate-50 transition-colors"}>
-                            <td className={`sticky left-0 z-10 px-4 py-2.5 font-medium ${isTotalRow ? "bg-slate-900 text-white" : "bg-white text-slate-800"}`}>
+                        <tr key={row.id} className={isTotalRow ? "font-semibold" : "group hover:bg-[var(--color-cream-2)]/40 transition-colors"}>
+                            <td
+                                className={`sticky left-0 z-10 px-4 py-2.5 font-medium border-b ${
+                                    isTotalRow
+                                        ? "bg-[var(--color-cream-2)] text-[var(--color-ink)] border-t-2 border-t-[var(--color-accent)] border-b-[var(--color-hairline)]"
+                                        : "bg-white group-hover:bg-[var(--color-cream-2)]/40 text-slate-800 border-b-[var(--color-hairline)] transition-colors"
+                                }`}
+                            >
                                 {row.label}
                             </td>
-                            <td className={`px-3 py-2.5 text-right font-mono border-r border-slate-200 ${cellClassName(row.values?.total, { isTotalRow, isTotalColumn: true })}`}>
+                            <td
+                                className={`px-3 py-2.5 text-right font-mono tabular-nums border-b ${
+                                    isTotalRow
+                                        ? "bg-[var(--color-cream-2)] border-t-2 border-t-[var(--color-accent)] border-b-[var(--color-hairline)]"
+                                        : "bg-[var(--color-cream-2)]/30 border-b-[var(--color-hairline)]"
+                                } ${cellClassName(row.values?.total, { isTotalRow, isTotalColumn: true })}`}
+                            >
                                 {formatValue(row.values?.total, { isTotalRow, isTotalColumn: true })}
                             </td>
                             {commodities.map((c) => {
@@ -56,7 +68,7 @@ export default function EditableDataTable({
                                 return (
                                     <td
                                         key={c.id}
-                                        className={`px-3 py-2.5 text-right font-mono ${editableCell ? "p-0" : ""} ${cellClassName(value, { isTotalRow, isTotalColumn: false })}`}
+                                        className={`px-3 py-2.5 text-right font-mono tabular-nums border-b border-[var(--color-hairline)] ${editableCell ? "p-0" : ""} ${isTotalRow ? "border-t-2 border-t-[var(--color-accent)]" : ""} ${cellClassName(value, { isTotalRow, isTotalColumn: false })}`}
                                     >
                                         {editableCell ? (
                                             <input
@@ -64,7 +76,7 @@ export default function EditableDataTable({
                                                 inputMode="decimal"
                                                 value={value ?? ""}
                                                 onChange={(e) => setCell(row.id, c.id, e.target.value)}
-                                                className="w-full min-w-24 bg-transparent px-3 py-2.5 text-right font-mono text-slate-700 outline-none focus:bg-violet-50 rounded-sm"
+                                                className="w-full min-w-24 bg-transparent px-3 py-2.5 text-right font-mono text-slate-700 outline-none focus:bg-[var(--color-accent-soft)] rounded-sm"
                                             />
                                         ) : (
                                             formatValue(value, { isTotalRow, isTotalColumn: false })

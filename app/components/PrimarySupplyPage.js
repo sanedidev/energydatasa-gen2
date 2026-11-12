@@ -11,6 +11,9 @@ import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
+import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+
+const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
 
 const SUPPLY_FUELS = [
     "bituminous", "coking", "anthracite", "coke", "charcoal",
@@ -117,27 +120,28 @@ export default function PrimarySupplyPage() {
                 </p>
 
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-[var(--color-accent)]">
-                            {tpesTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                    <div className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+                        <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
+                            <AnimatedNumber value={tpesTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Primary Energy Supply</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-emerald-400">
-                            {prodTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        <div className="text-xl font-bold text-emerald-400 tabular-nums">
+                            <AnimatedNumber value={prodTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Domestic Production</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-amber-400">
-                            {importsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        <div className="text-xl font-bold text-amber-400 tabular-nums">
+                            <AnimatedNumber value={importsTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Imports</div>
                     </div>
                     <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-red-400">
-                            {exportsTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                        <div className="text-xl font-bold text-red-400 tabular-nums">
+                            <AnimatedNumber value={exportsTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Exports</div>
                     </div>

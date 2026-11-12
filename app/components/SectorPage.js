@@ -10,7 +10,10 @@ import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
+import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
 import { computeSectorCO2 } from "@/app/lib/co2Factors";
+
+const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
 
 // Sectors are told apart by label/position, not a unique hue each - the
 // redesign's one terracotta accent covers all 5 (it used to be a different
@@ -155,16 +158,17 @@ export default function SectorPage({ sectionId }) {
 
                 {/* Key stat cards */}
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                        <div className="text-xl font-bold text-[var(--color-accent)]">
-                            {sectorTotal.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                    <div className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+                        <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
+                            <AnimatedNumber value={sectorTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Consumption</div>
                     </div>
                     {keyFuels.slice(0, 3).map((f) => (
                         <div key={f.id} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
-                            <div className="text-xl font-bold text-[var(--color-cream)]">
-                                {f.total.toLocaleString("en-US", { maximumFractionDigits: 0 })} PJ
+                            <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
+                                <AnimatedNumber value={f.total} format={fmtPJ} />
                             </div>
                             <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">{f.label}</div>
                         </div>

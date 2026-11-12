@@ -39,14 +39,14 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
 
     return (
         <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
-            <div className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-slate-50 transition-colors">
+            <div className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-[var(--color-cream-2)]/50 transition-colors">
                 <button onClick={onToggle} className="flex min-w-0 flex-1 items-center justify-between gap-4 text-left">
                     <div className="min-w-0">
                         <h2 className="text-base font-semibold text-slate-900">{section.label}</h2>
                         <p className="text-xs text-slate-500 mt-0.5">{section.description}</p>
                     </div>
                     <svg
-                        className={`h-4 w-4 text-slate-400 transition-transform shrink-0 ${collapsed ? "-rotate-90" : ""}`}
+                        className={`h-4 w-4 text-[var(--color-ink-soft)]/60 transition-transform duration-300 shrink-0 ${collapsed ? "-rotate-90" : ""}`}
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -77,7 +77,7 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
             </div>
 
             {!collapsed && (
-                <div className="overflow-x-auto border-t border-slate-100">
+                <div className="reveal-down overflow-x-auto border-t border-[var(--color-hairline)]">
                     <EditableDataTable
                         rows={grid.isEditing ? grid.draftRows : section.rows}
                         commodities={visibleCommodities}
@@ -87,8 +87,8 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
                         setCell={grid.setCell}
                         formatValue={(v) => fmt(v)}
                         cellClassName={(v, { isTotalRow, isTotalColumn }) => {
-                            if (isTotalColumn) return isTotalRow ? (v < 0 ? "text-red-400" : "text-emerald-400") : valueClass(v);
-                            if (isTotalRow) return v == null ? "text-slate-600" : (v < 0 ? "text-red-400" : "text-emerald-400");
+                            if (isTotalColumn) return isTotalRow ? (v < 0 ? "text-red-700" : "text-emerald-800") : valueClass(v);
+                            if (isTotalRow) return v == null ? "text-slate-500" : (v < 0 ? "text-red-700" : "text-emerald-800");
                             return valueClass(v);
                         }}
                     />

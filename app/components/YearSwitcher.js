@@ -89,7 +89,7 @@ export default function YearSwitcher() {
     return (
         <div className="sticky top-14 z-40 border-b border-[var(--color-hairline)] bg-[var(--color-cream-2)]/95 backdrop-blur-sm">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-2.5 flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-medium text-slate-400">Year</span>
+                <span className="text-xs font-medium text-[var(--color-ink-soft)]/70">Year</span>
                 {availableYears.map((y) =>
                     renamingYear === y.year ? (
                         <div key={y.year} className="flex items-center gap-1.5">
@@ -101,18 +101,18 @@ export default function YearSwitcher() {
                                     if (e.key === "Enter") handleRename();
                                     if (e.key === "Escape") { setRenamingYear(null); setRenameError(""); }
                                 }}
-                                className="w-16 rounded-md border border-slate-300 px-2 py-1 text-xs"
+                                className="w-16 rounded-none border border-[var(--color-hairline)] px-2 py-1 text-xs"
                             />
                             <button
                                 onClick={handleRename}
                                 disabled={renameBusy}
-                                className="rounded-md bg-violet-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-violet-700 disabled:opacity-50 transition-colors"
+                                className="rounded-none bg-[var(--color-accent)] px-2.5 py-1 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-colors"
                             >
                                 {renameBusy ? "Saving…" : "Save"}
                             </button>
                             <button
                                 onClick={() => { setRenamingYear(null); setRenameError(""); }}
-                                className="text-xs text-slate-400 hover:text-slate-600"
+                                className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                             >
                                 Cancel
                             </button>
@@ -121,10 +121,10 @@ export default function YearSwitcher() {
                         <div key={y.year} className="flex items-center gap-0.5">
                             <button
                                 onClick={() => setActiveYear(y.year)}
-                                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                                className={`rounded-none px-3 py-1 text-xs font-medium transition-colors ${
                                     activeYear === y.year
-                                        ? "bg-[var(--color-ink)] text-white"
-                                        : "bg-white text-slate-600 border border-[var(--color-hairline)] hover:bg-slate-100"
+                                        ? "bg-[var(--color-ink)] text-[var(--color-cream)]"
+                                        : "bg-white text-[var(--color-ink-soft)] border border-[var(--color-hairline)] hover:bg-[var(--color-cream-2)]"
                                 }`}
                             >
                                 {y.year}
@@ -133,7 +133,7 @@ export default function YearSwitcher() {
                                 <button
                                     onClick={() => startRename(y.year)}
                                     title={`Rename ${y.year}`}
-                                    className="rounded-full p-1 text-slate-300 hover:text-violet-600 hover:bg-violet-50 transition-colors"
+                                    className="rounded-none p-1 text-[var(--color-ink-soft)]/50 hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition-colors"
                                 >
                                     <PencilIcon className="h-3 w-3" />
                                 </button>
@@ -145,7 +145,7 @@ export default function YearSwitcher() {
                 {canCreate && !creating && (
                     <button
                         onClick={() => setCreating(true)}
-                        className="rounded-full px-3 py-1 text-xs font-medium text-violet-600 ring-1 ring-violet-200 ring-dashed hover:bg-violet-50 transition-colors"
+                        className="rounded-none px-3 py-1 text-xs font-medium text-[var(--color-accent)] border border-dashed border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)] transition-colors"
                     >
                         + New year
                     </button>
@@ -162,18 +162,18 @@ export default function YearSwitcher() {
                                 if (e.key === "Escape") { setCreating(false); setError(""); }
                             }}
                             placeholder="2025"
-                            className="w-16 rounded-md border border-slate-300 px-2 py-1 text-xs"
+                            className="w-16 rounded-none border border-[var(--color-hairline)] px-2 py-1 text-xs"
                         />
                         <button
                             onClick={handleCreate}
                             disabled={busy}
-                            className="rounded-md bg-violet-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-violet-700 disabled:opacity-50 transition-colors"
+                            className="rounded-none bg-[var(--color-accent)] px-2.5 py-1 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-50 transition-colors"
                         >
                             {busy ? "Creating…" : "Create"}
                         </button>
                         <button
                             onClick={() => { setCreating(false); setError(""); }}
-                            className="text-xs text-slate-400 hover:text-slate-600"
+                            className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
                         >
                             Cancel
                         </button>
@@ -184,7 +184,7 @@ export default function YearSwitcher() {
                 {renameError && <span className="text-xs text-red-600">{renameError}</span>}
 
                 {activeYear !== DEFAULT_YEAR && (
-                    <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-medium text-amber-700">
+                    <span className="ml-auto inline-flex items-center gap-1.5 rounded-none bg-amber-100 px-2.5 py-1 text-[11px] font-medium text-amber-700">
                         Viewing {activeYear} — not the default year
                     </span>
                 )}

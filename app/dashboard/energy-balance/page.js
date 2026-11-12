@@ -10,6 +10,7 @@ import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
 import FlowLine from "@/app/components/ui/FlowLine";
 import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import { RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
 import Link from "next/link";
 
 const EnergySankey = dynamic(() => import("@/app/components/EnergySankey"), { ssr: false });
@@ -108,6 +109,9 @@ export default function EnergyBalancePage() {
                 layout) - it is deliberately not restated here, in the title, or
                 in any card below. */}
             <HeroSection variant="dark" eyebrow="National Energy Balance">
+                <div className="relative">
+                    <RippleIcon className="hidden sm:block absolute -top-2 right-0 h-10 w-10 text-[var(--color-cream)]/50" />
+                </div>
                 <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
                     <span className="text-[var(--color-accent)]">National Energy Planning</span>
                 </h1>
@@ -118,7 +122,7 @@ export default function EnergyBalancePage() {
 
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {summaryStats.map((s) => (
-                        <div key={s.label} className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div key={s.label} className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                             <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                             <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
                                 <AnimatedNumber value={Math.abs(s.raw)} format={(n) => `${Math.round(n).toLocaleString("en-US")} PJ`} />
@@ -132,36 +136,36 @@ export default function EnergyBalancePage() {
             {/* ── Sector strip ──────────────────────────────────────────────── */}
             <div className="bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5">
-                    <div className="flex flex-col gap-5 sm:flex-row sm:gap-0 sm:divide-x sm:divide-slate-100">
+                    <div className="flex flex-col gap-5 sm:flex-row sm:gap-0 sm:divide-x sm:divide-[var(--color-hairline)]">
 
                         {/* Supply & Conversion */}
                         <div className="sm:pr-8">
-                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70">
                                 Supply &amp; Conversion
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 <Link
                                     href={`/dashboard/energy-balance/primary-supply?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
+                                    className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
                                 >
                                     <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
-                                    <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">Primary Energy Supply</span>
-                                    <span className="font-mono text-slate-500">{summaryStats[0].value}</span>
+                                    <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Primary Energy Supply</span>
+                                    <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[0].value}</span>
                                 </Link>
                                 <Link
                                     href={`/dashboard/energy-balance/conversion?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
+                                    className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
                                 >
-                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" />
-                                    <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">Conversion &amp; Transformation</span>
-                                    <span className="font-mono text-slate-500">{summaryStats[1].value}</span>
+                                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-ink-soft)]" />
+                                    <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Conversion &amp; Transformation</span>
+                                    <span className="font-mono text-[var(--color-ink-soft)]">{summaryStats[1].value}</span>
                                 </Link>
                             </div>
                         </div>
 
                         {/* Final Consumption by Sector */}
                         <div className="flex-1 min-w-0 sm:pl-8">
-                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+                            <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-[var(--color-ink-soft)]/70">
                                 Final Consumption by Sector
                             </p>
                             <div className="flex flex-wrap gap-2">
@@ -169,15 +173,15 @@ export default function EnergyBalancePage() {
                                     <Link
                                         key={s.id}
                                         href={`/dashboard/energy-balance/${s.id}?year=${activeYear}`}
-                                        className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-accent-soft)]"
+                                        className="group inline-flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-[var(--color-cream-2)] px-3 py-2 text-xs transition-all hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent-soft)]"
                                     >
-                                        <span className="font-medium text-slate-700 group-hover:text-[var(--color-accent)]">{s.label}</span>
+                                        <span className="font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{s.label}</span>
                                         <span className="font-mono text-red-500">{s.value}</span>
                                     </Link>
                                 ))}
                                 <Link
                                     href={`/dashboard/energy-balance/methodology?year=${activeYear}`}
-                                    className="group inline-flex items-center gap-1.5 rounded-xl border border-dashed border-slate-200 bg-white px-3 py-2 text-xs text-slate-400 transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-600"
+                                    className="group inline-flex items-center gap-1.5 rounded-none border border-dashed border-[var(--color-hairline)] bg-white px-3 py-2 text-xs text-[var(--color-ink-soft)] transition-all hover:border-[var(--color-ink-soft)]/40 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]"
                                 >
                                     Methodology &amp; Sources
                                 </Link>
@@ -206,20 +210,20 @@ export default function EnergyBalancePage() {
                                             if (e.key === "Enter") saveTitle();
                                             if (e.key === "Escape") setEditingTitle(false);
                                         }}
-                                        className="text-base font-semibold text-slate-900 bg-transparent border-b-2 border-violet-400 outline-none w-64"
+                                        className="text-base font-semibold text-[var(--color-ink)] bg-transparent border-b-2 border-[var(--color-accent)] outline-none w-64"
                                     />
-                                    <button onClick={saveTitle} className="text-xs text-violet-600 font-medium hover:text-violet-800">Save</button>
-                                    <button onClick={() => setEditingTitle(false)} className="text-xs text-slate-400 hover:text-slate-600">Cancel</button>
+                                    <button onClick={saveTitle} className="text-xs text-[var(--color-accent)] font-medium hover:text-[var(--color-accent-hover)]">Save</button>
+                                    <button onClick={() => setEditingTitle(false)} className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]">Cancel</button>
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-2 group">
-                                    <h2 className={`text-base font-semibold text-slate-900 ${savingTitle ? "opacity-50" : ""}`}>
+                                    <h2 className={`text-base font-semibold text-[var(--color-ink)] ${savingTitle ? "opacity-50" : ""}`}>
                                         {sankeyTitle}
                                     </h2>
                                     {canEditTitle && !savingTitle && (
                                         <button
                                             onClick={() => { setTitleDraft(sankeyTitle); setEditingTitle(true); }}
-                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-violet-600"
+                                            className="opacity-0 group-hover:opacity-100 transition-opacity text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]"
                                             title="Edit title"
                                         >
                                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -229,7 +233,7 @@ export default function EnergyBalancePage() {
                                     )}
                                 </div>
                             )}
-                            <p className="text-xs text-slate-500 mt-0.5">
+                            <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">
                                 Primary supply through transformation to final consumption. Hover over flows for PJ values.
                             </p>
                         </div>
@@ -248,8 +252,8 @@ export default function EnergyBalancePage() {
                     <FlowLine from="var(--color-link)" to="var(--color-accent)" />
                     <div className="px-6 pt-6 pb-2 flex items-start justify-between gap-4 flex-wrap">
                         <div>
-                            <h2 className="text-base font-semibold text-slate-900">Final Consumption by Sector</h2>
-                            <p className="text-xs text-slate-500 mt-0.5">
+                            <h2 className="text-base font-semibold text-[var(--color-ink)]">Final Consumption by Sector</h2>
+                            <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">
                                 Energy delivered to each end-use sector, by fuel. Hover a segment for its PJ value.
                             </p>
                         </div>
@@ -262,7 +266,7 @@ export default function EnergyBalancePage() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 py-5 flex flex-wrap gap-2">
                 <button
                     onClick={() => setActiveGroup("all")}
-                    className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === "all" ? "bg-[var(--color-ink)] text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
+                    className={`rounded-none px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === "all" ? "bg-[var(--color-ink)] text-[var(--color-cream)]" : "border border-[var(--color-hairline)] text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"}`}
                 >
                     All Commodities
                 </button>
@@ -270,7 +274,7 @@ export default function EnergyBalancePage() {
                     <button
                         key={g}
                         onClick={() => setActiveGroup(g)}
-                        className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === g ? "bg-[var(--color-ink)] text-white" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}
+                        className={`rounded-none px-4 py-1.5 text-sm font-medium transition-colors ${activeGroup === g ? "bg-[var(--color-ink)] text-[var(--color-cream)]" : "border border-[var(--color-hairline)] text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"}`}
                     >
                         {GROUP_LABELS[g]}
                     </button>
@@ -280,7 +284,7 @@ export default function EnergyBalancePage() {
             {/* ── Data table ────────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16 space-y-6">
                 {dataLoading ? (
-                    <div className="flex items-center justify-center py-16 text-slate-400 text-sm">Loading data…</div>
+                    <div className="flex items-center justify-center py-16 text-[var(--color-ink-soft)] text-sm">Loading data…</div>
                 ) : (
                     sections.map((section) => (
                         <NEBSectionCard
@@ -296,9 +300,9 @@ export default function EnergyBalancePage() {
 
             {/* ── Footer notes ──────────────────────────────────────────────── */}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
-                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
-                    <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
-                    <ul className="space-y-1 text-xs text-slate-500">
+                <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] px-5 py-4">
+                    <h3 className="text-xs font-semibold text-[var(--color-ink)] mb-2">Data Notes</h3>
+                    <ul className="space-y-1 text-xs text-[var(--color-ink-soft)]">
                         <li>• All values in Petajoules (PJ). Negative = consumption, Positive = production/supply.</li>
                         <li>• A dash (—) indicates zero, negligible, or not applicable for that commodity/row combination.</li>
                         <li>• TPES = Total Primary Energy Supply. OCGT = Open Cycle Gas Turbine. CHP = Combined Heat & Power. CTL = Coal to Liquids.</li>

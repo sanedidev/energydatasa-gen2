@@ -16,11 +16,11 @@ function fmt(val) {
 }
 
 function valueClass(val) {
-    if (val === null || val === undefined) return "text-slate-300";
+    if (val === null || val === undefined) return "text-[var(--color-ink-soft)]/40";
     const n = Number(val);
     if (n < 0) return "text-red-600 tabular-nums";
     if (n > 0) return "text-emerald-700 tabular-nums";
-    return "text-slate-400 tabular-nums";
+    return "text-[var(--color-ink-soft)]/70 tabular-nums";
 }
 
 // One collapsible section card on the NEB overview page - its own component
@@ -42,8 +42,8 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
             <div className="flex items-center justify-between gap-4 px-6 py-4 hover:bg-[var(--color-cream-2)]/50 transition-colors">
                 <button onClick={onToggle} className="flex min-w-0 flex-1 items-center justify-between gap-4 text-left">
                     <div className="min-w-0">
-                        <h2 className="text-base font-semibold text-slate-900">{section.label}</h2>
-                        <p className="text-xs text-slate-500 mt-0.5">{section.description}</p>
+                        <h2 className="text-base font-semibold text-[var(--color-ink)]">{section.label}</h2>
+                        <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">{section.description}</p>
                     </div>
                     <svg
                         className={`h-4 w-4 text-[var(--color-ink-soft)]/60 transition-transform duration-300 shrink-0 ${collapsed ? "-rotate-90" : ""}`}
@@ -88,7 +88,7 @@ export default function NEBSectionCard({ section, collapsed, onToggle, visibleCo
                         formatValue={(v) => fmt(v)}
                         cellClassName={(v, { isTotalRow, isTotalColumn }) => {
                             if (isTotalColumn) return isTotalRow ? (v < 0 ? "text-red-700" : "text-emerald-800") : valueClass(v);
-                            if (isTotalRow) return v == null ? "text-slate-500" : (v < 0 ? "text-red-700" : "text-emerald-800");
+                            if (isTotalRow) return v == null ? "text-[var(--color-ink-soft)]/70" : (v < 0 ? "text-red-700" : "text-emerald-800");
                             return valueClass(v);
                         }}
                     />

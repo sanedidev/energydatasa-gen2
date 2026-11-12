@@ -114,26 +114,26 @@ export default function ConversionPage() {
                 </p>
 
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                    <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                         <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
                             <AnimatedNumber value={netElectricity} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Net Electricity Generated</div>
                     </div>
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <div className="text-xl font-bold text-yellow-400 tabular-nums">
                             <AnimatedNumber value={powerStationTotal} format={fmtPJ} />
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Power Station Gross Output</div>
                     </div>
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <div className="text-xl font-bold text-red-400 tabular-nums">
                             <AnimatedNumber value={tdLosses} format={fmtPJ} /> <span className="text-base font-normal">({tdLossPct}%)</span>
                         </div>
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">T&amp;D Losses</div>
                     </div>
-                    <div className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <div className="text-xl font-bold text-amber-400 tabular-nums">
                             <AnimatedNumber value={crudeOutputTotal + ctlOutput} format={fmtPJ} />
                         </div>
@@ -146,16 +146,16 @@ export default function ConversionPage() {
 
                 {/* ── Power generation by source ────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100">
-                        <h2 className="font-semibold text-slate-900">Power Generation by Source</h2>
-                        <p className="text-xs text-slate-400 mt-0.5">
+                    <div className="px-6 py-4 border-b border-[var(--color-hairline)]">
+                        <h2 className="font-semibold text-[var(--color-ink)]">Power Generation by Source</h2>
+                        <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">
                             Input fuel consumed vs. electricity output — conversion efficiency shown for thermal plants
                         </p>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-sm">
                             <thead>
-                                <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                                <tr className="bg-[var(--color-cream-2)] border-b border-[var(--color-hairline)] text-xs font-semibold text-[var(--color-ink-soft)] uppercase tracking-wide">
                                     <th className="px-6 py-3 text-left">Source</th>
                                     <th className="px-4 py-3 text-right">Input (PJ)</th>
                                     <th className="px-4 py-3 text-right">Input Fuel</th>
@@ -164,27 +164,27 @@ export default function ConversionPage() {
                                     <th className="px-4 py-3 text-right">Share of Grid</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-[var(--color-hairline)]">
                                 {powerRows.map((r) => {
                                     const efficiency = r.cfg.thermal ? eff(r.inputPJ, r.outputPJ) : null;
                                     const sharePct   = powerStationTotal > 0
                                         ? (r.outputPJ / powerStationTotal * 100).toFixed(1)
                                         : "0.0";
                                     return (
-                                        <tr key={r.id} className="hover:bg-slate-50 transition-colors">
+                                        <tr key={r.id} className="hover:bg-[var(--color-cream-2)] transition-colors">
                                             <td className="px-6 py-3">
                                                 <div className="flex items-center gap-2.5">
                                                     <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${r.cfg.dot}`} />
-                                                    <span className="font-medium text-slate-900">{r.cfg.label}</span>
+                                                    <span className="font-medium text-[var(--color-ink)]">{r.cfg.label}</span>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-3 text-right font-mono text-slate-700">
+                                            <td className="px-4 py-3 text-right font-mono text-[var(--color-ink-soft)]">
                                                 {r.inputPJ > 0 ? r.inputPJ.toFixed(2) : "—"}
                                             </td>
-                                            <td className="px-4 py-3 text-right text-xs text-slate-500">
+                                            <td className="px-4 py-3 text-right text-xs text-[var(--color-ink-soft)]">
                                                 {COMMODITY_LABEL[r.inputId] ?? r.inputId}
                                             </td>
-                                            <td className="px-4 py-3 text-right font-mono text-slate-700">
+                                            <td className="px-4 py-3 text-right font-mono text-[var(--color-ink-soft)]">
                                                 {r.outputPJ.toFixed(2)}
                                             </td>
                                             <td className="px-4 py-3 text-right">
@@ -193,18 +193,18 @@ export default function ConversionPage() {
                                                         {efficiency}%
                                                     </span>
                                                 ) : (
-                                                    <span className="text-slate-400 text-xs">primary equiv.</span>
+                                                    <span className="text-[var(--color-ink-soft)]/70 text-xs">primary equiv.</span>
                                                 )}
                                             </td>
                                             <td className="px-4 py-3 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <div className="w-16 h-1.5 rounded-full bg-slate-100">
+                                                    <div className="w-16 h-1.5 rounded-none bg-[var(--color-cream-2)]">
                                                         <div
-                                                            className={`h-1.5 rounded-full ${r.cfg.color}`}
+                                                            className={`h-1.5 rounded-none ${r.cfg.color}`}
                                                             style={{ width: `${sharePct}%` }}
                                                         />
                                                     </div>
-                                                    <span className="font-semibold text-slate-900 tabular-nums w-10 text-right">
+                                                    <span className="font-semibold text-[var(--color-ink)] tabular-nums w-10 text-right">
                                                         {sharePct}%
                                                     </span>
                                                 </div>
@@ -213,9 +213,9 @@ export default function ConversionPage() {
                                     );
                                 })}
                                 {/* Totals row */}
-                                <tr className="bg-slate-900 font-semibold text-sm">
-                                    <td className="px-6 py-3 text-white">Total Power Stations</td>
-                                    <td className="px-4 py-3 text-right font-mono text-slate-400">—</td>
+                                <tr className="bg-[var(--color-ink)] font-semibold text-sm">
+                                    <td className="px-6 py-3 text-[var(--color-cream)]">Total Power Stations</td>
+                                    <td className="px-4 py-3 text-right font-mono text-[var(--color-cream)]/50">—</td>
                                     <td className="px-4 py-3" />
                                     <td className="px-4 py-3 text-right font-mono text-emerald-400">
                                         {powerStationTotal.toFixed(2)}
@@ -230,22 +230,22 @@ export default function ConversionPage() {
 
                 {/* ── Electricity balance ───────────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
-                    <h2 className="text-base font-semibold text-slate-900 mb-1">Electricity Balance</h2>
-                    <p className="text-xs text-slate-500 mb-5">
+                    <h2 className="text-base font-semibold text-[var(--color-ink)] mb-1">Electricity Balance</h2>
+                    <p className="text-xs text-[var(--color-ink-soft)] mb-5">
                         From gross generation to net electricity available for final consumption
                     </p>
                     <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-center">
-                        <div className="rounded-xl bg-indigo-50 ring-1 ring-indigo-100 p-4 text-center">
+                        <div className="rounded-none bg-indigo-50 border border-indigo-100 p-4 text-center">
                             <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wide mb-1">Power Stations</div>
                             <div className="text-2xl font-bold text-indigo-700 tabular-nums">+{powerStationTotal.toFixed(0)}</div>
                             <div className="text-xs text-indigo-500 mt-0.5">PJ</div>
                         </div>
-                        <div className="rounded-xl bg-violet-50 ring-1 ring-violet-100 p-4 text-center">
+                        <div className="rounded-none bg-violet-50 border border-violet-100 p-4 text-center">
                             <div className="text-xs font-semibold text-violet-600 uppercase tracking-wide mb-1">CHP Plants</div>
                             <div className="text-2xl font-bold text-violet-700 tabular-nums">+{chpTotal.toFixed(0)}</div>
                             <div className="text-xs text-violet-500 mt-0.5">PJ</div>
                         </div>
-                        <div className="rounded-xl bg-amber-50 ring-1 ring-amber-100 p-4 text-center">
+                        <div className="rounded-none bg-amber-50 border border-amber-100 p-4 text-center">
                             <div className="text-xs font-semibold text-amber-600 uppercase tracking-wide mb-1">Imports / Exports</div>
                             <div className="text-2xl font-bold text-amber-700 tabular-nums">
                                 {electricityImports > electricityExports ? "+" : "−"}
@@ -253,28 +253,28 @@ export default function ConversionPage() {
                             </div>
                             <div className="text-xs text-amber-500 mt-0.5">PJ net</div>
                         </div>
-                        <div className="rounded-xl bg-red-50 ring-1 ring-red-100 p-4 text-center">
+                        <div className="rounded-none bg-red-50 border border-red-100 p-4 text-center">
                             <div className="text-xs font-semibold text-red-600 uppercase tracking-wide mb-1">T&amp;D Losses</div>
                             <div className="text-2xl font-bold text-red-700 tabular-nums">−{tdLosses.toFixed(0)}</div>
                             <div className="text-xs text-red-500 mt-0.5">PJ</div>
                         </div>
-                        <div className="rounded-xl bg-slate-900 p-4 text-center">
-                            <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">Net Electricity</div>
+                        <div className="rounded-none bg-[var(--color-ink)] p-4 text-center">
+                            <div className="text-xs font-semibold text-[var(--color-cream)]/50 uppercase tracking-wide mb-1">Net Electricity</div>
                             <div className="text-2xl font-bold text-emerald-400 tabular-nums">{netElectricity.toFixed(0)}</div>
-                            <div className="text-xs text-slate-500 mt-0.5">PJ</div>
+                            <div className="text-xs text-[var(--color-cream)]/40 mt-0.5">PJ</div>
                         </div>
                     </div>
                 </div>
 
                 {/* ── Refinery section ──────────────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
-                    <h2 className="text-base font-semibold text-slate-900 mb-1">Liquid Fuel Transformation</h2>
-                    <p className="text-xs text-slate-500 mb-5">
+                    <h2 className="text-base font-semibold text-[var(--color-ink)] mb-1">Liquid Fuel Transformation</h2>
+                    <p className="text-xs text-[var(--color-ink-soft)] mb-5">
                         Crude oil refining and Sasol&apos;s Coal-to-Liquids (CTL) process
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Crude refining */}
-                        <div className="rounded-xl bg-amber-50 ring-1 ring-amber-100 p-5">
+                        <div className="rounded-none bg-amber-50 border border-amber-100 p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
                                     <h3 className="text-sm font-semibold text-amber-900">Crude Oil Refining</h3>
@@ -293,9 +293,9 @@ export default function ConversionPage() {
                                             <span className="text-amber-800">{o.label}</span>
                                             <span className="font-mono font-medium text-amber-900">{o.value.toFixed(1)} PJ</span>
                                         </div>
-                                        <div className="h-1.5 w-full rounded-full bg-amber-100">
+                                        <div className="h-1.5 w-full rounded-none bg-amber-100">
                                             <div
-                                                className="h-1.5 rounded-full bg-amber-400"
+                                                className="h-1.5 rounded-none bg-amber-400"
                                                 style={{ width: `${(o.value / crudeOutputTotal * 100).toFixed(1)}%` }}
                                             />
                                         </div>
@@ -309,38 +309,38 @@ export default function ConversionPage() {
                         </div>
 
                         {/* Sasol CTL */}
-                        <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] p-5">
+                        <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <div>
-                                    <h3 className="text-sm font-semibold text-slate-900">Coal to Liquids — Sasol CTL</h3>
-                                    <p className="text-xs text-slate-500 mt-0.5">Secunda synfuels complex</p>
+                                    <h3 className="text-sm font-semibold text-[var(--color-ink)]">Coal to Liquids — Sasol CTL</h3>
+                                    <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">Secunda synfuels complex</p>
                                 </div>
                                 <div className="text-right">
-                                    <div className="text-xs text-slate-500">Input</div>
-                                    <div className="text-lg font-bold text-slate-800 tabular-nums">{ctlInput.toFixed(0)} PJ</div>
-                                    <div className="text-[11px] text-slate-400">bituminous coal</div>
+                                    <div className="text-xs text-[var(--color-ink-soft)]">Input</div>
+                                    <div className="text-lg font-bold text-[var(--color-ink)] tabular-nums">{ctlInput.toFixed(0)} PJ</div>
+                                    <div className="text-[11px] text-[var(--color-ink-soft)]/70">bituminous coal</div>
                                 </div>
                             </div>
                             <div className="space-y-3">
                                 <div>
                                     <div className="flex justify-between text-xs mb-0.5">
-                                        <span className="text-slate-700">Diesel / Synfuels Output</span>
-                                        <span className="font-mono font-medium text-slate-900">{ctlOutput.toFixed(1)} PJ</span>
+                                        <span className="text-[var(--color-ink-soft)]">Diesel / Synfuels Output</span>
+                                        <span className="font-mono font-medium text-[var(--color-ink)]">{ctlOutput.toFixed(1)} PJ</span>
                                     </div>
-                                    <div className="h-1.5 w-full rounded-full bg-slate-200">
+                                    <div className="h-1.5 w-full rounded-none bg-[var(--color-hairline)]">
                                         <div
-                                            className="h-1.5 rounded-full bg-slate-500"
+                                            className="h-1.5 rounded-none bg-[var(--color-ink-soft)]"
                                             style={{ width: `${(ctlOutput / ctlInput * 100).toFixed(1)}%` }}
                                         />
                                     </div>
                                 </div>
-                                <div className="rounded-lg bg-white border border-[var(--color-hairline)] px-4 py-3 flex items-center justify-between">
-                                    <span className="text-xs text-slate-600">Conversion Efficiency</span>
+                                <div className="rounded-none bg-white border border-[var(--color-hairline)] px-4 py-3 flex items-center justify-between">
+                                    <span className="text-xs text-[var(--color-ink-soft)]">Conversion Efficiency</span>
                                     <span className="text-sm font-bold text-red-500">
                                         {(ctlOutput / ctlInput * 100).toFixed(1)}%
                                     </span>
                                 </div>
-                                <p className="text-[11px] text-slate-400">
+                                <p className="text-[11px] text-[var(--color-ink-soft)]/70">
                                     Sasol&apos;s CTL process converts coal to synthetic diesel and chemicals. The ~47% conversion loss reflects the thermodynamic cost of the Fischer-Tropsch synthesis.
                                 </p>
                             </div>
@@ -350,10 +350,10 @@ export default function ConversionPage() {
 
                 {/* ── Full data table ───────────────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
+                    <div className="px-6 py-4 border-b border-[var(--color-hairline)] flex items-center justify-between gap-4 flex-wrap">
                         <div>
-                            <h2 className="font-semibold text-slate-900">Full Breakdown</h2>
-                            <p className="text-xs text-slate-400 mt-0.5">
+                            <h2 className="font-semibold text-[var(--color-ink)]">Full Breakdown</h2>
+                            <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">
                                 All values in PJ · Negative = energy consumed in transformation · Positive = output
                             </p>
                         </div>
@@ -391,7 +391,7 @@ export default function ConversionPage() {
                                 a.href = url; a.download = `SA_NEB_${activeYear}_Conversion.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-none bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors"
                         >
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -409,25 +409,25 @@ export default function ConversionPage() {
                         setCell={grid.setCell}
                         formatValue={(v) => (v != null ? Number(v).toFixed(2) : "—")}
                         cellClassName={(v, { isTotalRow, isTotalColumn }) => {
-                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-slate-700";
-                            if (v == null) return isTotalRow ? "text-slate-500" : "text-slate-300";
+                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-[var(--color-ink-soft)]";
+                            if (v == null) return isTotalRow ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-ink-soft)]/40";
                             if (isTotalRow) return "text-emerald-800";
-                            return Number(v) < 0 ? "text-red-500" : "text-slate-700";
+                            return Number(v) < 0 ? "text-red-500" : "text-[var(--color-ink-soft)]";
                         }}
                     />
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}
-                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
-                    <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
-                    <ul className="space-y-1 text-xs text-slate-500">
+                <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] px-5 py-4">
+                    <h3 className="text-xs font-semibold text-[var(--color-ink)] mb-2">Data Notes</h3>
+                    <ul className="space-y-1 text-xs text-[var(--color-ink-soft)]">
                         <li>• All values in Petajoules (PJ). Negative = energy input consumed. Positive = energy output produced.</li>
                         <li>• Solar PV, wind, hydro, and nuclear are reported as primary equivalent — efficiency shown as &quot;primary equiv.&quot; rather than a thermal conversion rate.</li>
                         <li>• CHP = Combined Heat &amp; Power. These plants simultaneously produce electricity and useful heat for industrial processes.</li>
                         <li>• T&amp;D = Transmission &amp; Distribution losses in the electricity grid ({tdLossPct}% of gross generation).</li>
                         <li><SourceLine source={meta.source} date={meta.date} className="inline" /></li>
                         <li>
-                            <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="underline hover:text-slate-700">
+                            <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="underline hover:text-[var(--color-ink)]">
                                 ← Back to National Energy Planning
                             </Link>
                         </li>

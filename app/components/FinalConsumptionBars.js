@@ -11,12 +11,11 @@ const SERIES_LABEL = { ...FUEL_LABEL, electricity: ELECTRICITY_LABEL };
 const TOOLTIP_STYLE = {
     position: "fixed",
     pointerEvents: "none",
-    background: "#0f172a",
-    color: "#f1f5f9",
+    background: "var(--color-ink)",
+    color: "var(--color-cream)",
     fontSize: 12,
-    borderRadius: 10,
+    borderRadius: 0,
     padding: "8px 12px",
-    boxShadow: "0 12px 32px -4px rgba(15,23,42,0.45)",
     display: "flex",
     flexDirection: "column",
     gap: 2,
@@ -26,16 +25,6 @@ const TOOLTIP_STYLE = {
 
 function fmt(n) {
     return Math.round(n).toLocaleString("en-ZA");
-}
-
-// Mixes a hex color toward white by `amt` (0-1) - used to give each solid
-// series color a subtle same-hue gradient (a touch of glossy depth) without
-// changing its identity: both gradient stops come from the one validated hue.
-function tint(hex, amt) {
-    const n = parseInt(hex.slice(1), 16);
-    const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-    const mix = (c) => Math.round(c + (255 - c) * amt);
-    return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
 
 // Breaks each end-use sector's total into fuel-group + electricity segments,
@@ -86,33 +75,51 @@ export default function FinalConsumptionBars({ sections }) {
     }, [rows]);
 
     if (!rows.length) {
-        return <div className="px-6 py-10 text-sm text-slate-400">No final consumption data available.</div>;
+        return <div className="px-6 py-10 text-sm text-[var(--color-ink-soft)]">No final consumption data available.</div>;
     }
 
     return (
         <div className="px-6 pb-6 pt-2">
-            <div className="flex flex-col gap-1">
+            {/* Asymmetric focus: the largest sector carries real visual weight (a
+                taller bar, a serif label) and every row after it recedes - rank
+                read at a glance, not just from the numbers. */}
+            <div className="flex flex-col">
                 {rows.map((row, rowIndex) => {
                     const pct = grown ? (row.total / maxTotal) * 100 : 0;
                     const isRowHovered = hoveredRow === row.sectorId;
+                    const isFocus = rowIndex === 0;
+                    const barHeight = isFocus ? 14 : 7;
                     return (
                         <div
                             key={row.sectorId}
                             onMouseEnter={() => setHoveredRow(row.sectorId)}
                             onMouseLeave={() => setHoveredRow((r) => (r === row.sectorId ? null : r))}
-                            className="rounded-xl px-2 py-2.5 -mx-2 transition-colors duration-150"
-                            style={{ background: isRowHovered ? "rgba(100,116,139,0.06)" : "transparent" }}
+                            className="px-2 -mx-2 transition-colors duration-150 border-b border-[var(--color-hairline)] last:border-b-0"
+                            style={{
+                                background: isRowHovered ? "var(--color-cream-2)" : "transparent",
+                                paddingTop: isFocus ? 16 : 10,
+                                paddingBottom: isFocus ? 16 : 10,
+                            }}
                         >
                             <div className="mb-2 flex items-baseline justify-between">
-                                <span className="text-sm font-semibold text-slate-700">{row.label}</span>
-                                <span className="font-mono text-sm font-semibold tabular-nums text-slate-900">
-                                    {fmt(row.total)} <span className="text-xs font-normal text-slate-400">PJ</span>
+                                <span
+                                    className={
+                                        isFocus
+                                            ? "text-base font-semibold text-[var(--color-ink)] [font-family:var(--font-display)]"
+                                            : "text-sm text-[var(--color-ink-soft)]"
+                                    }
+                                >
+                                    {row.label}
+                                </span>
+                                <span className={isFocus ? "font-mono text-base font-semibold tabular-nums text-[var(--color-ink)]" : "font-mono text-sm tabular-nums text-[var(--color-ink-soft)]"}>
+                                    {fmt(row.total)} <span className="text-xs font-normal text-[var(--color-ink-soft)]/70">PJ</span>
                                 </span>
                             </div>
-                            <div className="h-6 w-full rounded-full bg-slate-100/80 shadow-[inset_0_1px_2px_rgba(15,23,42,0.06)]">
+                            <div className="w-full bg-[var(--color-cream-2)]" style={{ height: barHeight }}>
                                 <div
-                                    className="flex h-6"
+                                    className="flex"
                                     style={{
+                                        height: barHeight,
                                         width: `${pct}%`,
                                         gap: 2,
                                         minWidth: pct > 0 ? 2 : 0,
@@ -121,7 +128,6 @@ export default function FinalConsumptionBars({ sections }) {
                                     }}
                                 >
                                     {row.segments.map((seg, i) => {
-                                        const isFirst = i === 0;
                                         const isLast  = i === row.segments.length - 1;
                                         const isHovered = hover?.sectorId === row.sectorId && hover?.seriesKey === seg.key;
                                         return (
@@ -140,16 +146,13 @@ export default function FinalConsumptionBars({ sections }) {
                                                     flexGrow: seg.value,
                                                     flexBasis: 0,
                                                     minWidth: 3,
-                                                    background: `linear-gradient(180deg, ${tint(SERIES_COLOR[seg.key], 0.22)}, ${SERIES_COLOR[seg.key]})`,
-                                                    borderTopLeftRadius: isFirst ? 999 : 0,
-                                                    borderBottomLeftRadius: isFirst ? 999 : 0,
-                                                    borderTopRightRadius: isLast ? 999 : 0,
-                                                    borderBottomRightRadius: isLast ? 999 : 0,
-                                                    transform: isHovered ? "scaleY(1.12)" : "scaleY(1)",
-                                                    filter: isHovered ? "brightness(1.1)" : "none",
-                                                    boxShadow: isHovered ? "0 2px 8px rgba(15,23,42,0.22)" : "none",
+                                                    background: SERIES_COLOR[seg.key],
+                                                    borderTopRightRadius: isLast ? 2 : 0,
+                                                    borderBottomRightRadius: isLast ? 2 : 0,
+                                                    opacity: isHovered ? 1 : hover ? 0.55 : 1,
+                                                    transform: isHovered ? "scaleY(1.2)" : "scaleY(1)",
                                                     cursor: "pointer",
-                                                    transition: "transform 140ms ease, filter 140ms ease, box-shadow 140ms ease",
+                                                    transition: "transform 140ms ease, opacity 140ms ease",
                                                 }}
                                             />
                                         );
@@ -161,18 +164,14 @@ export default function FinalConsumptionBars({ sections }) {
                 })}
             </div>
 
-            <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--color-hairline)] pt-4">
                 {activeSeries.map((key) => (
-                    <div
-                        key={key}
-                        className="flex items-center gap-1.5 rounded-full px-2.5 py-1"
-                        style={{ background: `${SERIES_COLOR[key]}14` }}
-                    >
+                    <div key={key} className="flex items-center gap-1.5">
                         <span
-                            className="inline-block h-2 w-2 shrink-0 rounded-full"
+                            className="inline-block h-2 w-2 shrink-0"
                             style={{ background: SERIES_COLOR[key] }}
                         />
-                        <span className="text-xs font-medium text-slate-600">{SERIES_LABEL[key]}</span>
+                        <span className="text-xs text-[var(--color-ink-soft)]">{SERIES_LABEL[key]}</span>
                     </div>
                 ))}
             </div>
@@ -180,7 +179,7 @@ export default function FinalConsumptionBars({ sections }) {
             {hover && (
                 <div style={{ ...TOOLTIP_STYLE, left: hover.x, top: hover.y }}>
                     <span style={{ fontWeight: 600 }}>{hover.sectorLabel} — {SERIES_LABEL[hover.seriesKey]}</span>
-                    <span style={{ color: "#94a3b8" }}>{fmt(hover.value)} PJ</span>
+                    <span style={{ color: "var(--color-cream)", opacity: 0.6 }}>{fmt(hover.value)} PJ</span>
                 </div>
             )}
         </div>

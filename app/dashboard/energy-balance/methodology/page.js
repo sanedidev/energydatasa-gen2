@@ -115,11 +115,11 @@ export default function MethodologyPage() {
 
             {/* Breadcrumb */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm">
-                <Link href="/dashboard" className="text-slate-500 hover:text-slate-900 transition-colors">Dashboard</Link>
-                <span className="text-slate-300">/</span>
-                <NEBBackLink href="/dashboard/energy-balance" className="text-slate-500 hover:text-slate-900 transition-colors">National Energy Planning</NEBBackLink>
-                <span className="text-slate-300">/</span>
-                <span className="font-medium text-slate-900">Methodology</span>
+                <Link href="/dashboard" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Dashboard</Link>
+                <span className="text-[var(--color-ink-soft)]/40">/</span>
+                <NEBBackLink href="/dashboard/energy-balance" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">National Energy Planning</NEBBackLink>
+                <span className="text-[var(--color-ink-soft)]/40">/</span>
+                <span className="font-medium text-[var(--color-ink)]">Methodology</span>
             </nav>
 
             {/* Editable header */}

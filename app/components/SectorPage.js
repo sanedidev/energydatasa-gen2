@@ -140,10 +140,10 @@ export default function SectorPage({ sectionId }) {
                         <Link
                             key={s.id}
                             href={`${s.href}?year=${activeYear}`}
-                            className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                            className={`rounded-none px-3 py-1 text-xs font-medium transition-colors border ${
                                 s.id === sectionId
-                                    ? "bg-[var(--color-accent)]/20 text-[var(--color-cream)] ring-1 ring-[var(--color-accent)]/40"
-                                    : "bg-white/5 text-[var(--color-cream)]/50 hover:bg-white/10 hover:text-[var(--color-cream)]/80"
+                                    ? "bg-[var(--color-accent)]/20 text-[var(--color-cream)] border-[var(--color-accent)]/40"
+                                    : "bg-white/5 text-[var(--color-cream)]/50 border-transparent hover:bg-white/10 hover:text-[var(--color-cream)]/80"
                             }`}
                         >
                             {s.label}
@@ -158,7 +158,7 @@ export default function SectorPage({ sectionId }) {
 
                 {/* Key stat cards */}
                 <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="relative rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                    <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                         <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                         <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
                             <AnimatedNumber value={sectorTotal} format={fmtPJ} />
@@ -166,7 +166,7 @@ export default function SectorPage({ sectionId }) {
                         <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Consumption</div>
                     </div>
                     {keyFuels.slice(0, 3).map((f) => (
-                        <div key={f.id} className="rounded-xl bg-white/5 ring-1 ring-white/10 px-4 py-3">
+                        <div key={f.id} className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
                             <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
                                 <AnimatedNumber value={f.total} format={fmtPJ} />
                             </div>
@@ -180,8 +180,8 @@ export default function SectorPage({ sectionId }) {
 
                 {/* ── Fuel group mix ────────────────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
-                    <h2 className="text-base font-semibold text-slate-900 mb-1">Fuel Mix</h2>
-                    <p className="text-xs text-slate-500 mb-5">
+                    <h2 className="text-base font-semibold text-[var(--color-ink)] mb-1">Fuel Mix</h2>
+                    <p className="text-xs text-[var(--color-ink-soft)] mb-5">
                         Share of {cfg.label.toLowerCase()} energy by fuel group
                     </p>
                     <div className="space-y-3.5">
@@ -193,14 +193,14 @@ export default function SectorPage({ sectionId }) {
                                 return (
                                     <div key={group}>
                                         <div className="flex items-center justify-between text-sm mb-1">
-                                            <span className="text-slate-700">{g.label}</span>
-                                            <span className="font-medium text-slate-900 tabular-nums">
+                                            <span className="text-[var(--color-ink-soft)]">{g.label}</span>
+                                            <span className="font-medium text-[var(--color-ink)] tabular-nums">
                                                 {val.toFixed(1)} PJ
-                                                <span className="text-slate-400 font-normal ml-1.5">({pct(val)}%)</span>
+                                                <span className="text-[var(--color-ink-soft)]/70 font-normal ml-1.5">({pct(val)}%)</span>
                                             </span>
                                         </div>
-                                        <div className="h-2.5 w-full rounded-full bg-slate-100">
-                                            <div className={`h-2.5 rounded-full ${g.bar}`} style={{ width: `${pct(val)}%` }} />
+                                        <div className="h-1.5 w-full rounded-none bg-[var(--color-cream-2)]">
+                                            <div className={`h-1.5 rounded-none ${g.bar}`} style={{ width: `${pct(val)}%` }} />
                                         </div>
                                     </div>
                                 );
@@ -212,31 +212,31 @@ export default function SectorPage({ sectionId }) {
                 {co2.totalMtCO2 > 0 && (
                     <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
                         <div className="flex items-start justify-between gap-4 mb-1">
-                            <h2 className="text-base font-semibold text-slate-900">CO₂ Emissions Estimate</h2>
-                            <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-600 tabular-nums">
+                            <h2 className="text-base font-semibold text-[var(--color-ink)]">CO₂ Emissions Estimate</h2>
+                            <span className="shrink-0 rounded-none bg-[var(--color-cream-2)] px-2.5 py-0.5 text-xs font-semibold text-[var(--color-ink-soft)] tabular-nums">
                                 {co2.totalMtCO2.toFixed(2)} Mt CO₂
                             </span>
                         </div>
-                        <p className="text-xs text-slate-500 mb-5">
+                        <p className="text-xs text-[var(--color-ink-soft)] mb-5">
                             Estimated direct CO₂ from combustion — IPCC 2006 emission factors · Biomass counted as carbon-neutral
                         </p>
                         <div className="space-y-3.5">
                             {co2Groups.map((g) => (
                                 <div key={g.key}>
                                     <div className="flex items-center justify-between text-sm mb-1">
-                                        <span className="text-slate-700">{g.label}</span>
-                                        <span className="font-medium text-slate-900 tabular-nums">
+                                        <span className="text-[var(--color-ink-soft)]">{g.label}</span>
+                                        <span className="font-medium text-[var(--color-ink)] tabular-nums">
                                             {co2.byGroup[g.key].toFixed(2)} Mt CO₂
-                                            <span className="text-slate-400 font-normal ml-1.5">({co2Pct(co2.byGroup[g.key])}%)</span>
+                                            <span className="text-[var(--color-ink-soft)]/70 font-normal ml-1.5">({co2Pct(co2.byGroup[g.key])}%)</span>
                                         </span>
                                     </div>
-                                    <div className="h-2.5 w-full rounded-full bg-slate-100">
-                                        <div className={`h-2.5 rounded-full ${g.color}`} style={{ width: `${co2Pct(co2.byGroup[g.key])}%` }} />
+                                    <div className="h-1.5 w-full rounded-none bg-[var(--color-cream-2)]">
+                                        <div className={`h-1.5 rounded-none ${g.color}`} style={{ width: `${co2Pct(co2.byGroup[g.key])}%` }} />
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <p className="mt-4 text-[11px] text-slate-400">
+                        <p className="mt-4 text-[11px] text-[var(--color-ink-soft)]/70">
                             Electricity CO₂ uses SA grid average (0.9 kg CO₂/kWh · NEB 2024 ~81% coal). Figures are indicative estimates, not official inventory values.
                         </p>
                     </div>
@@ -245,10 +245,10 @@ export default function SectorPage({ sectionId }) {
                 {/* ── Subsector breakdown ───────────────────────────────────── */}
                 {subsectors.length > 1 && (
                     <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] p-6">
-                        <h2 className="text-base font-semibold text-slate-900 mb-1">
+                        <h2 className="text-base font-semibold text-[var(--color-ink)] mb-1">
                             {subsectors.length > 3 ? "Subsector Breakdown" : "End-Use Breakdown"}
                         </h2>
-                        <p className="text-xs text-slate-500 mb-5">
+                        <p className="text-xs text-[var(--color-ink-soft)] mb-5">
                             Share of total {cfg.label.toLowerCase()} consumption by sub-category
                         </p>
                         <div className="space-y-3.5">
@@ -258,15 +258,15 @@ export default function SectorPage({ sectionId }) {
                                 .map(({ row, total }) => (
                                     <div key={row.id}>
                                         <div className="flex items-center justify-between text-sm mb-1">
-                                            <span className="text-slate-700">{row.label}</span>
-                                            <span className="font-medium text-slate-900 tabular-nums">
+                                            <span className="text-[var(--color-ink-soft)]">{row.label}</span>
+                                            <span className="font-medium text-[var(--color-ink)] tabular-nums">
                                                 {total.toFixed(1)} PJ
-                                                <span className="text-slate-400 font-normal ml-1.5">({pct(total)}%)</span>
+                                                <span className="text-[var(--color-ink-soft)]/70 font-normal ml-1.5">({pct(total)}%)</span>
                                             </span>
                                         </div>
-                                        <div className="h-2.5 w-full rounded-full bg-slate-100">
+                                        <div className="h-1.5 w-full rounded-none bg-[var(--color-cream-2)]">
                                             <div
-                                                className="h-2.5 rounded-full bg-slate-400"
+                                                className="h-1.5 rounded-none bg-[var(--color-accent)]"
                                                 style={{ width: `${pct(total)}%` }}
                                             />
                                         </div>
@@ -278,10 +278,10 @@ export default function SectorPage({ sectionId }) {
 
                 {/* ── Full data table ───────────────────────────────────────── */}
                 <div className="rounded-[var(--radius-card)] bg-white border border-[var(--color-hairline)] overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
+                    <div className="px-6 py-4 border-b border-[var(--color-hairline)] flex items-center justify-between gap-4 flex-wrap">
                         <div>
-                            <h2 className="font-semibold text-slate-900">Full Breakdown</h2>
-                            <p className="text-xs text-slate-400 mt-0.5">All values in PJ · Absolute values shown</p>
+                            <h2 className="font-semibold text-[var(--color-ink)]">Full Breakdown</h2>
+                            <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">All values in PJ · Absolute values shown</p>
                         </div>
                         <div className="flex items-center gap-2">
                         <EditSaveControls
@@ -320,7 +320,7 @@ export default function SectorPage({ sectionId }) {
                                 a.href = url; a.download = `SA_NEB_${activeYear}_${sectionId}.json`; a.click();
                                 URL.revokeObjectURL(url);
                             }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+                            className="inline-flex items-center gap-1.5 rounded-none bg-white border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] transition-colors"
                         >
                             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -342,22 +342,22 @@ export default function SectorPage({ sectionId }) {
                         setCell={grid.setCell}
                         formatValue={(v) => (v != null ? Math.abs(Number(v)).toFixed(2) : "—")}
                         cellClassName={(v, { isTotalRow, isTotalColumn }) => {
-                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-slate-700";
-                            if (v == null) return isTotalRow ? "text-slate-500" : "text-slate-300";
-                            return isTotalRow ? "text-emerald-800" : "text-slate-700";
+                            if (isTotalColumn) return isTotalRow ? "text-emerald-800" : "text-[var(--color-ink-soft)]";
+                            if (v == null) return isTotalRow ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-ink-soft)]/40";
+                            return isTotalRow ? "text-emerald-800" : "text-[var(--color-ink-soft)]";
                         }}
                     />
                 </div>
 
                 {/* ── Footer ────────────────────────────────────────────────── */}
-                <div className="rounded-xl bg-slate-50 border border-[var(--color-hairline)] px-5 py-4">
-                    <h3 className="text-xs font-semibold text-slate-700 mb-2">Data Notes</h3>
-                    <ul className="space-y-1 text-xs text-slate-500">
+                <div className="rounded-none bg-[var(--color-cream-2)] border border-[var(--color-hairline)] px-5 py-4">
+                    <h3 className="text-xs font-semibold text-[var(--color-ink)] mb-2">Data Notes</h3>
+                    <ul className="space-y-1 text-xs text-[var(--color-ink-soft)]">
                         <li>• All values in Petajoules (PJ). Absolute values shown — original sign convention: negative = consumption.</li>
                         <li>• A dash (—) indicates zero, negligible, or not applicable for that fuel/row combination.</li>
                         <li><SourceLine source={meta.source} date={meta.date} className="inline" /></li>
                         <li>
-                            <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="underline hover:text-slate-700">
+                            <Link href={`/dashboard/energy-balance?year=${activeYear}`} className="underline hover:text-[var(--color-ink)]">
                                 ← Back to National Energy Planning
                             </Link>
                         </li>

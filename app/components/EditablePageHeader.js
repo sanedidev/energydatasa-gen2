@@ -83,31 +83,31 @@ export default function EditablePageHeader({
 
     if (editing) {
         return (
-            <div className="rounded-2xl border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] p-5 space-y-3">
+            <div className="rounded-none border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] p-5 space-y-3">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Editing page header</p>
                 <div className="space-y-1">
-                    <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Label (e.g. Topic)</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Label (e.g. Topic)</label>
                     <input
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                        className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         value={draft.label}
                         onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))}
                         placeholder="Topic"
                     />
                 </div>
                 <div className="space-y-1">
-                    <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Title</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Title</label>
                     <input
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                        className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-1.5 text-sm font-semibold outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
                         value={draft.title}
                         onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
                         placeholder="Page title"
                     />
                 </div>
                 <div className="space-y-1">
-                    <label className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Description</label>
+                    <label className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">Description</label>
                     <textarea
                         rows={3}
-                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40 resize-none"
+                        className="w-full rounded-none border border-[var(--color-hairline)] bg-white px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40 resize-none"
                         value={draft.desc}
                         onChange={(e) => setDraft((d) => ({ ...d, desc: e.target.value }))}
                         placeholder="Short description…"
@@ -117,13 +117,13 @@ export default function EditablePageHeader({
                     <button
                         onClick={saveEdit}
                         disabled={saving || !draft.title.trim()}
-                        className="rounded-xl bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40"
+                        className="rounded-none bg-[var(--color-accent)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40"
                     >
                         {saving ? "Saving…" : "Save"}
                     </button>
                     <button
                         onClick={cancelEdit}
-                        className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+                        className="rounded-none border border-[var(--color-hairline)] bg-white px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]"
                     >
                         Cancel
                     </button>
@@ -135,13 +135,13 @@ export default function EditablePageHeader({
     return (
         <div>
             {label && <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">{label}</p>}
-            <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-            {desc && <p className="mt-2 text-sm text-slate-500 max-w-2xl">{desc}</p>}
+            <h1 className="text-2xl font-bold text-[var(--color-ink)]">{title}</h1>
+            {desc && <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">{desc}</p>}
             {canManage && pageEditMode && (
                 <button
                     onClick={openEdit}
                     title="Edit page header"
-                    className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-2 py-1 text-[11px] font-medium text-slate-400 hover:bg-slate-50 hover:text-slate-700 transition-colors"
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-none border border-[var(--color-hairline)] px-2 py-1 text-[11px] font-medium text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors"
                 >
                     <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />

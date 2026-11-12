@@ -35,17 +35,17 @@ async function compressImage(file, maxWidth = 1200, quality = 0.78) {
 // ── Confirm modal ─────────────────────────────────────────────────────────────
 function ConfirmModal({ message, onConfirm, onCancel }) {
     return (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4 rounded-2xl">
-            <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 p-6 max-w-xs w-full space-y-4">
-                <p className="text-sm font-semibold text-slate-900">{message}</p>
-                <p className="text-xs text-slate-500">This action cannot be undone.</p>
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4 rounded-none">
+            <div className="bg-white rounded-none border border-[var(--color-hairline)] p-6 max-w-xs w-full space-y-4">
+                <p className="text-sm font-semibold text-[var(--color-ink)]">{message}</p>
+                <p className="text-xs text-[var(--color-ink-soft)]">This action cannot be undone.</p>
                 <div className="flex gap-2 justify-end">
                     <button type="button" onClick={onCancel}
-                        className="rounded-xl border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">
+                        className="rounded-none border border-[var(--color-hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                         Cancel
                     </button>
                     <button type="button" onClick={onConfirm}
-                        className="rounded-xl bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">
+                        className="rounded-none bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700">
                         Delete
                     </button>
                 </div>
@@ -57,7 +57,7 @@ function ConfirmModal({ message, onConfirm, onCancel }) {
 // ── Spinner ───────────────────────────────────────────────────────────────────
 function Spinner({ className = "h-5 w-5" }) {
     return (
-        <svg className={`animate-spin text-slate-400 ${className}`} fill="none" viewBox="0 0 24 24">
+        <svg className={`animate-spin text-[var(--color-ink-soft)]/70 ${className}`} fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
         </svg>
@@ -178,7 +178,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
     // ── Render ────────────────────────────────────────────────────────────────
     return (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm pt-10 px-4 pb-10 overflow-y-auto">
-            <div className="w-full max-w-3xl rounded-2xl bg-white shadow-2xl border border-slate-200 flex flex-col relative">
+            <div className="w-full max-w-3xl rounded-none bg-white border border-[var(--color-hairline)] flex flex-col relative">
                 {confirmDeleteKey && (
                     <ConfirmModal
                         message="Delete this image from the library?"
@@ -188,20 +188,20 @@ export default function MediaLibrary({ onSelect, onClose }) {
                 )}
 
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-hairline)] shrink-0">
                     <div>
-                        <p className="font-semibold text-slate-900">Media Library</p>
-                        <p className="text-xs text-slate-400 mt-0.5">Select an existing image or upload a new one</p>
+                        <p className="font-semibold text-[var(--color-ink)]">Media Library</p>
+                        <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">Select an existing image or upload a new one</p>
                     </div>
-                    <button onClick={onClose} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+                    <button onClick={onClose} className="text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink)] text-lg leading-none">✕</button>
                 </div>
 
                 {/* Toolbar */}
-                <div className="px-6 py-3 border-b border-slate-100 flex items-center gap-3 shrink-0">
+                <div className="px-6 py-3 border-b border-[var(--color-hairline)] flex items-center gap-3 shrink-0">
                     <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-50 transition-colors"
+                        className="inline-flex items-center gap-1.5 rounded-none bg-[var(--color-ink)] px-4 py-2 text-sm font-semibold text-[var(--color-cream)] hover:bg-[var(--color-ink-soft)] disabled:opacity-50 transition-colors"
                     >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -217,13 +217,13 @@ export default function MediaLibrary({ onSelect, onClose }) {
                     />
                     {uploading && (
                         <div className="flex-1 flex items-center gap-3">
-                            <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+                            <div className="flex-1 h-2 rounded-full bg-[var(--color-cream-2)] overflow-hidden">
                                 <div
                                     className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-200"
                                     style={{ width: `${uploadProgress}%` }}
                                 />
                             </div>
-                            <span className="text-xs text-slate-500 shrink-0">{uploadProgress}%</span>
+                            <span className="text-xs text-[var(--color-ink-soft)] shrink-0">{uploadProgress}%</span>
                         </div>
                     )}
                     {error && <p className="text-xs text-red-500">{error}</p>}
@@ -237,11 +237,11 @@ export default function MediaLibrary({ onSelect, onClose }) {
                         </div>
                     ) : images.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-48 text-center">
-                            <svg className="h-10 w-10 text-slate-200 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                            <svg className="h-10 w-10 text-[var(--color-ink-soft)]/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
                             </svg>
-                            <p className="text-sm text-slate-400">No images uploaded yet.</p>
-                            <p className="text-xs text-slate-300 mt-1">Click &ldquo;Upload new image&rdquo; to add one.</p>
+                            <p className="text-sm text-[var(--color-ink-soft)]/70">No images uploaded yet.</p>
+                            <p className="text-xs text-[var(--color-ink-soft)]/50 mt-1">Click &ldquo;Upload new image&rdquo; to add one.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -249,10 +249,10 @@ export default function MediaLibrary({ onSelect, onClose }) {
                                 <div
                                     key={img.key}
                                     onClick={() => setSelected(img.key === selected ? null : img.key)}
-                                    className={`group relative aspect-square rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
+                                    className={`group relative aspect-square rounded-none overflow-hidden cursor-pointer border-2 transition-all ${
                                         selected === img.key
                                             ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30"
-                                            : "border-transparent hover:border-slate-300"
+                                            : "border-transparent hover:border-[var(--color-ink-soft)]/40"
                                     }`}
                                 >
                                     <Image
@@ -293,17 +293,17 @@ export default function MediaLibrary({ onSelect, onClose }) {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 shrink-0">
-                    <p className="text-xs text-slate-400">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--color-hairline)] shrink-0">
+                    <p className="text-xs text-[var(--color-ink-soft)]/70">
                         {selected ? "1 image selected" : `${images.length} image${images.length !== 1 ? "s" : ""} in library`}
                     </p>
                     <div className="flex gap-2">
                         <button onClick={onClose}
-                            className="rounded-lg border border-slate-200 px-4 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                            className="rounded-none border border-[var(--color-hairline)] px-4 py-2 text-sm text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)]">
                             Cancel
                         </button>
                         <button onClick={handleConfirm} disabled={!selected}
-                            className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors">
+                            className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors">
                             Use selected image
                         </button>
                     </div>

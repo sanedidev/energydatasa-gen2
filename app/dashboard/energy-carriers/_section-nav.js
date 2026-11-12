@@ -36,11 +36,11 @@ function Item({ node, depth = 0, dynChildMap }) {
             <Link
                 href={node.href}
                 className={[
-                    "flex items-center rounded-lg px-3 py-1.5 text-sm transition-colors",
+                    "flex items-center rounded-none px-3 py-1.5 text-sm transition-colors",
                     depth > 0 ? "ml-2" : "",
                     active
                         ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-medium"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                        : "text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)]",
                 ].join(" ")}
             >
                 {active && depth === 0 && (
@@ -52,7 +52,7 @@ function Item({ node, depth = 0, dynChildMap }) {
             {expanded && allChildren.length > 0 ? (
                 <div className={[
                     "mt-0.5 ml-2 pl-3 border-l",
-                    active ? "border-[var(--color-accent)]/25" : "border-slate-100",
+                    active ? "border-[var(--color-accent)]/25" : "border-[var(--color-hairline)]",
                 ].join(" ")}>
                     <ul className="space-y-0.5 py-1">
                         {allChildren.map((child) => (
@@ -129,7 +129,7 @@ export default function SectionNav() {
         <nav aria-label="Energy Carriers" className="select-none">
             <div className="mb-3 flex items-center gap-2 px-3">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]/70" />
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">
                     Energy Carriers
                 </p>
             </div>

@@ -207,7 +207,7 @@ function FolderIcon() {
 
 function FileIcon() {
     return (
-        <svg className="h-3.5 w-3.5 shrink-0 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <svg className="h-3.5 w-3.5 shrink-0 text-[var(--color-link)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
         </svg>
     );
@@ -264,38 +264,38 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
     if (selected) {
         return (
             <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm p-4 pt-20">
-                <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl ring-1 ring-slate-200 overflow-hidden">
-                    <div className="flex items-start gap-3 px-5 py-4 border-b border-slate-100">
+                <div className="w-full max-w-lg bg-white rounded-none border border-[var(--color-hairline)] overflow-hidden">
+                    <div className="flex items-start gap-3 px-5 py-4 border-b border-[var(--color-hairline)]">
                         <span className="mt-0.5">{selected.type === "carrier" ? <FolderIcon /> : <FileIcon />}</span>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-slate-900 truncate">{selected.label}</p>
-                            <p className="text-[11px] text-slate-400 truncate mt-0.5">{selected.path.slice(0, -1).join(" / ")}</p>
+                            <p className="text-sm font-semibold text-[var(--color-ink)] truncate">{selected.label}</p>
+                            <p className="text-[11px] text-[var(--color-ink-soft)]/70 truncate mt-0.5">{selected.path.slice(0, -1).join(" / ")}</p>
                         </div>
-                        <button onClick={() => setSelected(null)} className="shrink-0 rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors" aria-label="Back">
+                        <button onClick={() => setSelected(null)} className="shrink-0 rounded-none p-1 text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors" aria-label="Back">
                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
                     <div className="p-5 space-y-3">
-                        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">How would you like to add this?</p>
+                        <p className="text-xs font-semibold text-[var(--color-ink-soft)] uppercase tracking-wider mb-1">How would you like to add this?</p>
 
                         <button onClick={handleDuplicate} disabled={actioning}
-                            className="w-full flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent-soft)] transition-all group disabled:opacity-40">
-                            <span className="mt-0.5 rounded-lg bg-[var(--color-accent-soft)] p-1.5 text-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/30 transition-colors">
+                            className="w-full flex items-start gap-4 rounded-none border border-[var(--color-hairline)] bg-white p-4 text-left hover:border-[var(--color-accent)]/50 hover:bg-[var(--color-accent-soft)] transition-all group disabled:opacity-40">
+                            <span className="mt-0.5 rounded-none bg-[var(--color-accent-soft)] p-1.5 text-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/30 transition-colors">
                                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
                                 </svg>
                             </span>
                             <div>
-                                <p className="text-sm font-semibold text-slate-900 group-hover:text-[var(--color-accent-hover)]">Duplicate here</p>
-                                <p className="text-xs text-slate-500 mt-0.5">Keep the original in <span className="font-medium">{selected.path[selected.path.length - 2] ?? "its carrier"}</span> and also add a copy here.</p>
+                                <p className="text-sm font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent-hover)]">Duplicate here</p>
+                                <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">Keep the original in <span className="font-medium">{selected.path[selected.path.length - 2] ?? "its carrier"}</span> and also add a copy here.</p>
                             </div>
                         </button>
 
                         {!selected.isStatic ? (
                             <button onClick={handleMove} disabled={actioning}
-                                className="w-full flex items-start gap-4 rounded-xl border border-slate-200 bg-white p-4 text-left hover:border-blue-300 hover:bg-blue-50 transition-all group disabled:opacity-40">
-                                <span className="mt-0.5 rounded-lg bg-blue-100 p-1.5 text-blue-600 group-hover:bg-blue-200 transition-colors">
+                                className="w-full flex items-start gap-4 rounded-none border border-[var(--color-hairline)] bg-white p-4 text-left hover:border-[var(--color-ink-soft)]/40 hover:bg-[var(--color-cream-2)] transition-all group disabled:opacity-40">
+                                <span className="mt-0.5 rounded-none bg-[var(--color-cream-2)] p-1.5 text-[var(--color-ink-soft)] group-hover:bg-[var(--color-hairline)] transition-colors">
                                     {actioning ? (
                                         <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
                                     ) : (
@@ -303,19 +303,19 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
                                     )}
                                 </span>
                                 <div>
-                                    <p className="text-sm font-semibold text-slate-900 group-hover:text-blue-800">{actioning ? "Moving…" : "Move here"}</p>
-                                    <p className="text-xs text-slate-500 mt-0.5">Remove from <span className="font-medium">{selected.path[selected.path.length - 2] ?? "its carrier"}</span> and move it here.</p>
+                                    <p className="text-sm font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-ink)]">{actioning ? "Moving…" : "Move here"}</p>
+                                    <p className="text-xs text-[var(--color-ink-soft)] mt-0.5">Remove from <span className="font-medium">{selected.path[selected.path.length - 2] ?? "its carrier"}</span> and move it here.</p>
                                 </div>
                             </button>
                         ) : (
-                            <div className="rounded-xl border border-dashed border-slate-200 p-4 text-xs text-slate-400">
+                            <div className="rounded-none border border-dashed border-[var(--color-hairline)] p-4 text-xs text-[var(--color-ink-soft)]/70">
                                 Move is not available for built-in pages.
                             </div>
                         )}
                     </div>
 
-                    <div className="border-t border-slate-100 px-5 py-3">
-                        <button onClick={() => setSelected(null)} className="text-xs text-slate-500 hover:text-slate-700 transition-colors">← Back to search</button>
+                    <div className="border-t border-[var(--color-hairline)] px-5 py-3">
+                        <button onClick={() => setSelected(null)} className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">← Back to search</button>
                     </div>
                 </div>
             </div>
@@ -325,36 +325,36 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
     // ── Search list ───────────────────────────────────────────────────────────
     return (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm p-4 pt-20">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl ring-1 ring-slate-200 flex flex-col max-h-[70vh]">
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100">
-                    <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="w-full max-w-lg bg-white rounded-none border border-[var(--color-hairline)] flex flex-col max-h-[70vh]">
+                <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-hairline)]">
+                    <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                     <input ref={searchRef} type="text" value={query} onChange={(e) => setQuery(e.target.value)}
                         placeholder={`Search ${sectionConfig.sectionLabel ?? "pages"}…`}
-                        className="flex-1 text-sm text-slate-900 placeholder-slate-400 outline-none bg-transparent" />
-                    {loadingDyn && <span className="text-[10px] text-slate-400 animate-pulse shrink-0">Loading…</span>}
-                    <button onClick={onCancel} className="shrink-0 rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors" aria-label="Close">
+                        className="flex-1 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-soft)]/60 outline-none bg-transparent" />
+                    {loadingDyn && <span className="text-[10px] text-[var(--color-ink-soft)]/70 animate-pulse shrink-0">Loading…</span>}
+                    <button onClick={onCancel} className="shrink-0 rounded-none p-1 text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors" aria-label="Close">
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
-                {!q && <p className="px-4 pt-2.5 pb-1 text-[11px] text-slate-400">Showing top-level items — type to search all</p>}
+                {!q && <p className="px-4 pt-2.5 pb-1 text-[11px] text-[var(--color-ink-soft)]/70">Showing top-level items — type to search all</p>}
 
-                <ul className="flex-1 overflow-y-auto divide-y divide-slate-50 py-1">
+                <ul className="flex-1 overflow-y-auto divide-y divide-[var(--color-hairline)] py-1">
                     {displayed.length === 0 && (
-                        <li className="px-4 py-8 text-center text-sm text-slate-400">{q ? "No matches found." : "No items available."}</li>
+                        <li className="px-4 py-8 text-center text-sm text-[var(--color-ink-soft)]/70">{q ? "No matches found." : "No items available."}</li>
                     )}
                     {displayed.map((item) => (
                         <li key={item.href}>
                             <button type="button" onClick={() => setSelected(item)}
-                                className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors group">
+                                className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-[var(--color-cream-2)] transition-colors group">
                                 <span className="mt-0.5">{item.type === "carrier" ? <FolderIcon /> : <FileIcon />}</span>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-slate-900 group-hover:text-[var(--color-accent)] transition-colors truncate">{item.label}</p>
-                                    <p className="text-[11px] text-slate-400 truncate mt-0.5">{item.path.slice(0, -1).join(" / ")}</p>
+                                    <p className="text-sm font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors truncate">{item.label}</p>
+                                    <p className="text-[11px] text-[var(--color-ink-soft)]/70 truncate mt-0.5">{item.path.slice(0, -1).join(" / ")}</p>
                                 </div>
-                                <span className={`shrink-0 self-center text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded-md ${item.type === "carrier" ? "bg-amber-50 text-amber-600" : "bg-blue-50 text-blue-500"}`}>
+                                <span className={`shrink-0 self-center text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded-none ${item.type === "carrier" ? "bg-amber-50 text-amber-600" : "bg-[var(--color-cream-2)] text-[var(--color-link)]"}`}>
                                     {item.type}
                                 </span>
                             </button>
@@ -362,9 +362,9 @@ export default function CarrierPicker({ sectionConfig: sectionConfigProp, onSele
                     ))}
                 </ul>
 
-                <div className="border-t border-slate-100 px-4 py-2.5 flex items-center justify-between">
-                    <p className="text-[11px] text-slate-400">{displayed.length} {displayed.length === 1 ? "item" : "items"}{q ? " found" : " shown"}</p>
-                    <button onClick={onCancel} className="text-xs text-slate-500 hover:text-slate-700 transition-colors">Cancel</button>
+                <div className="border-t border-[var(--color-hairline)] px-4 py-2.5 flex items-center justify-between">
+                    <p className="text-[11px] text-[var(--color-ink-soft)]/70">{displayed.length} {displayed.length === 1 ? "item" : "items"}{q ? " found" : " shown"}</p>
+                    <button onClick={onCancel} className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Cancel</button>
                 </div>
             </div>
         </div>

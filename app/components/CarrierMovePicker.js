@@ -116,9 +116,9 @@ export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTIO
 
     return (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 backdrop-blur-sm p-4 pt-20">
-            <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl ring-1 ring-slate-200 flex flex-col max-h-[70vh]">
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100">
-                    <svg className="h-4 w-4 shrink-0 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+            <div className="w-full max-w-lg bg-white rounded-none border border-[var(--color-hairline)] flex flex-col max-h-[70vh]">
+                <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-hairline)]">
+                    <svg className="h-4 w-4 shrink-0 text-[var(--color-ink-soft)]/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                     <input
@@ -127,35 +127,35 @@ export default function CarrierMovePicker({ card, sectionConfig = DEFAULT_SECTIO
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder={`Move "${card.title}" to…`}
-                        className="flex-1 text-sm text-slate-900 placeholder-slate-400 outline-none bg-transparent"
+                        className="flex-1 text-sm text-[var(--color-ink)] placeholder-[var(--color-ink-soft)]/60 outline-none bg-transparent"
                     />
-                    {loading && <span className="text-[10px] text-slate-400 animate-pulse shrink-0">Loading…</span>}
-                    <button onClick={onCancel} className="shrink-0 rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors" aria-label="Close">
+                    {loading && <span className="text-[10px] text-[var(--color-ink-soft)]/70 animate-pulse shrink-0">Loading…</span>}
+                    <button onClick={onCancel} className="shrink-0 rounded-none p-1 text-[var(--color-ink-soft)]/70 hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors" aria-label="Close">
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
-                <ul className="flex-1 overflow-y-auto divide-y divide-slate-50 py-1">
+                <ul className="flex-1 overflow-y-auto divide-y divide-[var(--color-hairline)] py-1">
                     {filtered.length === 0 && (
-                        <li className="px-4 py-8 text-center text-sm text-slate-400">{q ? "No matches found." : "No folders available."}</li>
+                        <li className="px-4 py-8 text-center text-sm text-[var(--color-ink-soft)]/70">{q ? "No matches found." : "No folders available."}</li>
                     )}
                     {filtered.map((t) => (
                         <li key={t.href}>
                             <button type="button" onClick={() => setTarget(t)}
-                                className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-slate-50 transition-colors group">
+                                className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-[var(--color-cream-2)] transition-colors group">
                                 <span className="mt-0.5"><FolderIcon /></span>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-slate-900 group-hover:text-[var(--color-accent)] transition-colors truncate">{t.label}</p>
-                                    {t.path && <p className="text-[11px] text-slate-400 truncate mt-0.5">{t.path.slice(0, -1).join(" / ")}</p>}
+                                    <p className="text-sm font-medium text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition-colors truncate">{t.label}</p>
+                                    {t.path && <p className="text-[11px] text-[var(--color-ink-soft)]/70 truncate mt-0.5">{t.path.slice(0, -1).join(" / ")}</p>}
                                 </div>
                             </button>
                         </li>
                     ))}
                 </ul>
 
-                <div className="border-t border-slate-100 px-4 py-2.5 flex items-center justify-between">
-                    <p className="text-[11px] text-slate-400">{filtered.length} folder{filtered.length !== 1 ? "s" : ""}{q ? " found" : ""}</p>
-                    <button onClick={onCancel} className="text-xs text-slate-500 hover:text-slate-700 transition-colors">Cancel</button>
+                <div className="border-t border-[var(--color-hairline)] px-4 py-2.5 flex items-center justify-between">
+                    <p className="text-[11px] text-[var(--color-ink-soft)]/70">{filtered.length} folder{filtered.length !== 1 ? "s" : ""}{q ? " found" : ""}</p>
+                    <button onClick={onCancel} className="text-xs text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Cancel</button>
                 </div>
             </div>
         </div>

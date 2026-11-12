@@ -21,13 +21,13 @@ export default function Page() {
 
             <div>
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Renewable Energy</p>
-                <h1 className="text-2xl font-bold text-slate-900">Wind</h1>
-                <p className="mt-2 text-sm text-slate-500">
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Wind</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
                     Installed wind capacity, generation volumes, plant locations, wind resource data, and REIPPP project details for South Africa.
                 </p>
             </div>
 
-            <div className="rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm p-6">
+            <div className="rounded-none bg-white border border-[var(--color-hairline)] p-6">
                 <EditableContent
                     slug="ec.renewable-energy.wind"
                     defaultContent={DEFAULT_CONTENT}

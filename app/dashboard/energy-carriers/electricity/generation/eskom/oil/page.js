@@ -23,13 +23,13 @@ export default function Page() {
 
             <div>
                 <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Eskom Generation</p>
-                <h1 className="text-2xl font-bold text-slate-900">Oil</h1>
-                <p className="mt-2 text-sm text-slate-500">
+                <h1 className="text-2xl font-bold text-[var(--color-ink)]">Oil</h1>
+                <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
                     Eskom&apos;s oil-fired generation units — capacity, fuel usage, operational role, and technology context.
                 </p>
             </div>
 
-            <div className="rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm p-6">
+            <div className="rounded-none bg-white border border-[var(--color-hairline)] p-6">
                 <EditableContent
                     slug="ec.electricity.generation.eskom.oil"
                     defaultContent={DEFAULT_CONTENT}

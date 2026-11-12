@@ -37,10 +37,10 @@ export default function DynamicEnergyEfficiencyPage({ params }) {
     if (loading) {
         return (
             <div className="space-y-4 animate-pulse">
-                <div className="h-4 w-1/3 rounded-full bg-slate-100" />
-                <div className="h-8 w-1/2 rounded-full bg-slate-100" />
+                <div className="h-4 w-1/3 rounded-full bg-[var(--color-cream-2)]" />
+                <div className="h-8 w-1/2 rounded-full bg-[var(--color-cream-2)]" />
                 <div className="grid grid-cols-3 gap-4">
-                    {[1, 2, 3].map((i) => <div key={i} className="h-28 rounded-2xl bg-slate-100" />)}
+                    {[1, 2, 3].map((i) => <div key={i} className="h-28 rounded-none bg-[var(--color-cream-2)]" />)}
                 </div>
             </div>
         );
@@ -49,7 +49,7 @@ export default function DynamicEnergyEfficiencyPage({ params }) {
     if (!config) {
         return (
             <div className="py-16 text-center">
-                <p className="text-slate-500 text-sm">Page not found.</p>
+                <p className="text-[var(--color-ink-soft)] text-sm">Page not found.</p>
                 <Link href="/dashboard/energy-efficiency" className="mt-4 inline-block text-sm text-[var(--color-accent)] hover:underline">
                     ← Back to Energy Efficiency
                 </Link>
@@ -83,10 +83,10 @@ export default function DynamicEnergyEfficiencyPage({ params }) {
                 <nav className="mb-2 flex flex-wrap items-center gap-1.5 text-sm">
                     {crumbs.map((c, i) => (
                         <span key={i} className="flex items-center gap-1.5">
-                            {i > 0 && <span className="text-slate-300">/</span>}
+                            {i > 0 && <span className="text-[var(--color-ink-soft)]/40">/</span>}
                             {c.href
-                                ? <Link href={c.href} className="text-slate-500 hover:text-slate-900 transition-colors">{c.label}</Link>
-                                : <span className="font-medium text-slate-900">{c.label}</span>}
+                                ? <Link href={c.href} className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">{c.label}</Link>
+                                : <span className="font-medium text-[var(--color-ink)]">{c.label}</span>}
                         </span>
                     ))}
                 </nav>
@@ -99,5 +99,5 @@ export default function DynamicEnergyEfficiencyPage({ params }) {
         );
     }
 
-    return <div className="py-8 text-slate-500 text-sm text-center">Unknown page type.</div>;
+    return <div className="py-8 text-[var(--color-ink-soft)] text-sm text-center">Unknown page type.</div>;
 }

@@ -22,7 +22,7 @@ export default function EnergyPlanningLayout({ children }) {
                 type="button"
                 onClick={() => setOpen(true)}
                 aria-label="Open section navigation"
-                className="md:hidden fixed right-4 z-50 flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+                className="md:hidden fixed right-4 z-50 flex items-center gap-2 rounded-none border border-[var(--color-hairline)] bg-white px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-cream-2)] transition-colors"
                 style={{ top: `calc(env(safe-area-inset-top, 0px) + ${HEADER_H + 10}px)` }}
             >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -33,7 +33,7 @@ export default function EnergyPlanningLayout({ children }) {
 
             <div className="relative md:flex md:gap-10">
                 {/* Desktop sidebar */}
-                <aside className="hidden md:block sticky top-18 z-10 w-60 shrink-0 self-start border-r border-slate-100 pr-6">
+                <aside className="hidden md:block sticky top-18 z-10 w-60 shrink-0 self-start border-r border-[var(--color-hairline)] pr-6">
                     <SectionNav />
                 </aside>
 
@@ -45,21 +45,21 @@ export default function EnergyPlanningLayout({ children }) {
                             onClick={() => setOpen(false)}
                         />
                         <div
-                            className="absolute left-0 w-[85%] max-w-[20rem] overflow-y-auto bg-white shadow-xl"
+                            className="absolute left-0 w-[85%] max-w-[20rem] overflow-y-auto bg-white border-r border-[var(--color-hairline)]"
                             onClick={(e) => e.stopPropagation()}
                             style={{
                                 top: `calc(env(safe-area-inset-top, 0px) + ${HEADER_H}px)`,
                                 height: `calc(100vh - env(safe-area-inset-top, 0px) - ${HEADER_H}px)`,
                             }}
                         >
-                            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            <div className="flex items-center justify-between border-b border-[var(--color-hairline)] px-4 py-3">
+                                <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">
                                     Energy Planning
                                 </p>
                                 <button
                                     onClick={() => setOpen(false)}
                                     aria-label="Close section menu"
-                                    className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                                    className="rounded-none p-1.5 text-[var(--color-ink-soft)] hover:bg-[var(--color-cream-2)] hover:text-[var(--color-ink)] transition-colors"
                                 >
                                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

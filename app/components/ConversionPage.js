@@ -236,10 +236,10 @@ export default function ConversionPage() {
                             <div className="text-2xl font-bold text-indigo-700 tabular-nums">+{powerStationTotal.toFixed(0)}</div>
                             <div className="text-xs text-indigo-500 mt-0.5">PJ</div>
                         </div>
-                        <div className="rounded-xl bg-teal-50 ring-1 ring-teal-100 p-4 text-center">
-                            <div className="text-xs font-semibold text-teal-600 uppercase tracking-wide mb-1">CHP Plants</div>
-                            <div className="text-2xl font-bold text-teal-700 tabular-nums">+{chpTotal.toFixed(0)}</div>
-                            <div className="text-xs text-teal-500 mt-0.5">PJ</div>
+                        <div className="rounded-xl bg-violet-50 ring-1 ring-violet-100 p-4 text-center">
+                            <div className="text-xs font-semibold text-violet-600 uppercase tracking-wide mb-1">CHP Plants</div>
+                            <div className="text-2xl font-bold text-violet-700 tabular-nums">+{chpTotal.toFixed(0)}</div>
+                            <div className="text-xs text-violet-500 mt-0.5">PJ</div>
                         </div>
                         <div className="rounded-xl bg-amber-50 ring-1 ring-amber-100 p-4 text-center">
                             <div className="text-xs font-semibold text-amber-600 uppercase tracking-wide mb-1">Imports / Exports</div>

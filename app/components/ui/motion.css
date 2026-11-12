@@ -63,6 +63,62 @@
   animation-delay: 1.3s;
 }
 
+/* Second batch of AnimatedIcons.js icons - the site's energy carriers and
+   infrastructure (wind, gas, nuclear, oil, the grid, industry, coal),
+   added so the icon library covers more of what the site actually
+   describes. Same rule: one subject, one distinct mechanism each. */
+@keyframes turbineSpin { to { transform: rotate(360deg); } }
+.motion-turbine-spin {
+  animation: turbineSpin 6s linear infinite;
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scaleY(1) skewX(0deg); }
+  50%      { transform: scaleY(1.07) skewX(-2deg); }
+}
+.motion-flame-flicker {
+  animation: flameFlicker 2.2s ease-in-out infinite;
+}
+
+@keyframes atomOrbit { to { transform: rotate(360deg); } }
+.motion-atom-orbit {
+  animation: atomOrbit 5s linear infinite;
+}
+
+@keyframes dropBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(3px); }
+}
+.motion-drop-bob {
+  animation: dropBob 3.5s ease-in-out infinite;
+}
+
+@keyframes beaconBlink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.2; }
+}
+.motion-beacon {
+  animation: beaconBlink 3s ease-in-out infinite;
+}
+.motion-beacon-delay {
+  animation-delay: 1.5s;
+}
+
+@keyframes smokeRise {
+  0%   { transform: translateY(0); opacity: 0.75; }
+  100% { transform: translateY(-14px); opacity: 0; }
+}
+.motion-smoke {
+  animation: smokeRise 3s ease-out infinite;
+}
+.motion-smoke-delay-1 { animation-delay: 1s; }
+.motion-smoke-delay-2 { animation-delay: 2s; }
+
+@keyframes emberGlow { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+.motion-ember-glow {
+  animation: emberGlow 4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [class*="motion-"], .flow-line, .reveal-down {
     animation: none !important;
@@ -71,4 +127,7 @@
   .motion-sun-breathe { opacity: 0.8; }
   .motion-battery-charge { width: 18px; }
   .motion-ripple { r: 7; opacity: 0.5; }
+  .motion-beacon { opacity: 0.6; }
+  .motion-smoke { opacity: 0.35; transform: translateY(-6px); }
+  .motion-ember-glow { opacity: 0.7; }
 }

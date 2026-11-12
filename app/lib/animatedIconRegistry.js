@@ -1,4 +1,7 @@
-import { SolarIcon, LiveReadingIcon, BatteryIcon, LeafIcon, RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
+import {
+    SolarIcon, LiveReadingIcon, BatteryIcon, LeafIcon, RippleIcon,
+    WindIcon, FlameIcon, NuclearIcon, OilIcon, PylonIcon, FactoryIcon, CoalIcon,
+} from "@/app/components/ui/icons/AnimatedIcons";
 
 // A choice of one of the site's own animated line icons, stored as plain
 // text in the same string fields that already hold a MediaLibrary Storage
@@ -9,10 +12,17 @@ const ICON_REF_PREFIX = "icon:";
 
 export const ICON_REGISTRY = [
     { id: "solar",       label: "Solar",        Icon: SolarIcon },
-    { id: "liveReading", label: "Live Reading", Icon: LiveReadingIcon },
+    { id: "wind",        label: "Wind",         Icon: WindIcon },
+    { id: "coal",        label: "Coal",         Icon: CoalIcon },
+    { id: "flame",       label: "Natural Gas",  Icon: FlameIcon },
+    { id: "oil",         label: "Oil",          Icon: OilIcon },
+    { id: "nuclear",     label: "Nuclear",      Icon: NuclearIcon },
+    { id: "ripple",      label: "Hydro",        Icon: RippleIcon },
+    { id: "leaf",        label: "Biomass",      Icon: LeafIcon },
     { id: "battery",     label: "Battery",      Icon: BatteryIcon },
-    { id: "leaf",        label: "Leaf",         Icon: LeafIcon },
-    { id: "ripple",      label: "Ripple",       Icon: RippleIcon },
+    { id: "pylon",       label: "Grid",         Icon: PylonIcon },
+    { id: "factory",     label: "Industry",     Icon: FactoryIcon },
+    { id: "liveReading", label: "Live Reading", Icon: LiveReadingIcon },
 ];
 
 const ICON_BY_ID = Object.fromEntries(ICON_REGISTRY.map((entry) => [entry.id, entry]));

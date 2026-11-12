@@ -118,7 +118,7 @@ export default function FinalConsumptionBars({ sections, activeYear }) {
                                         {fmt(row.total)} <span className="text-xs font-normal text-[var(--color-ink-soft)]/70">PJ</span>
                                     </span>
                                     <svg
-                                        className="h-3.5 w-3.5 text-[var(--color-accent)] opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                        className="h-3.5 w-3.5 text-[var(--color-ink-soft)]/40 group-hover:text-[var(--color-accent)] group-hover:translate-x-0.5 transition-all"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
                                     >
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

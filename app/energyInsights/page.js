@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent, createContentRecord, deleteContentRecord } from "@/app/lib/manageContent";
 import MediaLibrary from "@/app/components/MediaLibrary";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import MediaFill from "@/app/components/ui/MediaFill";
 import { LiveReadingIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const HIDDEN_SLUG = "energyinsights.hidden";
@@ -20,26 +19,17 @@ function slugify(str) {
 }
 
 function CoverImage({ imageKey, alt }) {
-    const src = useResolvedImageUrl(imageKey);
-    if (!src) return null;
+    if (!imageKey) return null;
     return (
         <div className="relative aspect-video overflow-hidden">
-            <Image
-                src={src}
-                alt={alt}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
-            />
+            <MediaFill value={imageKey} alt={alt} fallback={null} className="transition-transform duration-500 group-hover:scale-105" />
         </div>
     );
 }
 
 function NewArticleCoverPreview({ imageKey }) {
-    const src = useResolvedImageUrl(imageKey);
-    if (!src) return null;
-    return <Image src={src} alt="cover" fill className="object-cover" sizes="80px" unoptimized />;
+    if (!imageKey) return null;
+    return <MediaFill value={imageKey} alt="cover" fallback={null} />;
 }
 
 export default function EnergyInsightsIndex() {

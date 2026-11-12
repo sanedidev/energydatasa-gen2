@@ -1,22 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import MediaFill from "@/app/components/ui/MediaFill";
 
 function CoverImage({ imageKey, alt }) {
-    const src = useResolvedImageUrl(imageKey);
-    if (!src) return null;
+    if (!imageKey) return null;
     return (
         <div className="relative aspect-video overflow-hidden">
-            <Image
-                src={src}
-                alt={alt}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
-            />
+            <MediaFill value={imageKey} alt={alt} fallback={null} className="transition-transform duration-500 group-hover:scale-105" />
         </div>
     );
 }

@@ -11,7 +11,7 @@ import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
-import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import StatGaugeTile from "@/app/components/ui/StatGaugeTile";
 import YearSwitcher from "@/app/components/YearSwitcher";
 
 const fmtPJ = (n) => `${Math.round(n).toLocaleString("en-US")} PJ`;
@@ -99,6 +99,7 @@ export default function PrimarySupplyPage() {
     const groupSum = Object.values(groupTotals).reduce((a, b) => a + b, 0);
     const pct = (v) => groupSum > 0 ? (v / groupSum * 100).toFixed(1) : "0.0";
     const tpesPct = (v) => tpesTotal > 0 ? (v / tpesTotal * 100).toFixed(1) : "0.0";
+    const gaugePct = (v) => tpesTotal > 0 ? Math.abs(v) / tpesTotal * 100 : 0;
 
     return (
         <main>
@@ -125,31 +126,22 @@ export default function PrimarySupplyPage() {
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                        <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-                        <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
-                            <AnimatedNumber value={tpesTotal} format={fmtPJ} />
-                        </div>
-                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Primary Energy Supply</div>
-                    </div>
-                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                        <div className="text-xl font-bold text-emerald-400 tabular-nums">
-                            <AnimatedNumber value={prodTotal} format={fmtPJ} />
-                        </div>
-                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Domestic Production</div>
-                    </div>
-                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                        <div className="text-xl font-bold text-amber-400 tabular-nums">
-                            <AnimatedNumber value={importsTotal} format={fmtPJ} />
-                        </div>
-                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Imports</div>
-                    </div>
-                    <div className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                        <div className="text-xl font-bold text-red-400 tabular-nums">
-                            <AnimatedNumber value={exportsTotal} format={fmtPJ} />
-                        </div>
-                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Exports</div>
-                    </div>
+                    <StatGaugeTile
+                        value={tpesTotal} label="Total Primary Energy Supply" format={fmtPJ}
+                        pct={100} barClassName="bg-[var(--color-accent)]" valueClassName="text-[var(--color-accent)]"
+                    />
+                    <StatGaugeTile
+                        value={prodTotal} label="Domestic Production" format={fmtPJ}
+                        pct={gaugePct(prodTotal)} barClassName="bg-emerald-400" valueClassName="text-emerald-400"
+                    />
+                    <StatGaugeTile
+                        value={importsTotal} label="Total Imports" format={fmtPJ}
+                        pct={gaugePct(importsTotal)} barClassName="bg-amber-400" valueClassName="text-amber-400"
+                    />
+                    <StatGaugeTile
+                        value={exportsTotal} label="Total Exports" format={fmtPJ}
+                        pct={gaugePct(exportsTotal)} barClassName="bg-red-400" valueClassName="text-red-400"
+                    />
                 </div>
             </HeroSection>
 

@@ -1,16 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import MediaFill from "@/app/components/ui/MediaFill";
 import FlowLine from "@/app/components/ui/FlowLine";
 
 function AudienceLogo({ logo, title }) {
-    const src = useResolvedImageUrl(logo);
-    if (!src) return null;
+    if (!logo) return null;
     return (
         <div className="h-12 w-12 shrink-0 overflow-hidden rounded-none bg-[var(--color-cream-2)]">
-            <Image src={src} alt={title} width={48} height={48} className="h-full w-full object-cover" unoptimized />
+            <MediaFill value={logo} alt={title} fallback={null} />
         </div>
     );
 }

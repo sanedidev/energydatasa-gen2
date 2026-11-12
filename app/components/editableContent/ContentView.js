@@ -1,16 +1,14 @@
 "use client";
 
-import Image from "next/image";
+import MediaFill from "../ui/MediaFill";
 import { BG_VIEW, blockHasContent, getBlockBg, getBlockText, isHiddenBlock, isImageBlock, isSectionBlock, isTitleBlock } from "./blockHelpers";
-import { useResolvedImageUrl } from "./useResolvedImageUrl";
 import MarkdownContent from "./MarkdownContent";
 
 function ImageBlockView({ block }) {
-    const src = useResolvedImageUrl(block.key);
-    if (!src) return null;
+    if (!block.key) return null;
     return (
-        <div className="relative rounded-none overflow-hidden" style={{ width: `${block.width ?? 100}%`, height: `${block.maxHeight ?? 400}px` }}>
-            <Image src={src} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 80vw" unoptimized />
+        <div className="rounded-none overflow-hidden" style={{ width: `${block.width ?? 100}%`, height: `${block.maxHeight ?? 400}px` }}>
+            <MediaFill value={block.key} alt="" fallback={null} />
         </div>
     );
 }

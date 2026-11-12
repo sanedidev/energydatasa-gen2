@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { upsertPageContent, createContentRecord, deleteContentRecord } from "@/app/lib/manageContent";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
 import { usePermissions } from "@/app/context/permissions";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import MediaFill from "@/app/components/ui/MediaFill";
 import { RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 const HIDDEN_SLUG = "whoisitfor.hidden";
@@ -18,20 +17,18 @@ function slugify(str) {
     return str.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
 }
 
+const DEFAULT_LOGO_FALLBACK = (
+    <div className="flex h-full w-full items-center justify-center text-[var(--color-ink-soft)]/40">
+        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+    </div>
+);
+
 function AudienceLogo({ logo, title }) {
-    const src = useResolvedImageUrl(logo);
-    if (!src) {
-        return (
-            <div className="h-14 w-14 shrink-0 rounded-none bg-[var(--color-cream-2)] flex items-center justify-center text-[var(--color-ink-soft)]/40">
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </div>
-        );
-    }
     return (
         <div className="h-14 w-14 shrink-0 overflow-hidden rounded-none bg-[var(--color-cream-2)]">
-            <Image src={src} alt={title} width={56} height={56} className="h-full w-full object-cover" unoptimized />
+            <MediaFill value={logo} alt={title} fallback={DEFAULT_LOGO_FALLBACK} />
         </div>
     );
 }

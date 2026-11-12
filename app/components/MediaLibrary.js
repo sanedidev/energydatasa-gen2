@@ -4,6 +4,7 @@ import "@/app/ConfigureAmplify";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { list, uploadData, remove, getUrl } from "aws-amplify/storage";
+import { ICON_REGISTRY, iconRefFor, parseIconRef } from "@/app/lib/animatedIconRegistry";
 
 const PREFIX = "insights/";
 
@@ -69,9 +70,10 @@ function Spinner({ className = "h-5 w-5" }) {
 //   onSelect(key)  — called with the Storage path when the user confirms
 //   onClose()      — called to close the modal
 export default function MediaLibrary({ onSelect, onClose }) {
+    const [tab,            setTab]            = useState("images"); // "images" | "icons"
     const [images,         setImages]         = useState([]);
     const [loading,        setLoading]        = useState(true);
-    const [selected,       setSelected]       = useState(null);   // Storage path
+    const [selected,       setSelected]       = useState(null);   // Storage path, or an "icon:<id>" ref
     const [uploading,      setUploading]      = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [deleting,       setDeleting]       = useState(null);   // path being deleted
@@ -191,45 +193,92 @@ export default function MediaLibrary({ onSelect, onClose }) {
                 <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-hairline)] shrink-0">
                     <div>
                         <p className="font-semibold text-[var(--color-ink)]">Media Library</p>
-                        <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">Select an existing image or upload a new one</p>
+                        <p className="text-xs text-[var(--color-ink-soft)]/70 mt-0.5">Select an image, upload a new one, or choose an animated icon</p>
                     </div>
                     <button onClick={onClose} className="text-[var(--color-ink-soft)]/70 hover:text-[var(--color-ink)] text-lg leading-none">✕</button>
                 </div>
 
-                {/* Toolbar */}
-                <div className="px-6 py-3 border-b border-[var(--color-hairline)] flex items-center gap-3 shrink-0">
-                    <button
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                        className="inline-flex items-center gap-1.5 rounded-none bg-[var(--color-ink)] px-4 py-2 text-sm font-semibold text-[var(--color-cream)] hover:bg-[var(--color-ink-soft)] disabled:opacity-50 transition-colors"
-                    >
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        {uploading ? "Uploading…" : "Upload new image"}
-                    </button>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleFileChange}
-                    />
-                    {uploading && (
-                        <div className="flex-1 flex items-center gap-3">
-                            <div className="flex-1 h-2 rounded-full bg-[var(--color-cream-2)] overflow-hidden">
-                                <div
-                                    className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-200"
-                                    style={{ width: `${uploadProgress}%` }}
-                                />
-                            </div>
-                            <span className="text-xs text-[var(--color-ink-soft)] shrink-0">{uploadProgress}%</span>
-                        </div>
-                    )}
-                    {error && <p className="text-xs text-red-500">{error}</p>}
+                {/* Tabs */}
+                <div className="px-6 pt-3 border-b border-[var(--color-hairline)] flex items-center gap-1 shrink-0">
+                    {[{ id: "images", label: "Images" }, { id: "icons", label: "Animated icons" }].map((t) => (
+                        <button
+                            key={t.id}
+                            onClick={() => { setTab(t.id); setSelected(null); }}
+                            className={`rounded-none border-b-2 px-3 py-2 text-xs font-medium transition-colors ${
+                                tab === t.id
+                                    ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+                                    : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+                            }`}
+                        >
+                            {t.label}
+                        </button>
+                    ))}
                 </div>
 
+                {/* Toolbar */}
+                {tab === "images" && (
+                    <div className="px-6 py-3 border-b border-[var(--color-hairline)] flex items-center gap-3 shrink-0">
+                        <button
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploading}
+                            className="inline-flex items-center gap-1.5 rounded-none bg-[var(--color-ink)] px-4 py-2 text-sm font-semibold text-[var(--color-cream)] hover:bg-[var(--color-ink-soft)] disabled:opacity-50 transition-colors"
+                        >
+                            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                            </svg>
+                            {uploading ? "Uploading…" : "Upload new image"}
+                        </button>
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleFileChange}
+                        />
+                        {uploading && (
+                            <div className="flex-1 flex items-center gap-3">
+                                <div className="flex-1 h-2 rounded-full bg-[var(--color-cream-2)] overflow-hidden">
+                                    <div
+                                        className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-200"
+                                        style={{ width: `${uploadProgress}%` }}
+                                    />
+                                </div>
+                                <span className="text-xs text-[var(--color-ink-soft)] shrink-0">{uploadProgress}%</span>
+                            </div>
+                        )}
+                        {error && <p className="text-xs text-red-500">{error}</p>}
+                    </div>
+                )}
+
+                {/* Icon grid */}
+                {tab === "icons" && (
+                    <div className="flex-1 overflow-y-auto p-6 min-h-[300px]">
+                        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+                            {ICON_REGISTRY.map(({ id, label, Icon }) => {
+                                const ref = iconRefFor(id);
+                                const isSelected = selected === ref;
+                                return (
+                                    <button
+                                        key={id}
+                                        type="button"
+                                        onClick={() => setSelected(isSelected ? null : ref)}
+                                        className={`group flex flex-col items-center gap-2 rounded-none border-2 bg-[var(--color-cream-2)] px-3 py-5 transition-all ${
+                                            isSelected
+                                                ? "border-[var(--color-accent)] ring-2 ring-[var(--color-accent)]/30"
+                                                : "border-transparent hover:border-[var(--color-ink-soft)]/40"
+                                        }`}
+                                    >
+                                        <Icon className="h-10 w-10 text-[var(--color-accent)]" />
+                                        <span className="text-xs font-medium text-[var(--color-ink-soft)]">{label}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
                 {/* Image grid */}
+                {tab === "images" && (
                 <div className="flex-1 overflow-y-auto p-6 min-h-[300px]">
                     {loading ? (
                         <div className="flex items-center justify-center h-48">
@@ -291,11 +340,16 @@ export default function MediaLibrary({ onSelect, onClose }) {
                         </div>
                     )}
                 </div>
+                )}
 
                 {/* Footer */}
                 <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--color-hairline)] shrink-0">
                     <p className="text-xs text-[var(--color-ink-soft)]/70">
-                        {selected ? "1 image selected" : `${images.length} image${images.length !== 1 ? "s" : ""} in library`}
+                        {selected
+                            ? (parseIconRef(selected) ? "1 icon selected" : "1 image selected")
+                            : tab === "icons"
+                                ? `${ICON_REGISTRY.length} animated icons available`
+                                : `${images.length} image${images.length !== 1 ? "s" : ""} in library`}
                     </p>
                     <div className="flex gap-2">
                         <button onClick={onClose}
@@ -304,7 +358,7 @@ export default function MediaLibrary({ onSelect, onClose }) {
                         </button>
                         <button onClick={handleConfirm} disabled={!selected}
                             className="rounded-none bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] disabled:opacity-40 transition-colors">
-                            Use selected image
+                            {parseIconRef(selected) ? "Use selected icon" : "Use selected image"}
                         </button>
                     </div>
                 </div>

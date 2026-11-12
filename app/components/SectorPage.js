@@ -10,7 +10,7 @@ import EditSaveControls from "@/app/components/EditSaveControls";
 import NEBCsvControls from "@/app/components/NEBCsvControls";
 import HeroSection from "@/app/components/ui/HeroSection";
 import SourceLine from "@/app/components/ui/SourceLine";
-import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import StatGaugeTile from "@/app/components/ui/StatGaugeTile";
 import YearSwitcher from "@/app/components/YearSwitcher";
 import { computeSectorCO2 } from "@/app/lib/co2Factors";
 
@@ -105,6 +105,9 @@ export default function SectorPage({ sectionId }) {
         .sort((a, b) => b.total - a.total);
 
     const pct = (v) => sectorTotal > 0 ? (v / sectorTotal * 100).toFixed(1) : "0.0";
+    // Total Consumption is always >= any single fuel's share, so it anchors
+    // the gauges at 100% and each fuel tile's bar reflects its real share.
+    const gaugePct = (v) => sectorTotal > 0 ? Math.abs(v) / sectorTotal * 100 : 0;
 
     const co2 = computeSectorCO2(section, commodities);
     const co2Groups = [
@@ -163,20 +166,16 @@ export default function SectorPage({ sectionId }) {
 
                 {/* Key stat cards */}
                 <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                        <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-                        <div className="text-xl font-bold text-[var(--color-accent)] tabular-nums">
-                            <AnimatedNumber value={sectorTotal} format={fmtPJ} />
-                        </div>
-                        <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">Total Consumption</div>
-                    </div>
+                    <StatGaugeTile
+                        value={sectorTotal} label="Total Consumption" format={fmtPJ}
+                        pct={100} barClassName="bg-[var(--color-accent)]" valueClassName="text-[var(--color-accent)]"
+                    />
                     {keyFuels.slice(0, 3).map((f) => (
-                        <div key={f.id} className="rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                            <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
-                                <AnimatedNumber value={f.total} format={fmtPJ} />
-                            </div>
-                            <div className="mt-0.5 text-xs text-[var(--color-cream)]/50">{f.label}</div>
-                        </div>
+                        <StatGaugeTile
+                            key={f.id}
+                            value={f.total} label={f.label} format={fmtPJ}
+                            pct={gaugePct(f.total)}
+                        />
                     ))}
                 </div>
             </HeroSection>

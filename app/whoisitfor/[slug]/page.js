@@ -3,12 +3,11 @@
 import { use as usePromise, useEffect, useState } from "react";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { updateContentRecord } from "@/app/lib/manageContent";
-import Image from "next/image";
 import Breadcrumbs from "@/app/components/breadcrumbs";
 import EditableSections from "@/app/components/EditableSections";
 import { usePermissions } from "@/app/context/permissions";
 import MediaLibrary from "@/app/components/MediaLibrary";
-import { useResolvedImageUrl } from "@/app/components/editableContent/useResolvedImageUrl";
+import MediaFill from "@/app/components/ui/MediaFill";
 
 const DEFAULT_SECTIONS = [
     { id: "overview",         label: "Overview" },
@@ -50,9 +49,7 @@ export default function Page({ params }) {
     // logo media library
     const [mediaOpen, setMediaOpen] = useState(false);
 
-    const currentSrc = useResolvedImageUrl(profile?.logo);
-    const draftSrc    = useResolvedImageUrl(headerDraft.logo);
-    const editPreviewSrc = draftSrc ?? currentSrc;
+    const editPreviewLogo = headerDraft.logo || profile?.logo || "";
 
     useEffect(() => {
         if (!slug) return;
@@ -187,21 +184,7 @@ export default function Page({ params }) {
                             className="group relative h-20 w-20 overflow-hidden rounded-none border-2 border-dashed border-[var(--color-accent)]/40 bg-[var(--color-cream-2)] transition-all hover:border-[var(--color-accent)]/70"
                             title="Change image"
                         >
-                            {editPreviewSrc ? (
-                                <Image
-                                    src={editPreviewSrc}
-                                    alt="logo"
-                                    fill
-                                    className="object-cover"
-                                    unoptimized
-                                />
-                            ) : (
-                                <div className="flex h-full items-center justify-center text-[var(--color-ink-soft)]/40">
-                                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
-                                    </svg>
-                                </div>
-                            )}
+                            <MediaFill value={editPreviewLogo} alt="logo" />
                             <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-none">
                                 <span className="text-[10px] font-semibold text-white">Change</span>
                             </div>
@@ -242,16 +225,8 @@ export default function Page({ params }) {
             ) : (
                 <div className="flex items-start gap-5">
                     {/* Logo */}
-                    <div className={`shrink-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-[var(--color-cream-2)] ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
-                        {currentSrc ? (
-                            <Image src={currentSrc} alt={title} width={80} height={80} className="object-cover" unoptimized />
-                        ) : (
-                            <div className="h-20 w-20 flex items-center justify-center text-[var(--color-ink-soft)]/40">
-                                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A1.5 1.5 0 0021.75 19.5V4.5A1.5 1.5 0 0020.25 3H3.75A1.5 1.5 0 002.25 4.5v15A1.5 1.5 0 003.75 21z" />
-                                </svg>
-                            </div>
-                        )}
+                    <div className={`h-20 w-20 shrink-0 overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-hairline)] bg-[var(--color-cream-2)] ${editMode ? "ring-2 ring-[var(--color-accent)]/30" : ""}`}>
+                        <MediaFill value={profile?.logo} alt={title} />
                     </div>
                     <div>
                         <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Audiences</p>

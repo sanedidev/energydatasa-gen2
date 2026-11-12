@@ -7,17 +7,6 @@
    across more than one component - a one-off animation used by a single
    component can keep its own inline <style> block instead. */
 
-/* Ambient "live data" tick - a small corner mark on a stat tile that slowly
-   breathes opacity, suggesting the number behind it is live/current without
-   drawing attention away from the value itself. */
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.35; }
-}
-.motion-pulse-dot {
-  animation: pulseDot 6s ease-in-out infinite;
-}
-
 /* "Energy flow" line - FlowLine.js. The site's one recurring motion motif,
    used as a section hand-off in place of a hard border: a thin gradient
    that slowly drifts between its two given colors. */

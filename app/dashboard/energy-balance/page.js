@@ -10,7 +10,7 @@ import HeroSection from "@/app/components/ui/HeroSection";
 import EditableSourceLine from "@/app/components/ui/EditableSourceLine";
 import YearSwitcher from "@/app/components/YearSwitcher";
 import FlowLine from "@/app/components/ui/FlowLine";
-import AnimatedNumber from "@/app/components/ui/AnimatedNumber";
+import StatGaugeTile from "@/app/components/ui/StatGaugeTile";
 import { RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
 import Link from "next/link";
 
@@ -90,12 +90,19 @@ export default function EnergyBalancePage() {
         const SECTOR_IDS = ["agriculture", "commerce", "industry", "residential", "transport"];
         const SECTOR_LABELS = { agriculture: "Agriculture", commerce: "Commerce", industry: "Industry", residential: "Residential", transport: "Transport" };
 
+        // Each tile's gauge is sized relative to the largest value in the
+        // row, so it reflects where that stage sits in the real energy
+        // balance (TPES is always the top of the funnel) rather than an
+        // arbitrary animation.
+        const rawVals = [tpesVal, elecVal, tfesVal, tfcVal].map((v) => Math.abs(v));
+        const maxRaw  = Math.max(...rawVals, 1);
+
         return {
             summaryStats: [
-                { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal },
-                { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal },
-                { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal },
-                { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal  },
+                { label: "Total Primary Energy Supply", value: `${fmt0(tpesVal)} PJ`, raw: tpesVal, pct: Math.abs(tpesVal) / maxRaw * 100 },
+                { label: "Electricity Generated",        value: `${fmt0(elecVal)} PJ`, raw: elecVal, pct: Math.abs(elecVal) / maxRaw * 100 },
+                { label: "Total Final Energy Supply",    value: `${fmt0(tfesVal)} PJ`, raw: tfesVal, pct: Math.abs(tfesVal) / maxRaw * 100 },
+                { label: "Total Final Consumption",      value: `${fmt0(tfcVal)} PJ`,  raw: tfcVal,  pct: Math.abs(tfcVal)  / maxRaw * 100 },
             ],
             sectorTotals: SECTOR_IDS.map((id) => {
                 const row = byId[id]?.rows.find((r) => r.isTotal);
@@ -142,13 +149,13 @@ export default function EnergyBalancePage() {
 
                 <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {summaryStats.map((s) => (
-                        <div key={s.label} className="relative rounded-none border border-[var(--color-cream)]/10 px-4 py-3">
-                            <span className="motion-pulse-dot absolute top-3 right-3 h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-                            <div className="text-xl font-bold text-[var(--color-cream)] tabular-nums">
-                                <AnimatedNumber value={Math.abs(s.raw)} format={(n) => `${Math.round(n).toLocaleString("en-US")} PJ`} />
-                            </div>
-                            <div className="mt-0.5 text-xs text-white/50">{s.label}</div>
-                        </div>
+                        <StatGaugeTile
+                            key={s.label}
+                            value={Math.abs(s.raw)}
+                            label={s.label}
+                            pct={s.pct}
+                            format={(n) => `${Math.round(n).toLocaleString("en-US")} PJ`}
+                        />
                     ))}
                 </div>
             </HeroSection>

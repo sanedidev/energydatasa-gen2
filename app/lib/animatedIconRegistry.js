@@ -1,6 +1,7 @@
 import {
     SolarIcon, LiveReadingIcon, BatteryIcon, LeafIcon, RippleIcon,
     WindIcon, FlameIcon, NuclearIcon, OilIcon, PylonIcon, FactoryIcon, CoalIcon,
+    PeopleIcon, GrowthIcon, TownHallIcon, GraduationIcon, StampIcon,
 } from "@/app/components/ui/icons/AnimatedIcons";
 
 // A choice of one of the site's own animated line icons, stored as plain
@@ -23,6 +24,11 @@ export const ICON_REGISTRY = [
     { id: "pylon",       label: "Grid",         Icon: PylonIcon },
     { id: "factory",     label: "Industry",     Icon: FactoryIcon },
     { id: "liveReading", label: "Live Reading", Icon: LiveReadingIcon },
+    { id: "people",      label: "General Public",       Icon: PeopleIcon },
+    { id: "growth",      label: "Industry & Investors", Icon: GrowthIcon },
+    { id: "townHall",    label: "Municipalities",       Icon: TownHallIcon },
+    { id: "graduation",  label: "Students & Researchers", Icon: GraduationIcon },
+    { id: "stamp",       label: "Policy & Government",  Icon: StampIcon },
 ];
 
 const ICON_BY_ID = Object.fromEntries(ICON_REGISTRY.map((entry) => [entry.id, entry]));

@@ -210,6 +210,101 @@ export function FactoryIcon({ className = "h-10 w-10" }) {
     );
 }
 
+// Three figures with a ripple of movement passing through them, like a
+// wave through a crowd - for the "General Public" audience. The front
+// figure is accent-colored; the two behind stay ink.
+export function PeopleIcon({ className = "h-10 w-10" }) {
+    return (
+        <svg className={className} viewBox="0 0 48 48" fill="none">
+            <g transform="translate(11,6) scale(0.8)">
+                <g className="motion-crowd-bounce motion-crowd-delay-1">
+                    <circle cx="0" cy="6" r="4" stroke="currentColor" strokeWidth="1.1" />
+                    <path d="M-7,25 C-7,16 -3.5,12 0,12 C3.5,12 7,16 7,25 Z" stroke="currentColor" strokeWidth="1.1" />
+                </g>
+            </g>
+            <g transform="translate(37,6) scale(0.8)">
+                <g className="motion-crowd-bounce motion-crowd-delay-2">
+                    <circle cx="0" cy="6" r="4" stroke="currentColor" strokeWidth="1.1" />
+                    <path d="M-7,25 C-7,16 -3.5,12 0,12 C3.5,12 7,16 7,25 Z" stroke="currentColor" strokeWidth="1.1" />
+                </g>
+            </g>
+            <g transform="translate(24,9)">
+                <g className="motion-crowd-bounce">
+                    <circle cx="0" cy="6" r="4.5" fill="var(--color-accent)" />
+                    <path d="M-8,27 C-8,17 -4,13 0,13 C4,13 8,17 8,27 Z" fill="var(--color-accent)" />
+                </g>
+            </g>
+        </svg>
+    );
+}
+
+// A small bar chart growing - for "Industry & Investors". Each bar grows
+// and settles on its own stagger, like a steadily climbing trend.
+export function GrowthIcon({ className = "h-10 w-10" }) {
+    return (
+        <svg className={className} viewBox="0 0 48 48" fill="none">
+            <line x1="8" y1="40" x2="40" y2="40" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+            <rect className="motion-grow-bar" x="13" y="28" width="6" height="12" style={{ transformOrigin: "16px 40px" }} fill="var(--color-accent)" opacity="0.55" />
+            <rect className="motion-grow-bar motion-grow-delay-1" x="24" y="20" width="6" height="20" style={{ transformOrigin: "27px 40px" }} fill="var(--color-accent)" opacity="0.75" />
+            <rect className="motion-grow-bar motion-grow-delay-2" x="35" y="10" width="6" height="30" style={{ transformOrigin: "38px 40px" }} fill="var(--color-accent)" />
+        </svg>
+    );
+}
+
+// A government building with a waving flag - for "Municipalities".
+export function TownHallIcon({ className = "h-10 w-10" }) {
+    return (
+        <svg className={className} viewBox="0 0 48 48" fill="none">
+            <g stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round">
+                <path d="M9 19 L24 8 L39 19" />
+                <line x1="6" y1="19" x2="42" y2="19" />
+                <line x1="14" y1="22" x2="14" y2="35" />
+                <line x1="20" y1="22" x2="20" y2="35" />
+                <line x1="28" y1="22" x2="28" y2="35" />
+                <line x1="34" y1="22" x2="34" y2="35" />
+                <line x1="6" y1="35" x2="42" y2="35" />
+                <line x1="4" y1="40" x2="44" y2="40" />
+            </g>
+            <line x1="24" y1="8" x2="24" y2="1" stroke="currentColor" strokeWidth="1.1" />
+            <g className="motion-flag-wave" style={{ transformOrigin: "24px 2px" }}>
+                <path d="M24 1 L33 3.5 L24 6 Z" fill="var(--color-accent)" />
+            </g>
+        </svg>
+    );
+}
+
+// A graduation cap with a swinging tassel - for "Students & Researchers".
+export function GraduationIcon({ className = "h-10 w-10" }) {
+    return (
+        <svg className={className} viewBox="0 0 48 48" fill="none">
+            <path d="M6 18 L24 9 L42 18 L24 27 Z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round" />
+            <path d="M15 21.5 L15 29 C15 32.5 33 32.5 33 29 L33 21.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+            <g className="motion-tassel-swing" style={{ transformOrigin: "24px 18px" }}>
+                <line x1="24" y1="18" x2="31" y2="30" stroke="var(--color-accent)" strokeWidth="1.1" strokeLinecap="round" />
+                <circle cx="31" cy="32" r="1.8" fill="var(--color-accent)" />
+            </g>
+        </svg>
+    );
+}
+
+// A document being stamped - for "Policy & Government".
+export function StampIcon({ className = "h-10 w-10" }) {
+    return (
+        <svg className={className} viewBox="0 0 48 48" fill="none">
+            <g stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round">
+                <rect x="9" y="13" width="21" height="27" rx="1" />
+                <line x1="13.5" y1="20" x2="25.5" y2="20" strokeLinecap="round" />
+                <line x1="13.5" y1="25" x2="25.5" y2="25" strokeLinecap="round" />
+                <line x1="13.5" y1="30" x2="21" y2="30" strokeLinecap="round" />
+            </g>
+            <g className="motion-stamp-thump" stroke="var(--color-accent)" strokeWidth="1.1" strokeLinejoin="round">
+                <path d="M28 2 L36 2 L34 8 L30 8 Z" />
+                <rect x="23" y="8" width="14" height="4" rx="1" />
+            </g>
+        </svg>
+    );
+}
+
 // A small heap of coal lumps with a pulsing ember - for the Coal carrier.
 // Angular, faceted lumps (not rounded bumps) so it reads as rock, not cloud.
 export function CoalIcon({ className = "h-10 w-10" }) {

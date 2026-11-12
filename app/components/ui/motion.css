@@ -119,6 +119,33 @@
   animation: emberGlow 4s ease-in-out infinite;
 }
 
+/* Third batch of AnimatedIcons.js icons - matched 1:1 to the five
+   "Who it's for" audience categories, so their current stock-photo
+   placeholder icons can be swapped for one of these instead. */
+@keyframes crowdBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+.motion-crowd-bounce { animation: crowdBounce 2.4s ease-in-out infinite; }
+.motion-crowd-delay-1 { animation-delay: 0.25s; }
+.motion-crowd-delay-2 { animation-delay: 0.5s; }
+
+@keyframes growBar { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+.motion-grow-bar { animation: growBar 2.6s ease-in-out infinite; }
+.motion-grow-delay-1 { animation-delay: 0.3s; }
+.motion-grow-delay-2 { animation-delay: 0.6s; }
+
+@keyframes flagWave { 0%, 100% { transform: skewX(0deg); } 50% { transform: skewX(-10deg); } }
+.motion-flag-wave { animation: flagWave 2.2s ease-in-out infinite; }
+
+@keyframes tasselSwing { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+.motion-tassel-swing { animation: tasselSwing 3s ease-in-out infinite; }
+
+@keyframes stampThump {
+  0%, 55%, 100% { transform: translateY(0); }
+  65%           { transform: translateY(9px); }
+  72%           { transform: translateY(5px); }
+  80%           { transform: translateY(9px); }
+}
+.motion-stamp-thump { animation: stampThump 3.2s ease-in-out infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   [class*="motion-"], .flow-line, .reveal-down {
     animation: none !important;

@@ -1,6 +1,6 @@
 "use client";
 
-import "@/app/ConfigureAmplify";
+import { authSessionReady } from "@/app/ConfigureAmplify";
 import { useEffect, useState } from "react";
 import { getUrl } from "aws-amplify/storage";
 
@@ -31,6 +31,12 @@ export function useResolvedImageUrl(key: string | null | undefined): string | nu
                 return;
             }
             try {
+                // Wait on the shared credential warm-up (see
+                // ConfigureAmplify.js) so N images resolving at once share
+                // one Cognito Identity round trip instead of each racing
+                // their own - a no-op await once it's already resolved.
+                await authSessionReady;
+                if (cancelled) return;
                 const result = await getUrl({ path: key });
                 const resolvedUrl = result.url.toString();
                 const expiresAt = result.expiresAt ? result.expiresAt.getTime() : Date.now() + 10 * 60 * 1000;

@@ -79,6 +79,14 @@ const DEFAULT_SECTIONS = [
             "Mineral composition of underground-sourced coal is broadly comparable to opencast Highveld coal — moderate-to-high ash content and moderate sulphur levels — though underground seams can show greater variability in mineral matter distribution than the more uniform, shallower opencast pits, requiring closer blending management to maintain consistent boiler feed quality.",
         ]),
     },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Mining Indaba, [South Africa's Coal Sector Holds Firm Despite...](https://miningindaba.com/articles/south-africas-coal-sector-holds-firm-despite) — national production and demand context.\n2. Department of Mineral and Petroleum Resources (formerly DMRE), [South African Coal Sector Report](https://www.dmre.gov.za/Portals/0/Energy_Website/files/media/explained/South-African-Coal-Sector-Report.pdf) — coalfield and mining-method background.",
+        ]),
+    },
 ];
 
 export default function Page() {

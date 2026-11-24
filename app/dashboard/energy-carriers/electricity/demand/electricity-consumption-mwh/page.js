@@ -27,6 +27,14 @@ const DEFAULT_SECTIONS = [
             "Electricity consumption is heavily concentrated in **Gauteng** (South Africa's economic and industrial core), followed by other major metros — Cape Town, eThekwini (Durban), and the industrial corridors of Mpumalanga tied directly to nearby power generation and heavy industry. Rural and lower-income areas generally show markedly lower per-capita consumption, reflecting both lower appliance ownership and, in some communities, incomplete or unreliable electrification.",
         ]),
     },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Eskom, [Weekly System Status Reports](https://www.ntcsa.co.za/) — published by the National Transmission Company South Africa (NTCSA), covering recent generation, demand and system-performance data.\n2. Eskom, [Integrated Report](https://www.eskom.co.za/) — annual disclosure of sales volumes by customer category.\n3. Statistics South Africa, *Electricity Generated and Available for Distribution* (P4141) — the official monthly statistical release on national electricity generation and consumption.",
+        ]),
+    },
 ];
 
 export default function Page() {

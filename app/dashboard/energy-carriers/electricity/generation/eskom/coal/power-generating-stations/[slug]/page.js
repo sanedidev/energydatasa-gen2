@@ -12,6 +12,13 @@ const STATIONS = `${COAL}/power-generating-stations`;
 // regulatory filings) are left as placeholder guidance rather than
 // fabricated numbers, since that data isn't publicly verifiable at this
 // level of detail and belongs to Eskom's own operational records.
+//
+// Status facts last verified November 2026 against: Eskom's own published
+// Kusile/Medupi construction-budget statement; Ecofin Agency, "Eskom
+// Completes Kusile, Medupi Plants, Adds 9,600 MW to Grid"; Global Energy
+// Monitor's Medupi Power Station page; and Daily Investor, "Eskom Spent
+// R432 Billion on Two Power Stations That Are Still Not Finished 18 Years
+// Later" (29 September 2026).
 const STATION_FACTS = {
     arnot:      "Arnot Power Station is located near Middelburg, Mpumalanga. It has an installed capacity of approximately 2,352 MW across six units and was commissioned in the early-to-mid 1970s, making it one of Eskom's older coal-fired stations.",
     camden:     "Camden Power Station is located near Ermelo, Mpumalanga. Originally commissioned in 1967 with an installed capacity of approximately 1,561 MW, it was mothballed in the late 1980s and returned to service in the mid-2000s as part of Eskom's return-to-service programme to address the capacity shortfall of that period.",
@@ -21,12 +28,12 @@ const STATION_FACTS = {
     kendal:     "Kendal Power Station is located near Ogies, Mpumalanga. It has an installed capacity of approximately 4,116 MW across six units of 686 MW each, commissioned in the late 1980s to early 1990s, and is one of the largest direct dry-cooled power stations in the world.",
     komati:     "Komati Power Station is located near Middelburg, Mpumalanga. Originally commissioned with a capacity of approximately 1,000 MW, it was fully decommissioned in October 2022 — the first Eskom coal station retired under South Africa's Just Energy Transition — and is being repurposed as a pilot site for solar, wind, and battery storage.",
     kriel:      "Kriel Power Station is located near Kriel, Mpumalanga. It has an installed capacity of approximately 3,000 MW across six units of 500 MW each, commissioned between the mid-1970s and early 1980s.",
-    kusile:     "Kusile Power Station is located near eMalahleni, Mpumalanga. It has a design capacity of approximately 4,800 MW across six units of 800 MW each, and is one of Eskom's newest stations — the first in the fleet built with flue-gas desulphurisation (FGD) from the outset. Its construction faced significant delays and cost overruns, with units brought online progressively through the 2020s.",
+    kusile:     "Kusile Power Station is located near eMalahleni, Mpumalanga. It has a design capacity of approximately 4,800 MW across six units of 800 MW each, and is one of Eskom's newest stations — the first in the fleet built with flue-gas desulphurisation (FGD) from the outset. Construction faced significant delays and cost overruns (and a 2022 flue-duct failure that took three units offline for an extended period); all six units are now in commercial operation, with the final unit reaching commercial status in September 2025. Eskom now manages the station as an operating asset, though it remains in formal project close-out.",
     lethabo:    "Lethabo Power Station is located near Vereeniging, Free State. It has an installed capacity of approximately 3,708 MW across six units of 618 MW each, commissioned in the 1980s, and is supplied largely by discard coal from nearby collieries.",
     majuba:     "Majuba Power Station is located near Volksrust, Mpumalanga. It has an installed capacity of approximately 4,110 MW, commissioned between 1996 and 2001, making it one of the newer stations in the coal fleet prior to Medupi and Kusile. A 2014 coal storage silo collapse affected supply to some units for an extended period.",
     matimba:    "Matimba Power Station is located near Lephalale, Limpopo, in the Waterberg coalfield. It has an installed capacity of approximately 3,990 MW across six units of 665 MW each, commissioned between 1987 and 1991, and is one of the largest direct dry-cooled coal power stations in the world.",
     matla:      "Matla Power Station is located near Kriel, Mpumalanga. It has an installed capacity of approximately 3,600 MW across six units of 600 MW each, commissioned in the late 1970s to early 1980s.",
-    medupi:     "Medupi Power Station is located near Lephalale, Limpopo, adjacent to Matimba. It has a design capacity of approximately 4,764 MW across six units of 794 MW each, making it the newest and largest station in the coal fleet. Its construction was affected by significant delays, cost overruns, and a 2021 boiler explosion at Unit 4, with units completed progressively through the 2020s.",
+    medupi:     "Medupi Power Station is located near Lephalale, Limpopo, adjacent to Matimba. It has a design capacity of approximately 4,764 MW across six units of 794 MW each, making it the newest and largest station in the coal fleet. Its construction was affected by significant delays and cost overruns; Unit 4, damaged in a 2021 boiler explosion, returned to service in mid-2025. All six units are now complete and in commercial operation. Unlike Kusile, Medupi was not built with flue-gas desulphurisation (FGD) — Eskom published a draft cost-benefit analysis on a possible FGD retrofit in February 2026, so that remains an open question rather than a committed project.",
     tutuka:     "Tutuka Power Station is located near Standerton, Mpumalanga. It has an installed capacity of approximately 3,654 MW across six units of 609 MW each, commissioned in the early-to-mid 1980s, and has experienced notable reliability and availability challenges in recent years.",
 };
 

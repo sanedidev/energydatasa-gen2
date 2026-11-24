@@ -16,6 +16,14 @@ const DEFAULT_SECTIONS = [
             { type: "text", content: "Imports of coal into South Africa for Eskom's own use are effectively negligible — the country is a major net coal exporter, and Eskom's fuel strategy has always been built around domestic Mpumalanga and Limpopo coalfields rather than any import dependency.", bg: "gray" },
         ]),
     },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Daily Maverick, [Richards Bay Coal Terminal Exports Rise Over 10% in 2025 in Latest Sign of Transnet Reboot](https://www.dailymaverick.co.za/article/2026-01-27-richards-bay-coal-terminal-exports-rise-s-rise-over-10-in-2025-in-latest-sign-of/) (27 January 2026).\n2. Mining Indaba, [South Africa's Coal Sector Holds Firm Despite...](https://miningindaba.com/articles/south-africas-coal-sector-holds-firm-despite) — 2025 coal pricing and sales-revenue context.",
+        ]),
+    },
 ];
 
 export default function Page() {

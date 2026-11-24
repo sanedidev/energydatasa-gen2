@@ -27,7 +27,7 @@ const DEFAULT_SECTIONS = [
         id: "tonnes-produced",
         label: "Tonnes produced",
         defaultContent: JSON.stringify([
-            "Eskom is by far the largest single consumer of South African coal, burning on the order of **100+ million tonnes per year** across its coal fleet at recent fleet-wide utilisation levels, the majority of which is sourced from opencast operations given their lower extraction cost relative to underground mining. Annual volumes fluctuate with power station availability, planned maintenance, and load-shedding-driven dispatch changes.",
+            "Eskom is by far the largest single consumer of South African coal — industry reporting around IRP 2025 put current Eskom coal consumption at roughly **108 Mt/year**, the majority of which is sourced from opencast operations given their lower extraction cost relative to underground mining. IRP 2025's planned reduction in coal-fired capacity is expected to cut this substantially over time (toward a figure as low as ~40 Mt/year, on some projections, as older units retire). Annual volumes also fluctuate year to year with power station availability and planned maintenance.",
         ]),
     },
     {
@@ -77,6 +77,14 @@ const DEFAULT_SECTIONS = [
         label: "Mineral composition",
         defaultContent: JSON.stringify([
             "Highveld opencast coal is characterised by comparatively **high ash content** (commonly 25-35%) relative to international thermal coal, along with moderate sulphur levels — factors that directly shape boiler design (larger ash-handling and precipitator/FGD systems) and are central to the emissions-control and ash-disposal challenges facing Eskom's coal fleet.",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Mining Indaba, [South Africa's Coal Sector Holds Firm Despite...](https://miningindaba.com/articles/south-africas-coal-sector-holds-firm-despite) — Eskom coal consumption and IRP 2025 demand-reduction estimates.\n2. Department of Mineral and Petroleum Resources (formerly DMRE), [South African Coal Sector Report](https://www.dmre.gov.za/Portals/0/Energy_Website/files/media/explained/South-African-Coal-Sector-Report.pdf) — coalfield and coal-quality background.",
         ]),
     },
 ];

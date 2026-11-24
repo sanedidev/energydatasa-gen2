@@ -27,7 +27,7 @@ const DEFAULT_SECTIONS = [
         label: "Blending Mandates",
         defaultContent: JSON.stringify([
             { type: "title", title: "Blending Mandates" },
-            "South Africa's **Biofuels Industrial Strategy** (first published in 2007) set indicative national blending targets — around 2% bioethanol in petrol and 5% biodiesel in diesel — intended to stimulate a domestic biofuels industry, support agricultural development, and reduce reliance on imported liquid fuels. Mandatory blending regulations under the **Department of Mineral Resources and Energy (DMRE)** were subsequently developed to give the targets regulatory teeth.\n\nIn practice, uptake has been considerably slower than the strategy envisioned. Persistent obstacles have included feedstock cost competitiveness against imported refined fuels, uncertainty over pricing support mechanisms for producers, limited investment in dedicated production facilities, and competing food-versus-fuel land-use considerations for maize and sugarcane. As a result, actual blended volumes have remained well below the strategy's original targets for most of the period since its introduction.",
+            "South Africa's **Biofuels Industrial Strategy** (2007) set the policy direction, and **mandatory blending regulations were subsequently promulgated in August 2012 and came into legal effect from 1 October 2015** (Government Notice R.671) — a real, binding minimum, not just an aspirational target: **5% v/v minimum biodiesel**, and bio-ethanol permitted in a **2–10% v/v range** (the basis for the commonly-cited 'B5' and 'up to E10' labels). Draft amendment regulations were published for comment in 2021; subsequent gazette references into 2025 suggest the framework has continued to be revised, though a finalised updated version was not confirmed in this research pass.\n\nDespite the legal mandate existing since 2015, **actual market uptake and compliance have lagged**, constrained by feedstock cost competitiveness against imported refined fuels, limited dedicated production capacity, pricing-support uncertainty for producers, and food-versus-fuel land-use tension for maize and sugarcane. The gap between what's legally required and what's commercially produced and blended at scale has been a persistent feature of the policy's implementation since 2015.",
         ]),
     },
     {
@@ -43,7 +43,15 @@ const DEFAULT_SECTIONS = [
         label: "Relevant Datasets",
         defaultContent: JSON.stringify([
             { type: "title", title: "Relevant Datasets" },
-            "- **DMRE biofuels data** — blending mandate compliance and production statistics\n- **SANEDI biomass atlas** — mapped biomass resource availability by region and feedstock type\n- **Municipal waste statistics** — published by metros and the national Department of Forestry, Fisheries and the Environment\n- **National Energy Balance biomass data** — biomass and waste contribution within the broader NEB dataset (see National Energy Planning)",
+            "- **DMPR biofuels data** — blending mandate compliance and production statistics (the minerals/petroleum-side successor to the former DMRE)\n- **SANEDI biomass atlas** — mapped biomass resource availability by region and feedstock type\n- **Municipal waste statistics** — published by metros and the national Department of Forestry, Fisheries and the Environment\n- **National Energy Balance biomass data** — biomass and waste contribution within the broader NEB dataset (see National Energy Planning)",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Government of South Africa, [Regulations Regarding the Mandatory Blending of Bio-fuels with Petrol and Diesel (Government Notice No. R.671)](https://www.gov.za/sites/default/files/gcis_document/201409/35623rg9808gon671.pdf) (2012).\n2. International Energy Agency, [Regulations Regarding the Mandatory Blending of Bio-fuels with Petrol and Diesel](https://www.iea.org/policies/5297-regulations-regarding-the-mandatory-blending-of-bio-fuels-with-petrol-and-diesel-government-notice-no-r-671) (policy database entry).\n3. Cliffe Dekker Hofmeyr, [Mandatory Blending of Biofuels with Petrol and Diesel to Start in October 2015](https://www.cliffedekkerhofmeyr.com/en/news/press-releases/2013/projects/mandatory-blending-of-biofuels-with-petrol-and-diesel-to-start-in-october-2015.html).\n4. Government of South Africa, [draft amendment regulations, Government Gazette 44265](https://www.gov.za/sites/default/files/gcis_document/202103/44265rg11257gon211.pdf) (2021).",
         ]),
     },
 ];

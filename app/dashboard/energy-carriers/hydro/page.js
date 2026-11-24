@@ -36,7 +36,7 @@ const DEFAULT_SECTIONS = [
         label: "Resource Context",
         defaultContent: JSON.stringify([
             { type: "title", title: "Resource Context" },
-            "South Africa's semi-arid climate and highly variable rainfall place a natural ceiling on how much hydropower the country can develop domestically — most of the technically feasible large-scale hydro sites within South Africa's borders have already been developed. This is why the country's biggest hydro growth opportunities lie outside its own borders: the **Southern African Power Pool (SAPP)** already imports a portion of the region's hydro generation, most notably from the **Cahora Bassa** scheme in Mozambique via the Zimbabwe-South Africa transmission interconnectors, and proposed projects such as the **Grand Inga** scheme in the Democratic Republic of Congo have long been discussed as a long-term regional hydro resource.\n\nClimate change projections for southern Africa generally point toward greater rainfall variability and more frequent drought conditions, which is a key planning risk for any strategy that leans further on hydro (domestic or imported) for future capacity.",
+            "South Africa's semi-arid climate and highly variable rainfall place a natural ceiling on how much hydropower the country can develop domestically — most of the technically feasible large-scale hydro sites within South Africa's borders have already been developed. This is why the country's biggest hydro growth opportunities lie outside its own borders: South Africa imports hydro power from the **Cahora Bassa** scheme in Mozambique via a **dedicated HVDC transmission line** running directly between Songo (Mozambique) and Eskom's Apollo converter station in South Africa — not via Zimbabwe, which has its own separate HVAC connection into Cahora Bassa for its own supply. Proposed projects such as the **Grand Inga** scheme in the Democratic Republic of Congo have long been discussed as a long-term regional hydro resource via the wider Southern African Power Pool (SAPP).\n\nClimate change projections for southern Africa generally point toward greater rainfall variability and more frequent drought conditions, which is a key planning risk for any strategy that leans further on hydro (domestic or imported) for future capacity.",
         ]),
     },
     {
@@ -45,6 +45,14 @@ const DEFAULT_SECTIONS = [
         defaultContent: JSON.stringify([
             { type: "title", title: "Relevant Datasets" },
             "- **Eskom generation reports** — pumped-storage and run-of-river output by station, published in Eskom's annual and integrated reports\n- **Department of Water and Sanitation (DWS)** — hydrological and dam-level data for major river systems\n- **NERSA** — generation licence registrations for hydro facilities, including municipal and private schemes\n- **Southern African Power Pool (SAPP)** — regional hydro trade and import/export statistics",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Wikipedia, [Cahora Bassa (HVDC)](https://www.wikipedia.org/wiki/Cabora-Bassa) — technical overview of the Songo–Apollo HVDC link and its capacity history.\n2. ESMAP, [Cahora Bassa Generation](https://www.esmap.org/sites/esmap.org/files/BN004-10_REISP-CD_Cahora%20Bassa-Generation.pdf) — regional power trade context.\n3. Engineering News, [HCB, Eskom Work on Cahora Bassa Line Refurb Plan After Disruptions](https://www.engineeringnews.co.za/article/hcb-eskom-work-on-cahora-bassa-line-refurb-plan-after-disruptions-2013-01-25).",
         ]),
     },
 ];

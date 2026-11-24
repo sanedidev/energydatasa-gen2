@@ -25,6 +25,15 @@ const DEFAULT_SECTIONS = [
         label: "Seasonal Variation",
         defaultContent: JSON.stringify([
             "**Winter** load profiles show the most extreme peak-to-trough variation, driven by heating demand and shorter daylight hours pulling the evening peak higher and earlier. **Summer** profiles are generally flatter, though growing air-conditioning penetration has begun to introduce a secondary early-afternoon demand bump in warmer inland regions during heatwave periods — a pattern that is expected to become more pronounced as cooling appliance ownership continues to grow nationally.",
+            { type: "text", content: "Growing rooftop solar adoption is reshaping the midday portion of the national load curve: grid-measured demand now dips during sunlight hours as behind-the-meter solar output offsets consumption, an effect visible in Eskom's own system status data and distinct from the evening peak, which solar does not address.", bg: "blue" },
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Eskom / National Transmission Company South Africa (NTCSA), [Weekly System Status Reports](https://www.ntcsa.co.za/) — published load and generation data used to characterise daily and seasonal demand shapes.",
         ]),
     },
 ];

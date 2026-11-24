@@ -17,14 +17,22 @@ const DEFAULT_SECTIONS = [
         id: "km",
         label: "KM",
         defaultContent: JSON.stringify([
-            "Eskom's transmission network spans **tens of thousands of circuit-kilometres**, reflecting South Africa's geography: generation is heavily concentrated in Mpumalanga and Limpopo, while significant demand centres — Gauteng, the Western Cape, KwaZulu-Natal — lie hundreds of kilometres away, requiring long high-voltage corridors to move power efficiently across the country. Network growth in recent years has been increasingly driven by the need to connect new renewable energy capacity in resource-rich but historically under-served regions such as the Northern Cape and parts of the Eastern Cape, a key focus of Eskom's Transmission Development Plan.",
+            "Eskom's transmission network totalled **374 transmission lines spanning approximately 33,199 km**, connecting **169 transmission substations**, according to Eskom's own National Transmission Company South Africa (NTC) transmission licence application (reporting 2021 figures — the most recent detailed public breakdown found for this page). This reflects South Africa's geography: generation is heavily concentrated in Mpumalanga and Limpopo, while major demand centres — Gauteng, the Western Cape, KwaZulu-Natal — lie hundreds of kilometres away, requiring long high-voltage corridors to move power efficiently across the country.\n\nNetwork expansion is increasingly driven by the need to connect new renewable energy capacity in resource-rich but historically under-served regions such as the Northern Cape and parts of the Eastern Cape — a central focus of Eskom's Transmission Development Plan, and a frequently-cited bottleneck for new wind and solar projects awaiting grid connection.",
         ]),
     },
     {
         id: "voltage",
         label: "Voltage",
         defaultContent: JSON.stringify([
-            "The transmission network operates across several voltage classes, from **765 kV** (South Africa's highest transmission voltage, used on key long-distance corridors) down through **400 kV** and **275 kV** (the backbone voltages linking major generation and demand centres) to **132 kV** (sub-transmission, feeding into regional distribution networks). Each voltage class serves a different role: higher voltages minimise losses over long distances, while lower voltages step power down for regional distribution to substations closer to end consumers.",
+            "The transmission network operates across several voltage classes. Per Eskom's 2021 transmission licence figures:\n- **765 kV:** 10 lines, ~2,784 km — South Africa's highest transmission voltage, used on key long-distance corridors.\n- **400 kV:** 167 lines, ~19,760 km — the dominant backbone voltage linking major generation and demand centres.\n- **275 kV:** ~7,342 km.\n- **220 kV:** ~1,352 km.\n\nBelow these, **132 kV** sub-transmission lines feed into regional distribution networks. Higher voltages minimise losses over long distances, while lower voltages step power down for regional distribution to substations closer to end consumers.",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. Eskom, [NTC Transmission Licence Application](https://www.eskom.co.za/wp-content/uploads/2023/02/NTC_Transmission_licence_application.pdf) — line counts and lengths by voltage class (2021 data).\n2. Eskom, [Transmission Development Plan](https://www.eskom.co.za/?p=8892) — planned network expansion to connect new generation capacity.",
         ]),
     },
 ];

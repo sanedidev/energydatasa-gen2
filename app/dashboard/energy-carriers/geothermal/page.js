@@ -27,7 +27,7 @@ const DEFAULT_SECTIONS = [
         label: "Exploration & Development",
         defaultContent: JSON.stringify([
             { type: "title", title: "Exploration & Development" },
-            "Geothermal exploration in South Africa has historically been limited and largely academic or exploratory in nature, rather than backed by sustained commercial investment. Dedicated funding for geothermal resource assessment has been modest compared to funding directed at solar, wind, and other renewable technologies, reflecting both the resource's uncertain commercial potential and the relatively low priority it has been given in national energy planning to date.\n\nAny path toward commercial development would likely require a combination of further resource characterisation (additional borehole and heat-flow data), feasibility studies for specific direct-use applications, and dedicated funding — potentially through vehicles such as the Central Energy Fund (CEF) or DMRE-linked exploration support — given the high upfront cost and uncertainty associated with geothermal resource confirmation.",
+            "Geothermal exploration in South Africa has historically been limited and largely academic or exploratory in nature, rather than backed by sustained commercial investment. Dedicated funding for geothermal resource assessment has been modest compared to funding directed at solar, wind, and other renewable technologies, reflecting both the resource's uncertain commercial potential and the relatively low priority it has been given in national energy planning to date.\n\nAny path toward commercial development would likely require a combination of further resource characterisation (additional borehole and heat-flow data), feasibility studies for specific direct-use applications, and dedicated funding — potentially through vehicles such as the Central Energy Fund (CEF) or DMPR-linked exploration support — given the high upfront cost and uncertainty associated with geothermal resource confirmation.",
         ]),
     },
     {
@@ -43,7 +43,15 @@ const DEFAULT_SECTIONS = [
         label: "Relevant Datasets",
         defaultContent: JSON.stringify([
             { type: "title", title: "Relevant Datasets" },
-            "- **Council for Geoscience heat flow maps** — regional geothermal gradient and heat flow data\n- **Borehole temperature databases** — collected alongside groundwater and mineral exploration\n- **DMRE exploration licences** — records of any geothermal-related exploration activity\n- **Hot spring inventories** — documented natural hot spring locations and measured temperatures",
+            "- **Council for Geoscience heat flow maps** — regional geothermal gradient and heat flow data\n- **Borehole temperature databases** — collected alongside groundwater and mineral exploration\n- **DMPR exploration licences** — records of any geothermal-related exploration activity (the minerals-side successor to the former DMRE)\n- **Hot spring inventories** — documented natural hot spring locations and measured temperatures",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "This page's characterisation of South Africa as a low-enthalpy, early-exploration-stage geothermal setting reflects the consistent, long-standing scientific consensus on the Kaapvaal Craton's tectonic stability versus active-rift settings like East Africa's Rift Valley. No dedicated recent (2024–2026) South African geothermal resource assessment or commercial development announcement was found during this research pass — if a specific current source becomes available (e.g. a Council for Geoscience report), it should be added here.",
         ]),
     },
 ];

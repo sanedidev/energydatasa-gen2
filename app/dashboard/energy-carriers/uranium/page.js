@@ -36,7 +36,7 @@ const DEFAULT_SECTIONS = [
         label: "Koeberg Context",
         defaultContent: JSON.stringify([
             { type: "title", title: "Koeberg Context" },
-            "Koeberg's two pressurised water reactor units have a combined capacity of approximately 1,860 MW and have operated since the mid-1980s. Both units underwent **long-term operation (LTO) life extension programmes**, including steam generator replacements, to extend their operating licences beyond their original 40-year design life.\n\nFuel procurement for Koeberg is managed through Eskom's nuclear fuel supply arrangements, sourcing enriched uranium fuel assemblies internationally under multi-year contracts. Fuel costs represent a comparatively small share of Koeberg's generating cost relative to capital and operating costs — one of nuclear power's structural characteristics, where the fuel itself is cheap but the plant is capital-intensive.",
+            "Koeberg's two pressurised water reactor units have a combined capacity of approximately 1,860 MW (about 5% of South Africa's total electricity supply) and have operated since the mid-1980s. Both units' **long-term operation (LTO) life extension programmes** are now complete, following steam generator replacement and refuelling work: Unit 1 was granted its 20-year extension in July 2024 (operating to 2044), and Unit 2 followed in November 2025 (operating to 2044/2045) — these are secured, not pending.\n\nFuel procurement for Koeberg is managed through Eskom's nuclear fuel supply arrangements, sourcing enriched uranium fuel assemblies internationally under multi-year contracts. Fuel costs represent a comparatively small share of Koeberg's generating cost relative to capital and operating costs — one of nuclear power's structural characteristics, where the fuel itself is cheap but the plant is capital-intensive.",
         ]),
     },
     {
@@ -44,7 +44,15 @@ const DEFAULT_SECTIONS = [
         label: "Relevant Datasets",
         defaultContent: JSON.stringify([
             { type: "title", title: "Relevant Datasets" },
-            "- **DMRE mineral resources reports** — historical and current uranium production and reserve estimates\n- **IAEA Uranium Resources, Production and Demand ('Red Book')** — internationally comparable uranium resource data, including South Africa\n- **Eskom Koeberg operational data** — published in Eskom's annual and integrated reports\n- **National Nuclear Regulator (NNR)** — licensing and safety oversight information for Koeberg",
+            "- **DMPR mineral resources reports** — historical and current uranium production and reserve estimates (the minerals-side successor to the former DMRE)\n- **IAEA Uranium Resources, Production and Demand ('Red Book')** — internationally comparable uranium resource data, including South Africa\n- **Eskom Koeberg operational data** — published in Eskom's annual and integrated reports\n- **National Nuclear Regulator (NNR)** — licensing and safety oversight information for Koeberg",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "1. News24, [Koeberg Unit 2 Has Its Life Extended by 20 Years Just Days Before Expiry of Licence](https://www.news24.com/business/climate-future/energy/koeberg-unit-2-has-its-life-extended-by-20-years-just-days-before-expiry-of-licence-20251106-0729) (6 November 2025).\n2. Engineering News, [National Nuclear Regulator Grants 20-Year Life Extension to Koeberg Unit 2](https://www.engineeringnews.co.za/article/national-nuclear-regulator-grants-20-year-life-extension-to-koeberg-unit-2-2025-11-06).\n3. Engineering News, [Necsa Welcomes Regulatory Approval for Extending the Life of Koeberg's First Nuclear Reactor](https://www.engineeringnews.co.za/article/necsa-welcomes-regulatory-approval-for-extending-the-life-of-koebergs-first-nuclear-reactor-2024-07-17) (17 July 2024).",
         ]),
     },
 ];

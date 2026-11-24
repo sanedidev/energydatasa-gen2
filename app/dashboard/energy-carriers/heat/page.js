@@ -46,6 +46,14 @@ const DEFAULT_SECTIONS = [
             "- **SANEDI industrial energy audit data** — process heat efficiency assessments across industrial sectors\n- **Solar water heating programme statistics** — historical rebate programme installation data (DoE/Eskom)\n- **National Energy Balance heat data** — final consumption of heat-related fuels by sector (see National Energy Planning)\n- **Stats SA energy use surveys** — household and commercial energy use patterns, including water and space heating",
         ]),
     },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "This page describes general, well-established structural features of South African industrial and residential heat demand (fuel mix by sector, the role of solar water heating, the relative under-development of district heating) rather than citing a single current report. For sector-specific figures, see the **National Energy Balance** (compiled by SANEDI and the UCT Energy Systems Research Group) referenced in the datasets above, and the Energy Efficiency pages on this platform for solar water heating programme details.",
+        ]),
+    },
 ];
 
 export default function Page() {

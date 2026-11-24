@@ -34,6 +34,14 @@ const DEFAULT_SECTIONS = [
             "Agricultural customers are typically billed under **Ruraflex** or similar rural tariff structures, which include seasonal and time-of-use elements similar to industrial tariffs but calibrated to farming load patterns — notably irrigation pumping, which is highly seasonal and often runs during off-peak hours specifically to take advantage of lower rates. Rural electrification pricing more broadly has had to balance cost-reflective pricing principles against the historically weaker grid infrastructure and lower load density typical of agricultural areas.",
         ]),
     },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "For the underlying year-by-year approved tariff increase figures referenced across these sectors, see the Multi-Year Price Determination page on this site, sourced to NERSA's published tariff decisions.\n\n1. Eskom, [Eskom Implements NERSA Decision for Financial Year 2027](https://www.eskom.co.za/eskom-implements-nersa-decision-for-financial-year-2027/) — current Homeflex, Megaflex and Ruraflex tariff structures.\n2. Eskom, [2026–2027 Tariff Increase](https://www.eskom.co.za/distribution/2026-2027-tariff-increase/) — current tariff schedules by customer category.",
+        ]),
+    },
 ];
 
 export default function Page() {

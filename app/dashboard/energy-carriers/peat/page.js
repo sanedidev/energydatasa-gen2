@@ -43,7 +43,15 @@ const DEFAULT_SECTIONS = [
         label: "Relevant Datasets",
         defaultContent: JSON.stringify([
             { type: "title", title: "Relevant Datasets" },
-            "- **DMRE mineral resources surveys** — where peat occurrences have been documented alongside other mineral resource assessments\n- **SANBI wetland inventory data** — the South African National Biodiversity Institute's National Wetland Map, covering peat-bearing wetland systems\n- **National Energy Balance tables** — for peat's (minimal) place within the broader national energy accounting framework",
+            "- **DMPR mineral resources surveys** — where peat occurrences have been documented alongside other mineral resource assessments (the minerals-side successor to the former DMRE)\n- **SANBI wetland inventory data** — the South African National Biodiversity Institute's National Wetland Map, covering peat-bearing wetland systems\n- **National Energy Balance tables** — for peat's (minimal) place within the broader national energy accounting framework",
+        ]),
+    },
+    {
+        id: "sources",
+        label: "Sources & References",
+        defaultContent: JSON.stringify([
+            { type: "title", title: "Sources & References" },
+            "This page's assessment — that peat has no commercial energy role in South Africa, given coal's abundance and the conservation status of peat-bearing wetlands — reflects the consistent absence of any peat-fired generation or extraction industry in South African energy and minerals reporting. No source describing active South African peat energy development was found during this research pass, which is itself consistent with the page's own conclusion.",
         ]),
     },
 ];

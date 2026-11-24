@@ -1,15 +1,30 @@
 "use client";
 
+// http(s)/mailto only - this content is admin-editable after the fact (via
+// EditableSections), so a careless or malicious edit could otherwise turn a
+// "link" into a javascript: or data: URI that runs when a visitor clicks it.
+function isSafeHref(href) {
+    return /^(https?:|mailto:)/i.test(href.trim());
+}
+
 function parseInline(text) {
     const parts = [];
-    const re = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+    const re = /\[([^\]]+)\]\(([^)]+)\)|\*\*(.+?)\*\*|\*(.+?)\*/g;
     let last = 0, m;
     while ((m = re.exec(text)) !== null) {
         if (m.index > last) parts.push(text.slice(last, m.index));
-        if (m[1] !== undefined)
-            parts.push(<strong key={m.index} className="font-semibold text-[var(--color-ink)]">{m[1]}</strong>);
-        else
-            parts.push(<em key={m.index} className="italic">{m[2]}</em>);
+        if (m[1] !== undefined) {
+            const href = m[2].trim();
+            parts.push(
+                isSafeHref(href)
+                    ? <a key={m.index} href={href} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline">{m[1]}</a>
+                    : m[1]
+            );
+        } else if (m[3] !== undefined) {
+            parts.push(<strong key={m.index} className="font-semibold text-[var(--color-ink)]">{m[3]}</strong>);
+        } else {
+            parts.push(<em key={m.index} className="italic">{m[4]}</em>);
+        }
         last = m.index + m[0].length;
     }
     if (last < text.length) parts.push(text.slice(last));

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HeroSection from "@/app/components/ui/HeroSection";
-import { SolarIcon, LeafIcon, BatteryIcon, RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
+import { SolarIcon, LeafIcon, RippleIcon } from "@/app/components/ui/icons/AnimatedIcons";
 
 export const metadata = { title: "Datasets" };
 
@@ -13,18 +13,11 @@ const SECTIONS = [
         Icon: SolarIcon,
     },
     {
-        href: "/dashboard/energy-efficiency",
-        title: "Energy Efficiency",
-        desc: "EEDSM, EPCs, tax incentives, standards & labelling.",
-        count: "4 categories",
+        href: "/dashboard/energy-efficiency-planning",
+        title: "Energy Efficiency & Planning",
+        desc: "EEDSM, EPCs, tax incentives and standards, plus the IRP, IEP, Gas and Liquid Fuels Master Plans.",
+        count: "8 categories",
         Icon: LeafIcon,
-    },
-    {
-        href: "/dashboard/energy-planning",
-        title: "Energy Planning",
-        desc: "IRP, IEP, Gas Master Plan, Liquid Fuels Master Plan.",
-        count: "4 categories",
-        Icon: BatteryIcon,
     },
     {
         href: "/dashboard/energy-balance",

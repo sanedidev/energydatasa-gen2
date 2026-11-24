@@ -17,6 +17,7 @@ import { upsertPageContent } from "@/app/lib/manageContent";
 import { BASE as EC_BASE, STATIC_NAV as EC_NAV } from "@/app/dashboard/energy-carriers/_nav-data";
 import { BASE as EE_BASE, STATIC_NAV as EE_NAV } from "@/app/dashboard/energy-efficiency/_nav-data";
 import { BASE as EP_BASE, STATIC_NAV as EP_NAV } from "@/app/dashboard/energy-planning/_nav-data";
+import { BASE as EEP_BASE } from "@/app/dashboard/energy-efficiency-planning/_nav-data";
 
 
 // ─── Per-subsystem static items + section configs ────────────────────────────
@@ -110,6 +111,30 @@ export const EP_SECTION_CONFIG = {
                 { id: "integrated-energy-plan", href: `${EP_BASE}/integrated-energy-plan`, title: "Integrated Energy Plan (IEP)", desc: "Energy balance, long-term demand drivers and policy pathways.", hidden: false },
                 { id: "gas-master-plan", href: `${EP_BASE}/gas-master-plan`, title: "Gas Master Plan", desc: "Infrastructure, LNG vs piped options, demand outlooks and timelines.", hidden: false },
                 { id: "liquid-fuels-master-plan", href: `${EP_BASE}/liquid-fuels-master-plan`, title: "Liquid Fuels Master Plan", desc: "Refinery/import strategy, specs, logistics and security of supply.", hidden: false },
+            ],
+        },
+    ],
+};
+
+// The merged Energy Efficiency + Planning dashboard block. staticItems
+// covers all 8 pre-existing leaf pages (so the "link to an existing page"
+// picker can still find any of them from the merged index), while base/
+// rootCardsSlug point at this section's own new root, for anything created
+// fresh from here going forward.
+export const EEP_SECTION_CONFIG = {
+    base: EEP_BASE,
+    rootCardsSlug: "energy-efficiency-planning.__cards__",
+    sectionPathKey: "dashboard.energy-efficiency-planning",
+    sectionLabel: "Energy Efficiency & Planning",
+    staticItems: [...flattenNav(EE_NAV, ["Energy Efficiency"]), ...flattenNav(EP_NAV, ["Energy Planning"])],
+    staticCarriers: [
+        {
+            href: EEP_BASE,
+            label: "Energy Efficiency & Planning",
+            cardsSlug: "energy-efficiency-planning.__cards__",
+            defaultCards: [
+                ...EE_SECTION_CONFIG.staticCarriers[0].defaultCards,
+                ...EP_SECTION_CONFIG.staticCarriers[0].defaultCards,
             ],
         },
     ],

@@ -24,12 +24,12 @@ export default function Page() {
         <div className="space-y-8">
             <Breadcrumbs items={[
                 { label: "Datasets", href: "/dashboard" },
-                { label: "Energy Efficiency", href: "/dashboard/energy-efficiency" },
+                { label: "Energy Efficiency & Planning", href: "/dashboard/energy-efficiency-planning" },
                 { label: "Standards & Labelling" },
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency &amp; Planning</p>
                 <h1 className="text-2xl font-bold text-[var(--color-ink)]">Standards & Labelling</h1>
                 <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
                     Minimum energy performance standards (MEPS) and product labelling requirements for appliances and equipment in South Africa.

@@ -24,12 +24,12 @@ export default function Page() {
         <div className="space-y-8">
             <Breadcrumbs items={[
                 { label: "Datasets", href: "/dashboard" },
-                { label: "Energy Efficiency", href: "/dashboard/energy-efficiency" },
+                { label: "Energy Efficiency & Planning", href: "/dashboard/energy-efficiency-planning" },
                 { label: "Tax Incentives" },
             ]} />
 
             <div>
-                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency</p>
+                <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-accent)]">Energy Efficiency &amp; Planning</p>
                 <h1 className="text-2xl font-bold text-[var(--color-ink)]">Tax Incentives</h1>
                 <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
                     Incentive schemes, eligibility criteria, and application guidance for energy efficiency improvements in South Africa.

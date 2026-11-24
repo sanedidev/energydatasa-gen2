@@ -1,0 +1,103 @@
+"use client";
+
+import { use as usePromise, useEffect, useState } from "react";
+import Link from "next/link";
+import { apiClient as client } from "@/app/lib/apiClient";
+import CarrierIndexPage from "@/app/components/CarrierIndexPage";
+import EditableSections from "@/app/components/EditableSections";
+
+
+export default function DynamicEnergyEfficiencyPlanningPage({ params }) {
+    const { slug } = usePromise(params);
+    const slugPath = slug.join(".");
+    const nodeConfigSlug = `dyn.node.dashboard.energy-efficiency-planning.${slugPath}`;
+
+    const [config, setConfig] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let cancelled = false;
+        async function load() {
+            try {
+                const res = await client.models.PageContent.pageContentBySlug({ slug: nodeConfigSlug }, { authMode: "apiKey" });
+                const item = res?.data?.[0] ?? null;
+                if (!cancelled && item?.content) {
+                    setConfig(JSON.parse(item.content));
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        }
+        load();
+        return () => { cancelled = true; };
+    }, [nodeConfigSlug]);
+
+    if (loading) {
+        return (
+            <div className="space-y-4 animate-pulse">
+                <div className="h-4 w-1/3 rounded-full bg-[var(--color-cream-2)]" />
+                <div className="h-8 w-1/2 rounded-full bg-[var(--color-cream-2)]" />
+                <div className="grid grid-cols-3 gap-4">
+                    {[1, 2, 3].map((i) => <div key={i} className="h-28 rounded-none bg-[var(--color-cream-2)]" />)}
+                </div>
+            </div>
+        );
+    }
+
+    if (!config) {
+        return (
+            <div className="py-16 text-center">
+                <p className="text-[var(--color-ink-soft)] text-sm">Page not found.</p>
+                <Link href="/dashboard/energy-efficiency-planning" className="mt-4 inline-block text-sm text-[var(--color-accent)] hover:underline">
+                    ← Back to Energy Efficiency & Planning
+                </Link>
+            </div>
+        );
+    }
+
+    const crumbs = config.crumbs ?? [
+        { label: "Datasets", href: "/dashboard" },
+        { label: "Energy Efficiency & Planning", href: "/dashboard/energy-efficiency-planning" },
+        { label: config.title },
+    ];
+
+    if (config.type === "carrier") {
+        return (
+            <CarrierIndexPage
+                pageSlug={`dyn.cards.dashboard.energy-efficiency-planning.${slugPath}`}
+                defaultCards={[]}
+                crumbs={crumbs}
+                label="Datasets"
+                title={config.title}
+                description={config.desc}
+                cols={2}
+            />
+        );
+    }
+
+    if (config.type === "file") {
+        return (
+            <div className="space-y-8">
+                <nav className="mb-2 flex flex-wrap items-center gap-1.5 text-sm">
+                    {crumbs.map((c, i) => (
+                        <span key={i} className="flex items-center gap-1.5">
+                            {i > 0 && <span className="text-[var(--color-ink-soft)]/40">/</span>}
+                            {c.href
+                                ? <Link href={c.href} className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">{c.label}</Link>
+                                : <span className="font-medium text-[var(--color-ink)]">{c.label}</span>}
+                        </span>
+                    ))}
+                </nav>
+                <EditableSections
+                    pageKey={`dyn.file.dashboard.energy-efficiency-planning.${slugPath}`}
+                    defaultSections={[{ id: "overview", label: "Overview" }]}
+                    placeholders={{ overview: "Add content for this section." }}
+                />
+            </div>
+        );
+    }
+
+    return <div className="py-8 text-[var(--color-ink-soft)] text-sm text-center">Unknown page type.</div>;
+}

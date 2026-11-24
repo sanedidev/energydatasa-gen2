@@ -1,25 +1,9 @@
-import CarrierIndexPage from "@/app/components/CarrierIndexPage";
+import { redirect } from "next/navigation";
 
-const BASE = "/dashboard/energy-planning";
-const CARDS = [
-    { id: "integrated-resource-plan",  href: `${BASE}/integrated-resource-plan`,  title: "Integrated Resource Plan (IRP)", desc: "Capacity outlooks, technology splits, assumptions and scenarios.",              hidden: false },
-    { id: "integrated-energy-plan",    href: `${BASE}/integrated-energy-plan`,    title: "Integrated Energy Plan (IEP)",   desc: "Energy balance, long-term demand drivers and policy pathways.",               hidden: false },
-    { id: "gas-master-plan",           href: `${BASE}/gas-master-plan`,           title: "Gas Master Plan",                desc: "Infrastructure, LNG vs piped options, demand outlooks and timelines.",          hidden: false },
-    { id: "liquid-fuels-master-plan",  href: `${BASE}/liquid-fuels-master-plan`,  title: "Liquid Fuels Master Plan",       desc: "Refinery/import strategy, specs, logistics and security of supply.",           hidden: false },
-];
-
+// Energy Planning's own index merged into Energy Efficiency & Planning -
+// this route stays so old bookmarks/links keep working. The 4 leaf pages
+// under this folder (integrated-resource-plan, etc.) are untouched and
+// still live here.
 export default function Page() {
-    return (
-        <CarrierIndexPage
-            pageSlug="energy-planning.__cards__"
-            defaultCards={CARDS}
-            crumbs={[
-                { label: "Datasets", href: "/dashboard" },
-            ]}
-            label="Datasets"
-            title="Energy Planning"
-            description="Long-term planning frameworks and integrated resource strategies for South Africa."
-            cols={2}
-        />
-    );
+    redirect("/dashboard/energy-efficiency-planning");
 }

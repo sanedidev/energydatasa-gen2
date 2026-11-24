@@ -221,6 +221,39 @@ const SECTION_REGISTRY = [
             "liquid-fuels-master-plan": "ep.liquid-fuels-master-plan",
         },
     },
+    {
+        // The merged dashboard block - its own "manage index" permission is
+        // separate from the two groups above (which still grant access to
+        // the real Energy Efficiency / Energy Planning page content itself,
+        // unchanged). knownKeys below intentionally map back to those same
+        // real pageKeys rather than inventing new ones, so a grant made here
+        // and a grant made via the groups above refer to the identical page.
+        group: "Energy Efficiency & Planning (index)",
+        pageSlug: "energy-efficiency-planning.__cards__",
+        base: "/dashboard/energy-efficiency-planning",
+        sectionPathKey: "dashboard.energy-efficiency-planning",
+        wildcardKey: null,
+        defaultCards: [
+            { id: "tax-incentives",                  href: "/dashboard/energy-efficiency/tax-incentives",                  title: "Tax Incentives" },
+            { id: "energy-performance-certificates", href: "/dashboard/energy-efficiency/energy-performance-certificates", title: "Energy Performance Certificates" },
+            { id: "balancing-energy-supply-demand",  href: "/dashboard/energy-efficiency/balancing-energy-supply-and-demand", title: "Balancing Energy Supply and Demand" },
+            { id: "standards-and-labelling",         href: "/dashboard/energy-efficiency/standards-and-labelling",         title: "Standards & Labelling" },
+            { id: "integrated-resource-plan", href: "/dashboard/energy-planning/integrated-resource-plan", title: "Integrated Resource Plan (IRP)" },
+            { id: "integrated-energy-plan",   href: "/dashboard/energy-planning/integrated-energy-plan",   title: "Integrated Energy Plan (IEP)" },
+            { id: "gas-master-plan",          href: "/dashboard/energy-planning/gas-master-plan",          title: "Gas Master Plan" },
+            { id: "liquid-fuels-master-plan", href: "/dashboard/energy-planning/liquid-fuels-master-plan", title: "Liquid Fuels Master Plan" },
+        ],
+        knownKeys: {
+            "tax-incentives":                  "ee.tax-incentives",
+            "energy-performance-certificates": "ee.energy-performance-certificates",
+            "balancing-energy-supply-demand":  "ee.balancing-energy-supply-and-demand",
+            "standards-and-labelling":         "ee.standards-and-labelling",
+            "integrated-resource-plan": "ep.integrated-resource-plan",
+            "integrated-energy-plan":   "ep.integrated-energy-plan",
+            "gas-master-plan":          "ep.gas-master-plan",
+            "liquid-fuels-master-plan": "ep.liquid-fuels-master-plan",
+        },
+    },
 ];
 
 function fallbackDynKey(section, card) {

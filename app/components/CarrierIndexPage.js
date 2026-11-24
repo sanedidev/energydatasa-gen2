@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { apiClient as client } from "@/app/lib/apiClient";
 import { usePermissions } from "@/app/context/permissions";
 import Breadcrumbs from "@/app/components/breadcrumbs";
-import CarrierPicker, { DEFAULT_SECTION_CONFIG, EE_SECTION_CONFIG, EP_SECTION_CONFIG } from "@/app/components/CarrierPicker";
+import CarrierPicker, { DEFAULT_SECTION_CONFIG, EE_SECTION_CONFIG, EP_SECTION_CONFIG, EEP_SECTION_CONFIG } from "@/app/components/CarrierPicker";
 import CarrierMovePicker from "@/app/components/CarrierMovePicker";
 import DragHandle from "@/app/components/ui/DragHandle";
 import ConfirmDialog from "@/app/components/ui/ConfirmDialog";
@@ -429,9 +429,10 @@ export default function CarrierIndexPage({
 
     const sectionName = pathname.split("/")[2] ?? "";
     const PICKER_SECTION_CONFIGS = {
-        "energy-carriers":   DEFAULT_SECTION_CONFIG,
-        "energy-efficiency": EE_SECTION_CONFIG,
-        "energy-planning":   EP_SECTION_CONFIG,
+        "energy-carriers":            DEFAULT_SECTION_CONFIG,
+        "energy-efficiency":          EE_SECTION_CONFIG,
+        "energy-planning":            EP_SECTION_CONFIG,
+        "energy-efficiency-planning": EEP_SECTION_CONFIG,
     };
     const pickerSectionConfig = PICKER_SECTION_CONFIGS[sectionName] ?? DEFAULT_SECTION_CONFIG;
 

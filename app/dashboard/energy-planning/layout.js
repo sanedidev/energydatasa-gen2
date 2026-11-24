@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import SectionNav from "./_section-nav";
+import SectionNav from "@/app/dashboard/energy-efficiency-planning/_section-nav";
 
 const HEADER_H = 64;
 
@@ -54,7 +54,7 @@ export default function EnergyPlanningLayout({ children }) {
                         >
                             <div className="flex items-center justify-between border-b border-[var(--color-hairline)] px-4 py-3">
                                 <p className="text-xs font-semibold uppercase tracking-wider text-[var(--color-ink-soft)]/70">
-                                    Energy Planning
+                                    Energy Efficiency &amp; Planning
                                 </p>
                                 <button
                                     onClick={() => setOpen(false)}

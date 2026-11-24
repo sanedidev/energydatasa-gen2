@@ -72,14 +72,14 @@ export default function Page() {
             <nav className="flex flex-wrap items-center gap-1.5 text-sm">
                 <Link href="/dashboard" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Datasets</Link>
                 <span className="text-slate-300">/</span>
-                <Link href="/dashboard/energy-planning" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Energy Planning</Link>
+                <Link href="/dashboard/energy-efficiency-planning" className="text-[var(--color-ink-soft)] hover:text-[var(--color-ink)] transition-colors">Energy Efficiency &amp; Planning</Link>
                 <span className="text-slate-300">/</span>
                 <span className="font-medium text-[var(--color-ink)]">Integrated Energy Plan</span>
             </nav>
 
             <EditablePageHeader
                 pageKey={PAGE_KEY}
-                defaultLabel="Energy Planning"
+                defaultLabel="Energy Efficiency & Planning"
                 defaultTitle="Integrated Energy Plan (IEP)"
                 defaultDesc="South Africa's long-term energy strategy — balancing supply scenarios, demand projections, and policy pathways across all energy carriers."
             />

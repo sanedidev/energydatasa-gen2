@@ -27,7 +27,7 @@ const DEFAULT_SECTIONS = [
         defaultContent: JSON.stringify([
             { type: "title", title: "Compliance & Obligations" },
             "- **Who is responsible:** the building owner carries ultimate responsibility for obtaining and displaying a valid EPC, regardless of who occupies the building.\n- **Where it must be displayed:** a valid EPC must be publicly displayed at the building's entrance.\n- **Validity period:** an EPC is valid for **up to five years** from its date of issue, after which it must be renewed.\n- **Who issues it:** certificates must be issued by an **accredited body** against **SANS 1544:2014**, the national standard for energy performance certification of buildings.\n- **Compliance deadline:** the original registration deadline of 7 December 2022 was extended to **7 December 2025** by the then Department of Mineral Resources and Energy.",
-            { type: "text", content: "Enforcement sits across two bodies: the **Department of Mineral Resources and Energy (DMRE)** monitors compliance, while **SANEDI** maintains the national register that every issued certificate must be recorded on.", bg: "blue" },
+            { type: "text", content: "Enforcement sits across two bodies: compliance monitoring was assigned to the then **Department of Mineral Resources and Energy (DMRE)**, whose electricity-related functions (including the National Energy Act) transferred to the newly-created **Department of Electricity and Energy (DOEE)** from 2024, while **SANEDI** maintains the national register that every issued certificate must be recorded on.", bg: "blue" },
         ]),
     },
     {

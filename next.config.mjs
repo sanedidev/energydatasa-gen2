@@ -4,6 +4,10 @@ const nextConfig = {
   // reason to hand out free framework/version fingerprinting.
   poweredByHeader: false,
 
+  experimental: {
+    agentUpgrade: "security",
+  },
+
   async headers() {
     return [
       {

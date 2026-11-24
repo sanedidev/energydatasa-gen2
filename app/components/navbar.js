@@ -43,8 +43,22 @@ export default function Navbar() {
                 {/* Brand */}
                 <Link
                     href="/"
-                    className="shrink-0 text-sm font-bold tracking-widest text-[var(--color-ink)] uppercase transition-colors hover:text-[var(--color-accent)]"
+                    className="group flex shrink-0 items-center gap-2 text-sm font-bold tracking-widest text-[var(--color-ink)] uppercase transition-colors hover:text-[var(--color-accent)]"
                 >
+                    <svg
+                        viewBox="0 0 512 512"
+                        aria-hidden="true"
+                        className="h-6 w-6 shrink-0 rounded-[6px] bg-[var(--color-accent)] p-1 transition-colors group-hover:bg-[var(--color-accent-hover)]"
+                    >
+                        <path
+                            d="M48 268h80l40-150 64 300 64-215 40 65h128"
+                            fill="none"
+                            stroke="var(--color-cream)"
+                            strokeWidth="46"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
                     Energy Data SA
                 </Link>
 

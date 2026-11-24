@@ -22,7 +22,7 @@ const SECTIONS = [
     {
         href: "/dashboard/energy-balance",
         title: "National Energy Planning",
-        desc: "2024 NEB — primary supply, conversion, and final consumption by sector and commodity.",
+        desc: "National Energy Balance — primary supply, conversion, and final consumption by sector and commodity.",
         count: "8 sections · primary to final consumption",
         Icon: RippleIcon,
     },
